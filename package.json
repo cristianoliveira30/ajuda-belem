@@ -1,0 +1,31 @@
+{
+  "name": "ajuda-belem",
+  "private": true,
+  "packageManager": "yarn@4.18.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "test": "vitest --run"
+  },
+  "dependencies": {
+    "@nuxt/ui": "^4.11.1",
+    "nuxt": "^4.5.2",
+    "vue": "^3.5.43",
+    "vue-router": "^5.3.1",
+    "zod": "^4.2.0"
+  },
+  "devDependencies": {
+    "@iconify-json/lucide": "^1.2.133",
+    "@nuxt/eslint": "^1.17.0",
+    "@nuxt/test-utils": "^3.20.0",
+    "eslint": "^10.10.0",
+    "rolldown": "^1.2.9",
+    "typescript": "5.9.3",
+    "vitest": "^3.2.4"
+  }
+}
