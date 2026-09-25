@@ -1,0 +1,11 @@
+node_modules
+.nuxt
+.output
+.data
+.git
+.github
+.vscode
+.yarn
+*.log
+.env
+.env.*

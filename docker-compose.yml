@@ -1,0 +1,74 @@
+x-auth-env: &auth-env
+  DATABASE_URL: postgres://ajuda_belem:ajuda_belem@db:5432/ajuda_belem
+  BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?defina BETTER_AUTH_SECRET no .env — veja .env.example}
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ajuda_belem
+      POSTGRES_PASSWORD: ajuda_belem
+      POSTGRES_DB: ajuda_belem
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ajuda_belem']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    environment: *auth-env
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - '3000:3000'
+    volumes:
+      - app-data:/app/.data
+
+  # Ambiente de desenvolvimento (hot-reload) sem precisar de Node/Yarn no
+  # host:
+  #   docker compose --profile dev up dev
+  # O projeto é montado por bind mount (`.:/app`) — editar um arquivo local
+  # já reflete no container. `node_modules` fica de fora do bind mount
+  # (volume anônimo) para não ser sobrescrito pelo `node_modules` do host
+  # (que pode nem existir, ou ter binários nativos de outra plataforma).
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment: *auth-env
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    profiles: ['dev']
+
+  # Tarefa avulsa (não sobe com `docker compose up`) para criar/atualizar as
+  # tabelas do Better Auth sem precisar de yarn/node instalado localmente:
+  #   docker compose run --rm migrate
+  # Usa o estágio `build` do Dockerfile (tem yarn + node_modules + o código-
+  # fonte, ao contrário do estágio `runtime` final usado pelo serviço `app`,
+  # que não tem nenhum dos dois).
+  migrate:
+    build:
+      context: .
+      target: build
+    environment: *auth-env
+    depends_on:
+      db:
+        condition: service_healthy
+    command: yarn db:migrate
+    profiles: ['tools']
+
+volumes:
+  db-data:
+  app-data:

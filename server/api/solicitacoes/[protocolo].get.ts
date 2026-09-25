@@ -1,6 +1,6 @@
-import type { Solicitacao } from '#shared/types/solicitacao'
+import type { Solicitacao, SolicitacaoPublica } from '#shared/types/solicitacao'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<SolicitacaoPublica> => {
   const protocolo = getRouterParam(event, 'protocolo')
 
   if (!protocolo) {
@@ -13,5 +13,8 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, message: 'Solicitação não encontrada' })
   }
 
-  return solicitacao
+  // Rota pública (sem login): nunca devolver nome, e-mail, telefone ou CPF do
+  // cidadão. Quem precisa dos dados de contato é a rota do painel, autenticada.
+  const { nome: _nome, email: _email, telefone: _telefone, cpf: _cpf, ...solicitacaoPublica } = solicitacao
+  return solicitacaoPublica
 })

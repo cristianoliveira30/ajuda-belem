@@ -11,9 +11,9 @@ const columns = [
   {
     title: 'Institucional',
     links: [
-      { label: 'Sobre o Ajuda Belém', to: '/' },
+      { label: 'Avisos e notícias', to: '/avisos' },
+      { label: 'Contatos úteis', to: '/contatos' },
       { label: 'Acessibilidade', to: '/' },
-      { label: 'Fale com a Prefeitura', to: '/' },
     ],
   },
 ]

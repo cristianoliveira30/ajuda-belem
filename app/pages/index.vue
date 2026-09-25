@@ -2,6 +2,7 @@
 const protocolo = ref('')
 const busca = ref('')
 const router = useRouter()
+const { data: sessao } = useSessao()
 
 function consultarProtocolo() {
   if (!protocolo.value.trim())
@@ -29,23 +30,7 @@ const servicosFiltrados = computed(() => {
   )
 })
 
-const avisos = [
-  {
-    icon: 'i-lucide-cloud-rain',
-    title: 'Período chuvoso em Belém',
-    description: 'Relate pontos de alagamento na sua região para agilizar a limpeza de bueiros e canais.',
-  },
-  {
-    icon: 'i-lucide-hard-hat',
-    title: 'Manutenção programada',
-    description: 'Equipes de zeladoria seguem atuando nos bairros com mais solicitações abertas.',
-  },
-  {
-    icon: 'i-lucide-megaphone',
-    title: 'Canal oficial',
-    description: 'O Ajuda Belém é o canal direto entre você e as equipes de infraestrutura da Prefeitura.',
-  },
-]
+const avisosRecentes = AVISOS.slice(0, 3)
 
 const passos = [
   {
@@ -98,12 +83,12 @@ const passos = [
               aria-label="Notificações"
             />
             <UButton
-              to="/entrar"
+              :to="sessao?.user ? '/perfil' : '/entrar'"
               icon="i-lucide-user"
               color="neutral"
               variant="ghost"
               class="bg-white/15 text-white hover:bg-white/25"
-              aria-label="Entrar"
+              :aria-label="sessao?.user ? 'Minha conta' : 'Entrar'"
             />
           </div>
         </div>
@@ -124,7 +109,7 @@ const passos = [
       <UContainer class="relative z-10 -mt-10">
         <NuxtLink
           to="/solicitacoes/nova"
-          class="flex items-center gap-4 rounded-2xl bg-default p-4 shadow-lg ring-1 ring-default transition hover:shadow-xl active:scale-[0.99]"
+          class="flex items-center gap-4 rounded-2xl bg-default p-4 shadow-lg ring-1 ring-default transition hover:shadow-xl active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
           <span class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 dark:bg-secondary-900/40 dark:text-secondary-300">
             <UIcon name="i-lucide-message-circle" class="size-5" />
@@ -155,7 +140,7 @@ const passos = [
               v-for="servico in servicosFiltrados"
               :key="servico.value"
               :to="{ path: '/solicitacoes/nova', query: { categoria: servico.value } }"
-              class="flex flex-col items-center gap-2 rounded-2xl bg-default p-4 text-center shadow-sm ring-1 ring-default transition hover:shadow-md active:scale-[0.97]"
+              class="flex flex-col items-center gap-2 rounded-2xl bg-default p-4 text-center shadow-sm ring-1 ring-default transition hover:shadow-md active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
               <span class="flex size-11 items-center justify-center rounded-xl" :class="TOM_CATEGORIA_CLASSES[servico.tom]">
                 <UIcon :name="servico.icon" class="size-5" />
@@ -182,27 +167,31 @@ const passos = [
         </section>
 
         <section id="avisos" class="scroll-mt-20">
-          <h2 class="mb-4 text-lg font-bold text-highlighted">
-            Avisos e notícias
-          </h2>
+          <div class="mb-4 flex items-center justify-between">
+            <h2 class="text-lg font-bold text-highlighted">
+              Avisos e notícias
+            </h2>
+            <UButton to="/avisos" label="Ver todos" color="neutral" variant="ghost" size="sm" />
+          </div>
           <div class="space-y-3">
-            <div
-              v-for="aviso in avisos"
-              :key="aviso.title"
-              class="flex items-start gap-3 rounded-2xl bg-default p-4 shadow-sm ring-1 ring-default"
+            <NuxtLink
+              v-for="aviso in avisosRecentes"
+              :key="aviso.id"
+              to="/avisos"
+              class="flex items-start gap-3 rounded-2xl bg-default p-4 shadow-sm ring-1 ring-default transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
               <span class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-100 text-primary-600 dark:bg-primary-900/40 dark:text-primary-300">
                 <UIcon :name="aviso.icon" class="size-5" />
               </span>
               <div>
                 <p class="font-semibold text-highlighted">
-                  {{ aviso.title }}
+                  {{ aviso.titulo }}
                 </p>
                 <p class="mt-0.5 text-sm text-muted">
-                  {{ aviso.description }}
+                  {{ aviso.descricao }}
                 </p>
               </div>
-            </div>
+            </NuxtLink>
           </div>
         </section>
       </UContainer>

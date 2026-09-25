@@ -37,6 +37,11 @@ interface NominatimResposta {
   }
 }
 
+interface NominatimBusca {
+  lat: string
+  lon: string
+}
+
 const route = useRoute()
 const router = useRouter()
 
@@ -53,6 +58,8 @@ function estadoInicial() {
     numero: '',
     bairro: '',
     pontoReferencia: '',
+    latitude: undefined as number | undefined,
+    longitude: undefined as number | undefined,
     risco: '' as '' | 'sim' | 'nao' | 'nao_sei',
     nome: '',
     email: '',
@@ -127,6 +134,13 @@ async function enviarTexto() {
 
   entrada.value = ''
 
+  const ameaca = detectarAmeacaEntrada(texto)
+  if (ameaca) {
+    mensagemUsuario(texto)
+    await mensagemBot(MENSAGEM_AMEACA_ENTRADA[ameaca])
+    return
+  }
+
   if (etapa.value === 'descricao') {
     dados.descricao = dados.descricao ? `${dados.descricao} ${texto}` : texto
     mensagemUsuario(texto)
@@ -197,12 +211,37 @@ function abrirSeletorFoto() {
   fileInputRef.value?.click()
 }
 
-function arquivoParaBase64(file: File) {
+const LADO_MAXIMO_FOTO = 1280
+
+// Redimensiona no navegador antes de converter para base64: fotos de celular
+// costumam ter vários MB, e sem isso cada uma vai inteira no JSON da solicitação.
+function redimensionarFoto(file: File) {
   return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = () => reject(reader.error)
-    reader.readAsDataURL(file)
+    const leitor = new FileReader()
+    leitor.onerror = () => reject(leitor.error)
+    leitor.onload = () => {
+      const imagem = new Image()
+      imagem.onerror = () => resolve(leitor.result as string)
+      imagem.onload = () => {
+        const escala = Math.min(1, LADO_MAXIMO_FOTO / Math.max(imagem.width, imagem.height))
+        const largura = Math.round(imagem.width * escala)
+        const altura = Math.round(imagem.height * escala)
+        const canvas = document.createElement('canvas')
+        canvas.width = largura
+        canvas.height = altura
+        const contexto = canvas.getContext('2d')
+
+        if (!contexto) {
+          resolve(leitor.result as string)
+          return
+        }
+
+        contexto.drawImage(imagem, 0, 0, largura, altura)
+        resolve(canvas.toDataURL('image/jpeg', 0.75))
+      }
+      imagem.src = leitor.result as string
+    }
+    leitor.readAsDataURL(file)
   })
 }
 
@@ -213,7 +252,7 @@ async function aoSelecionarFoto(event: Event) {
   if (!arquivos.length)
     return
 
-  const fotos = await Promise.all(arquivos.map(arquivoParaBase64))
+  const fotos = await Promise.all(arquivos.map(redimensionarFoto))
   dados.fotos.push(...fotos)
   mensagens.value.push({ id: proximoId(), autor: 'usuario', fotos })
   rolarParaFinal()
@@ -252,6 +291,8 @@ async function usarLocalizacaoAtual() {
         dados.rua = endereco.road || endereco.pedestrian || ''
         dados.numero = endereco.house_number || 'S/N'
         dados.bairro = endereco.suburb || endereco.neighbourhood || endereco.city_district || ''
+        dados.latitude = latitude
+        dados.longitude = longitude
         digitando.value = false
 
         if (dados.rua && dados.bairro) {
@@ -289,14 +330,48 @@ async function confirmarLocalizacaoEncontrada() {
 
 function corrigirLocalizacao() {
   mensagemUsuario('Corrigir localização')
+  dados.latitude = undefined
+  dados.longitude = undefined
   etapa.value = 'localizacao_manual'
+}
+
+async function geocodificarEnderecoDigitado() {
+  try {
+    const resultados = await $fetch<NominatimBusca[]>('https://nominatim.openstreetmap.org/search', {
+      query: {
+        q: `${dados.rua}, ${dados.numero}, ${dados.bairro}, Belém, Pará, Brasil`,
+        format: 'jsonv2',
+        limit: 1,
+      },
+    })
+    const encontrado = resultados?.[0]
+    if (encontrado) {
+      dados.latitude = Number.parseFloat(encontrado.lat)
+      dados.longitude = Number.parseFloat(encontrado.lon)
+    }
+  }
+  catch {
+    // Sem coordenadas, a solicitação simplesmente não aparece no mapa.
+  }
 }
 
 async function enviarEnderecoManual() {
   if (!dados.rua.trim() || !dados.bairro.trim())
     return
 
-  mensagemUsuario(`${dados.rua}, ${dados.numero || 'S/N'} — ${dados.bairro}`)
+  const enderecoDigitado = `${dados.rua}, ${dados.numero || 'S/N'} — ${dados.bairro}`
+  const ameaca = detectarAmeacaEntrada(enderecoDigitado)
+  if (ameaca) {
+    mensagemUsuario(enderecoDigitado)
+    await mensagemBot(MENSAGEM_AMEACA_ENTRADA[ameaca])
+    return
+  }
+
+  mensagemUsuario(enderecoDigitado)
+
+  if (!dados.latitude || !dados.longitude)
+    await geocodificarEnderecoDigitado()
+
   await perguntarReferencia()
 }
 
@@ -391,6 +466,8 @@ async function confirmarEnvio() {
         numero: dados.numero || 'S/N',
         bairro: dados.bairro,
         pontoReferencia: dados.pontoReferencia || undefined,
+        latitude: dados.latitude,
+        longitude: dados.longitude,
         risco: dados.risco || undefined,
         nome: dados.nome,
         email: dados.email,
@@ -452,7 +529,7 @@ function reiniciar() {
       </UContainer>
     </div>
 
-    <div ref="containerRef" class="flex-1 overflow-y-auto">
+    <div ref="containerRef" class="flex-1 overflow-y-auto" aria-live="polite" aria-relevant="additions">
       <UContainer class="max-w-2xl space-y-4 py-6">
         <div
           v-for="mensagem in mensagens"
@@ -491,10 +568,14 @@ function reiniciar() {
           <span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary-600 to-primary-400 text-white">
             <UIcon name="i-lucide-message-circle" class="size-3" />
           </span>
-          <div class="flex items-center gap-1 rounded-2xl rounded-bl-sm bg-default px-4 py-3 shadow-sm ring-1 ring-default">
-            <span class="size-1.5 animate-bounce rounded-full bg-muted [animation-delay:-0.3s]" />
-            <span class="size-1.5 animate-bounce rounded-full bg-muted [animation-delay:-0.15s]" />
-            <span class="size-1.5 animate-bounce rounded-full bg-muted" />
+          <div
+            class="flex items-center gap-1 rounded-2xl rounded-bl-sm bg-default px-4 py-3 shadow-sm ring-1 ring-default"
+            role="status"
+          >
+            <span class="sr-only">Assistente está digitando</span>
+            <span class="size-1.5 animate-bounce rounded-full bg-muted motion-reduce:animate-none [animation-delay:-0.3s]" />
+            <span class="size-1.5 animate-bounce rounded-full bg-muted motion-reduce:animate-none [animation-delay:-0.15s]" />
+            <span class="size-1.5 animate-bounce rounded-full bg-muted motion-reduce:animate-none" />
           </div>
         </div>
 
@@ -600,7 +681,13 @@ function reiniciar() {
                 📷 Fotos
               </dt>
               <dd class="flex gap-1">
-                <img v-for="(foto, index) in dados.fotos" :key="index" :src="foto" class="size-10 rounded-md object-cover">
+                <img
+                  v-for="(foto, index) in dados.fotos"
+                  :key="index"
+                  :src="foto"
+                  class="size-10 rounded-md object-cover"
+                  alt="Foto enviada pelo cidadão"
+                >
               </dd>
             </div>
             <div>

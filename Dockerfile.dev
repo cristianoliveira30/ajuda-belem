@@ -1,0 +1,20 @@
+# syntax=docker/dockerfile:1
+
+# Imagem de desenvolvimento: só instala as dependências. O código-fonte não é
+# copiado aqui — o serviço `dev` do docker-compose.yml faz bind mount do
+# projeto (`.:/app`), então editar um arquivo no host já reflete direto no
+# container, sem rebuild. `node_modules` fica de fora do bind mount (volume
+# anônimo no compose) para não ser sobrescrito pelo host.
+FROM node:24.21.0-alpine
+WORKDIR /app
+
+RUN corepack enable
+
+COPY package.json yarn.lock .yarnrc.yml ./
+RUN yarn install
+
+ENV HOST=0.0.0.0
+ENV PORT=3000
+EXPOSE 3000
+
+CMD ["yarn", "dev"]

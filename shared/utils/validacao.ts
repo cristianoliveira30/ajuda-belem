@@ -10,6 +10,8 @@ export const solicitacaoSchema = z.object({
   bairro: z.string().min(1, 'Informe o bairro'),
   complemento: z.string().optional(),
   pontoReferencia: z.string().optional(),
+  latitude: z.number().min(-90).max(90).optional(),
+  longitude: z.number().min(-180).max(180).optional(),
   descricao: z
     .string()
     .min(20, 'Descreva o problema com mais detalhes (mínimo 20 caracteres)')
@@ -23,3 +25,20 @@ export const solicitacaoSchema = z.object({
 })
 
 export type SolicitacaoFormData = z.infer<typeof solicitacaoSchema>
+
+const valoresStatus = ['aberto', 'em_analise', 'encaminhado', 'em_execucao', 'concluido'] as const
+
+export const atualizarStatusSchema = z.object({
+  status: z.enum(valoresStatus, { message: 'Selecione um status válido' }),
+  mensagem: z.string().min(3, 'Descreva a atualização').max(500, 'Mensagem muito longa'),
+  responsavel: z.string().max(120).optional(),
+})
+
+export type AtualizarStatusFormData = z.infer<typeof atualizarStatusSchema>
+
+export const avaliacaoSchema = z.object({
+  nota: z.number().min(1, 'Dê uma nota de 1 a 5').max(5),
+  comentario: z.string().max(500, 'Comentário muito longo').optional(),
+})
+
+export type AvaliacaoFormData = z.infer<typeof avaliacaoSchema>

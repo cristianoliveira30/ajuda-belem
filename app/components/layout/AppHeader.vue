@@ -1,11 +1,13 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
+const { data: sessao } = useSessao()
 
 const links = [
   { label: 'Início', to: '/' },
   { label: 'Registrar problema', to: '/solicitacoes/nova' },
   { label: 'Acompanhar', to: '/solicitacoes/acompanhar' },
   { label: 'Mapa', to: '/mapa' },
+  { label: 'Avisos', to: '/avisos' },
 ]
 
 function toggleColorMode() {
@@ -45,10 +47,11 @@ function toggleColorMode() {
           @click="toggleColorMode"
         />
         <UButton
-          to="/entrar"
+          :to="sessao?.user ? '/perfil' : '/entrar'"
+          :icon="sessao?.user ? 'i-lucide-user' : undefined"
           color="secondary"
           variant="solid"
-          label="Entrar"
+          :label="sessao?.user ? 'Minha conta' : 'Entrar'"
           class="hidden md:inline-flex"
         />
       </div>

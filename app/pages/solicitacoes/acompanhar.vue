@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Solicitacao } from '#shared/types/solicitacao'
+import type { SolicitacaoPublica } from '#shared/types/solicitacao'
 
 useSeoMeta({ title: 'Acompanhar solicitação — Ajuda Belém' })
 
@@ -9,7 +9,7 @@ const router = useRouter()
 const protocolo = ref((route.query.protocolo as string) || '')
 const protocoloConsultado = ref(protocolo.value)
 
-const { data: solicitacao, error, status, refresh } = await useFetch<Solicitacao>(
+const { data: solicitacao, error, status, refresh } = await useFetch<SolicitacaoPublica>(
   () => `/api/solicitacoes/${protocoloConsultado.value}`,
   { immediate: !!protocoloConsultado.value },
 )
@@ -53,6 +53,41 @@ const timelineItems = computed(() => {
     icon: STATUS_SOLICITACAO[item.status].icon,
   }))
 })
+
+const notaSelecionada = ref(0)
+const comentarioAvaliacao = ref('')
+const enviandoAvaliacao = ref(false)
+const erroAvaliacao = ref('')
+
+async function enviarAvaliacao() {
+  if (!notaSelecionada.value) {
+    erroAvaliacao.value = 'Selecione de 1 a 5 estrelas antes de enviar.'
+    return
+  }
+
+  const ameaca = detectarAmeacaEntrada(comentarioAvaliacao.value)
+  if (ameaca) {
+    erroAvaliacao.value = MENSAGEM_AMEACA_ENTRADA[ameaca]
+    return
+  }
+
+  erroAvaliacao.value = ''
+  enviandoAvaliacao.value = true
+
+  try {
+    await $fetch(`/api/solicitacoes/${protocoloConsultado.value}/avaliacao`, {
+      method: 'POST',
+      body: { nota: notaSelecionada.value, comentario: comentarioAvaliacao.value.trim() || undefined },
+    })
+    await refresh()
+  }
+  catch {
+    erroAvaliacao.value = 'Não foi possível enviar sua avaliação. Tente novamente.'
+  }
+  finally {
+    enviandoAvaliacao.value = false
+  }
+}
 </script>
 
 <template>
@@ -137,6 +172,50 @@ const timelineItems = computed(() => {
             <span class="font-medium text-highlighted">Histórico</span>
           </template>
           <UTimeline :items="timelineItems" />
+        </UPageCard>
+
+        <UPageCard v-if="solicitacao.status === 'concluido'" variant="subtle">
+          <template #header>
+            <span class="font-medium text-highlighted">Avaliar atendimento</span>
+          </template>
+
+          <template v-if="solicitacao.avaliacao">
+            <div class="flex items-center gap-2">
+              <UInputRating :model-value="solicitacao.avaliacao.nota" readonly />
+              <span class="text-sm text-muted">Avaliação enviada, obrigado!</span>
+            </div>
+            <p v-if="solicitacao.avaliacao.comentario" class="mt-2 text-sm text-highlighted">
+              "{{ solicitacao.avaliacao.comentario }}"
+            </p>
+          </template>
+
+          <template v-else>
+            <p class="mb-3 text-sm text-muted">
+              Como você avalia o atendimento recebido para essa solicitação?
+            </p>
+            <UInputRating v-model="notaSelecionada" size="xl" />
+            <UTextarea
+              v-model="comentarioAvaliacao"
+              :rows="2"
+              placeholder="Comentário (opcional)"
+              class="mt-3 w-full"
+            />
+            <UAlert
+              v-if="erroAvaliacao"
+              class="mt-3"
+              color="error"
+              variant="subtle"
+              icon="i-lucide-alert-triangle"
+              :description="erroAvaliacao"
+            />
+            <UButton
+              label="Enviar avaliação"
+              color="primary"
+              class="mt-3"
+              :loading="enviandoAvaliacao"
+              @click="enviarAvaliacao"
+            />
+          </template>
         </UPageCard>
       </div>
       </div>
