@@ -10,7 +10,18 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return
 
   const { data } = await useSessao()
+  const usuario = data.value?.user
 
-  if (!data.value?.user)
+  if (!usuario)
     return navigateTo('/entrar')
+
+  // Login por Google não pede CPF (ver server/utils/auth.ts) — cidadão
+  // autenticado sem CPF completa isso direto em /perfil (ver
+  // app/pages/perfil.vue), então só precisa ser mandado pra lá antes de
+  // entrar em outra área de conta. Servidor nunca cai aqui: a exigência é só
+  // para cidadão (ver server/api/perfil/completar-cadastro.post.ts).
+  const cadastroIncompleto = usuario.papel === 'cidadao' && !usuario.cpf
+
+  if (cadastroIncompleto && to.path !== '/perfil')
+    return navigateTo('/perfil')
 })

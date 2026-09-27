@@ -3,8 +3,64 @@ useSeoMeta({ title: 'Meu perfil — Ajuda Belém' })
 
 const { perfil, status, refresh } = usePerfil()
 
+// Cidadão que entrou pelo Google não tem CPF (Google não fornece) — pede só
+// isso aqui mesmo, em vez de mandar pra outra tela. Cadastro tradicional
+// nunca cai nesse caso, já nasce com CPF (ver hook em server/utils/auth.ts).
+const cadastroIncompleto = computed(() => perfil.value?.papel === 'cidadao' && !perfil.value.cpf)
+
+const cpf = ref('')
+const carregandoCpf = ref(false)
+const erroCpf = ref('')
+
+async function completarCpf() {
+  erroCpf.value = ''
+
+  if (!validarCpf(cpf.value)) {
+    erroCpf.value = 'Informe um CPF válido.'
+    return
+  }
+
+  carregandoCpf.value = true
+
+  try {
+    await $fetch('/api/perfil/completar-cadastro', {
+      method: 'POST',
+      body: { cpf: normalizarCpf(cpf.value) },
+    })
+
+    // O cookie de sessão cacheia o `cpf` antigo (null) por até 60s (ver
+    // session.cookieCache em server/utils/auth.ts) — sem forçar uma leitura
+    // fresca aqui, a tela continuaria achando que falta CPF até o cache
+    // expirar sozinho.
+    await $fetch('/api/auth/get-session', { query: { disableCookieCache: true } })
+    await refresh()
+  }
+  catch (erroRequisicao) {
+    const mensagem = (erroRequisicao as { data?: { message?: string } })?.data?.message
+    erroCpf.value = mensagem || 'Não foi possível salvar seu CPF agora. Tente novamente.'
+  }
+  finally {
+    carregandoCpf.value = false
+  }
+}
+
+const erroSair = ref('')
+
 async function sair() {
-  await authClient.signOut()
+  erroSair.value = ''
+
+  try {
+    await authClient.signOut()
+  }
+  catch {
+    erroSair.value = 'Não foi possível sair agora. Tente novamente.'
+    return
+  }
+
+  // `refresh` força um novo GET /api/auth/get-session, ignorando o cache
+  // compartilhado da key 'sessao' (ver useSessao.ts) — sem isso, a próxima
+  // visita a uma rota protegida reaproveitava a sessão antiga em cache.
+  await refresh()
   await navigateTo('/')
 }
 </script>
@@ -22,6 +78,37 @@ async function sair() {
           Não foi possível carregar seu perfil.
         </p>
         <UButton label="Tentar novamente" color="neutral" variant="soft" class="mt-4" @click="refresh()" />
+      </UPageCard>
+
+      <UPageCard v-else-if="cadastroIncompleto" variant="subtle">
+        <div class="mb-6 text-center">
+          <span class="mx-auto flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-600 to-primary-400 text-white shadow-sm">
+            <UIcon name="i-lucide-user-check" class="size-6" />
+          </span>
+          <h1 class="mt-4 text-xl font-bold text-highlighted">
+            Complete seu cadastro
+          </h1>
+          <p class="mt-1 text-sm text-muted">
+            Para concluir seu cadastro, informe seu CPF.
+          </p>
+        </div>
+
+        <form class="space-y-4" @submit.prevent="completarCpf">
+          <UFormField label="CPF">
+            <UInput v-model="cpf" required placeholder="000.000.000-00" class="w-full" />
+          </UFormField>
+
+          <UAlert v-if="erroCpf" color="error" variant="subtle" icon="i-lucide-alert-triangle" :description="erroCpf" />
+
+          <UButton
+            type="submit"
+            label="Concluir cadastro"
+            color="primary"
+            block
+            size="lg"
+            :loading="carregandoCpf"
+          />
+        </form>
       </UPageCard>
 
       <template v-else>
@@ -63,7 +150,7 @@ async function sair() {
                 Telefone
               </dt>
               <dd class="text-highlighted">
-                {{ perfil.telefone || '—' }}
+                {{ perfil.telefone || 'Não informado' }}
               </dd>
             </div>
           </dl>
@@ -87,8 +174,10 @@ async function sair() {
             variant="soft"
             block
           />
+          <UAlert v-if="erroSair" color="error" variant="subtle" icon="i-lucide-alert-triangle" :description="erroSair" />
+
           <UButton
-            label="Sair da conta"
+            label=" conta"
             icon="i-lucide-log-out"
             color="error"
             variant="outline"

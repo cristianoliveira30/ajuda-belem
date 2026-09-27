@@ -18,3 +18,21 @@ create index "session_userId_idx" on "session" ("userId");
 create index "account_userId_idx" on "account" ("userId");
 
 create index "verification_identifier_idx" on "verification" ("identifier");
+
+-- Adicionado quando o cadastro tradicional passou a exigir CPF (ver
+-- server/utils/auth.ts, campo `cpf` com `unique: true`). Garante no banco
+-- que CPF preenchido não se repete entre contas; `cpf = null` (contas
+-- criadas via Google, que não pedem CPF) continua podendo se repetir à
+-- vontade — é o comportamento padrão de índice único no Postgres, NULL
+-- nunca é igual a NULL. Numa instalação nova, `yarn db:migrate` já cria
+-- este índice sozinho (o campo tem `unique: true` na config); numa
+-- instalação já existente, ele precisa ser criado manualmente uma vez, com
+-- exatamente este comando:
+create unique index "user_cpf_uidx" on "user" ("cpf");
+
+-- Login/cadastro com Google (ver `socialProviders.google` em
+-- server/utils/auth.ts) não precisou de nenhuma tabela ou coluna nova: a
+-- tabela "account" acima já foi desenhada de forma genérica por provedor
+-- (`providerId`, tokens de acesso/refresh, etc.) — uma conta Google vira só
+-- mais uma linha em "account" com `providerId = 'google'`, ligada ao mesmo
+-- "user".

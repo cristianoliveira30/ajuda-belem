@@ -6,6 +6,7 @@ const router = useRouter()
 const email = ref('')
 const senha = ref('')
 const carregando = ref(false)
+const carregandoGoogle = ref(false)
 const erro = ref('')
 
 async function entrar() {
@@ -32,6 +33,30 @@ async function entrar() {
     carregando.value = false
   }
 }
+
+// Login via Google é sempre de cidadão (papel padrão) — sem CPF/senha
+// envolvidos, então não há decisão de destino aqui como no login
+// tradicional: vai direto para /perfil.
+async function entrarComGoogle() {
+  erro.value = ''
+  carregandoGoogle.value = true
+
+  try {
+    const { error } = await authClient.signIn.social({
+      provider: 'google',
+      callbackURL: '/perfil',
+    })
+
+    if (error) {
+      erro.value = error.message || 'Não foi possível continuar com o Google agora.'
+      carregandoGoogle.value = false
+    }
+  }
+  catch {
+    erro.value = 'Não foi possível continuar com o Google agora. Verifique sua conexão e tente novamente.'
+    carregandoGoogle.value = false
+  }
+}
 </script>
 
 <template>
@@ -47,6 +72,23 @@ async function entrar() {
         <p class="mt-1 text-sm text-muted">
           Acesse sua conta de cidadão ou servidor da Prefeitura.
         </p>
+      </div>
+
+      <UButton
+        label="Continuar com Google"
+        icon="i-lucide-chrome"
+        color="neutral"
+        variant="outline"
+        block
+        size="lg"
+        :loading="carregandoGoogle"
+        @click="entrarComGoogle"
+      />
+
+      <div class="my-6 flex items-center gap-3 text-xs text-muted">
+        <span class="h-px flex-1 bg-default" />
+        ou
+        <span class="h-px flex-1 bg-default" />
       </div>
 
       <form class="space-y-4" @submit.prevent="entrar">

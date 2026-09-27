@@ -1,6 +1,12 @@
 x-auth-env: &auth-env
   DATABASE_URL: postgres://ajuda_belem:ajuda_belem@db:5432/ajuda_belem
   BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?defina BETTER_AUTH_SECRET no .env — veja .env.example}
+  # Opcionais (login com Google) — diferente de BETTER_AUTH_SECRET, não têm
+  # `:?`: o app funciona normalmente sem eles, só o botão "Continuar com
+  # Google" não completa o login de verdade até serem preenchidos.
+  BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3000}
+  GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+  GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
 
 services:
   db:

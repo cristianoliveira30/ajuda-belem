@@ -7,8 +7,13 @@ const telefone = ref('')
 const cpf = ref('')
 const senha = ref('')
 const carregando = ref(false)
+const carregandoGoogle = ref(false)
 const erro = ref('')
 
+// Validação de UX: antecipa o erro antes de gastar uma requisição. Não
+// substitui nada — o cadastro tradicional exige e valida CPF de novo no
+// backend (ver hook em server/utils/auth.ts), que é quem garante a regra de
+// verdade e não pode ser contornado chamando a API direto.
 async function cadastrar() {
   erro.value = ''
 
@@ -18,6 +23,10 @@ async function cadastrar() {
   }
   if (senha.value.length < 6) {
     erro.value = 'A senha precisa ter pelo menos 6 caracteres.'
+    return
+  }
+  if (!validarCpf(cpf.value)) {
+    erro.value = 'Informe um CPF válido.'
     return
   }
 
@@ -35,13 +44,13 @@ async function cadastrar() {
       email: email.value.trim(),
       password: senha.value,
       telefone: telefone.value.trim() || undefined,
-      cpf: cpf.value.trim() || undefined,
+      cpf: normalizarCpf(cpf.value),
     })
 
     if (error) {
       erro.value = error.status === 422
         ? 'Já existe uma conta com esse e-mail.'
-        : 'Não foi possível criar sua conta. Tente novamente.'
+        : error.message || 'Não foi possível criar sua conta. Tente novamente.'
       return
     }
 
@@ -52,6 +61,30 @@ async function cadastrar() {
   }
   finally {
     carregando.value = false
+  }
+}
+
+// Cadastro/login via Google: sem CPF, sem senha — Better Auth cria a conta
+// (papel "cidadao" por padrão, igual ao tradicional) e já redireciona.
+async function cadastrarComGoogle() {
+  erro.value = ''
+  carregandoGoogle.value = true
+
+  try {
+    const { error } = await authClient.signIn.social({
+      provider: 'google',
+      callbackURL: '/perfil',
+    })
+
+    if (error) {
+      erro.value = error.message || 'Não foi possível continuar com o Google agora.'
+      carregandoGoogle.value = false
+    }
+    // Sucesso redireciona o navegador para o Google — não há o que fazer aqui.
+  }
+  catch {
+    erro.value = 'Não foi possível continuar com o Google agora. Verifique sua conexão e tente novamente.'
+    carregandoGoogle.value = false
   }
 }
 </script>
@@ -71,6 +104,23 @@ async function cadastrar() {
         </p>
       </div>
 
+      <UButton
+        label="Continuar com Google"
+        icon="i-lucide-chrome"
+        color="neutral"
+        variant="outline"
+        block
+        size="lg"
+        :loading="carregandoGoogle"
+        @click="cadastrarComGoogle"
+      />
+
+      <div class="my-6 flex items-center gap-3 text-xs text-muted">
+        <span class="h-px flex-1 bg-default" />
+        ou cadastre-se com e-mail
+        <span class="h-px flex-1 bg-default" />
+      </div>
+
       <form class="space-y-4" @submit.prevent="cadastrar">
         <UFormField label="Nome completo">
           <UInput v-model="nome" required class="w-full" />
@@ -82,8 +132,8 @@ async function cadastrar() {
           <UFormField label="Telefone">
             <UInput v-model="telefone" placeholder="(91) 90000-0000" class="w-full" />
           </UFormField>
-          <UFormField label="CPF (opcional)">
-            <UInput v-model="cpf" placeholder="000.000.000-00" class="w-full" />
+          <UFormField label="CPF">
+            <UInput v-model="cpf" required placeholder="000.000.000-00" class="w-full" />
           </UFormField>
         </div>
         <UFormField label="Senha" help="Mínimo de 6 caracteres">
