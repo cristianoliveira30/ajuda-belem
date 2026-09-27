@@ -1,13 +1,27 @@
 <script setup lang="ts">
-const { perfil } = usePerfil()
+const { perfil, refresh } = usePerfil()
 
 const links = [
   { label: 'Visão geral', icon: 'i-lucide-layout-dashboard', to: '/painel' },
   { label: 'Solicitações', icon: 'i-lucide-list-checks', to: '/painel/solicitacoes' },
 ]
 
+const erroSair = ref('')
+
 async function sair() {
-  await authClient.signOut()
+  erroSair.value = ''
+
+  try {
+    await authClient.signOut()
+  }
+  catch {
+    erroSair.value = 'Não foi possível sair agora.'
+    return
+  }
+
+  // Mesmo motivo do sair() em app/pages/perfil.vue: força a sessão em
+  // cache (key 'sessao', compartilhada em todo o app) a refletir o logout.
+  await refresh()
   await navigateTo('/')
 }
 </script>
@@ -32,6 +46,7 @@ async function sair() {
             {{ perfil?.nome }} · {{ perfil?.secretaria || 'Prefeitura' }}
           </p>
           <UButton label="Voltar ao site" icon="i-lucide-arrow-left" to="/" color="neutral" variant="ghost" block />
+          <UAlert v-if="erroSair" color="error" variant="subtle" icon="i-lucide-alert-triangle" :description="erroSair" />
           <UButton label="Sair" icon="i-lucide-log-out" color="error" variant="ghost" block @click="sair" />
         </div>
       </template>
