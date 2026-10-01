@@ -6,26 +6,29 @@ definePageMeta({ middleware: 'servidor', layout: 'painel' })
 
 const { data: solicitacoes, status: carregamento } = await useFetch<Solicitacao[]>('/api/painel/solicitacoes')
 
-const filtroCategoria = ref('')
-const filtroStatus = ref('')
+// `USelect` (Reka UI) não aceita item com `value: ''` — é reservado pra
+// "seleção limpa" internamente. 'todas'/'todos' representa a opção "sem
+// filtro" em vez de string vazia.
+const filtroCategoria = ref('todas')
+const filtroStatus = ref('todos')
 const filtroBairro = ref('')
 
 const opcoesCategoria = computed(() => [
-  { label: 'Todas as categorias', value: '' },
+  { label: 'Todas as categorias', value: 'todas' },
   ...CATEGORIAS.map(categoria => ({ label: categoria.label, value: categoria.value })),
 ])
 
 const opcoesStatus = computed(() => [
-  { label: 'Todos os status', value: '' },
+  { label: 'Todos os status', value: 'todos' },
   ...(Object.entries(STATUS_SOLICITACAO) as [StatusSolicitacao, typeof STATUS_SOLICITACAO[StatusSolicitacao]][])
     .map(([valor, info]) => ({ label: info.label, value: valor })),
 ])
 
 const filtradas = computed(() => {
   return (solicitacoes.value ?? []).filter((solicitacao) => {
-    if (filtroCategoria.value && solicitacao.categoria !== filtroCategoria.value)
+    if (filtroCategoria.value !== 'todas' && solicitacao.categoria !== filtroCategoria.value)
       return false
-    if (filtroStatus.value && solicitacao.status !== filtroStatus.value)
+    if (filtroStatus.value !== 'todos' && solicitacao.status !== filtroStatus.value)
       return false
     if (filtroBairro.value && !solicitacao.bairro.toLowerCase().includes(filtroBairro.value.toLowerCase()))
       return false
@@ -71,6 +74,9 @@ function formatarData(data: string) {
             {{ solicitacao.bairro }} · {{ solicitacao.nome }} · {{ formatarData(solicitacao.criadoEm) }} · {{ solicitacao.protocolo }}
           </p>
         </div>
+        <UBadge color="neutral" variant="subtle" class="shrink-0">
+          {{ solicitacao.relatos?.length ?? 1 }} relato{{ (solicitacao.relatos?.length ?? 1) === 1 ? '' : 's' }}
+        </UBadge>
         <UBadge :color="STATUS_SOLICITACAO[solicitacao.status].color" variant="subtle" class="shrink-0">
           {{ STATUS_SOLICITACAO[solicitacao.status].label }}
         </UBadge>

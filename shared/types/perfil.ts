@@ -1,4 +1,4 @@
-export type PapelUsuario = 'cidadao' | 'servidor'
+export type PapelUsuario = 'cidadao' | 'servidor' | 'admin'
 
 export interface Perfil {
   id: string
@@ -8,6 +8,8 @@ export interface Perfil {
   telefone: string | null
   papel: PapelUsuario
   secretaria: string | null
+  // Só relevante pra servidor criado pelo admin — ver server/utils/auth.ts.
+  primeiroAcesso: boolean
 }
 
 // Formato do usuário devolvido por GET /api/auth/get-session (Better Auth).
@@ -19,4 +21,6 @@ export interface SessaoUsuario {
   telefone?: string | null
   papel: PapelUsuario
   secretaria?: string | null
+  primeiroAcesso?: boolean
+  banned?: boolean | null
 }

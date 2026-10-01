@@ -5562,6 +5562,7 @@ __metadata:
     "@types/leaflet": "npm:^1.9.22"
     "@types/pg": "npm:^8.23.1"
     "@vite-pwa/nuxt": "npm:^1.1.1"
+    apexcharts: "npm:^7.6.0"
     better-auth: "npm:^1.7.5"
     eslint: "npm:^10.10.0"
     leaflet: "npm:^1.9.4"
@@ -5644,6 +5645,22 @@ __metadata:
     normalize-path: "npm:^3.0.0"
     picomatch: "npm:^2.0.4"
   checksum: 10c0/57b06ae984bc32a0d22592c87384cd88fe4511b1dd7581497831c56d41939c8a001b28e7b853e1450f2bf61992dfcaa8ae2d0d161a0a90c4fb631ef07098fbac
+  languageName: node
+  linkType: hard
+
+"apex-commons@npm:^0.8.0":
+  version: 0.8.1
+  resolution: "apex-commons@npm:0.8.1"
+  checksum: 10c0/9d0817892f57b355b440226676d06f2aee44a443527f10500e1be0a6aeb00a172616f2701c76a10fdf031984dddc49aacddbc4bb5638b1da82f8b07b9b572683
+  languageName: node
+  linkType: hard
+
+"apexcharts@npm:^7.6.0":
+  version: 7.6.0
+  resolution: "apexcharts@npm:7.6.0"
+  dependencies:
+    apex-commons: "npm:^0.8.0"
+  checksum: 10c0/5bbf32c0a2daa808456b005f2965c2aefef4d778cac44a02250e3e1ef7e6aa7984601bcdcfbedaae2b8162facae8c8edfb8474032430fea82910487154ccee12
   languageName: node
   linkType: hard
 

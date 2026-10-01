@@ -162,7 +162,7 @@ async function atualizarStatus() {
                 Contato
               </dt>
               <dd class="text-highlighted">
-                {{ solicitacao.nome }} · {{ solicitacao.email }} · {{ solicitacao.telefone }}
+                {{ solicitacao.nome }} · {{ solicitacao.email }} · {{ solicitacao.telefone || 'Não informado' }}
               </dd>
             </div>
             <div v-if="solicitacao.cpf">
@@ -179,6 +179,14 @@ async function atualizarStatus() {
               </dt>
               <dd class="text-highlighted">
                 {{ formatarData(solicitacao.criadoEm) }}
+              </dd>
+            </div>
+            <div>
+              <dt class="text-muted">
+                Quantidade de relatos
+              </dt>
+              <dd class="text-highlighted">
+                {{ solicitacao.relatos?.length ?? 1 }}
               </dd>
             </div>
           </dl>

@@ -5,26 +5,29 @@ useSeoMeta({ title: 'Mapa de ocorrências — Ajuda Belém' })
 
 const { data: ocorrencias, status: carregamento } = await useFetch<OcorrenciaMapa[]>('/api/mapa/ocorrencias')
 
-const filtroCategoria = ref('')
-const filtroStatus = ref('')
+// `USelect` (Reka UI) não aceita item com `value: ''` — é reservado pra
+// "seleção limpa" internamente. 'todas'/'todos' representa a opção "sem
+// filtro" em vez de string vazia.
+const filtroCategoria = ref('todas')
+const filtroStatus = ref('todos')
 
 const opcoesCategoria = computed(() => [
-  { label: 'Todas as categorias', value: '' },
+  { label: 'Todas as categorias', value: 'todas' },
   ...CATEGORIAS.map(categoria => ({ label: categoria.label, value: categoria.value })),
 ])
 
 const listaStatus = Object.entries(STATUS_SOLICITACAO) as [StatusSolicitacao, typeof STATUS_SOLICITACAO[StatusSolicitacao]][]
 
 const opcoesStatus = computed(() => [
-  { label: 'Todos os status', value: '' },
+  { label: 'Todos os status', value: 'todos' },
   ...listaStatus.map(([valor, info]) => ({ label: info.label, value: valor })),
 ])
 
 const filtradas = computed(() => {
   return (ocorrencias.value ?? []).filter((ocorrencia) => {
-    if (filtroCategoria.value && ocorrencia.categoria !== filtroCategoria.value)
+    if (filtroCategoria.value !== 'todas' && ocorrencia.categoria !== filtroCategoria.value)
       return false
-    if (filtroStatus.value && ocorrencia.status !== filtroStatus.value)
+    if (filtroStatus.value !== 'todos' && ocorrencia.status !== filtroStatus.value)
       return false
     return true
   })
@@ -60,7 +63,18 @@ const CORES_LEGENDA: Record<StatusSolicitacao, string> = {
         <div v-if="carregamento === 'pending'" class="absolute inset-0 z-10 flex items-center justify-center bg-default/60">
           <UIcon name="i-lucide-loader-2" class="size-6 animate-spin text-muted" />
         </div>
-        <MapaOcorrencias :ocorrencias="filtradas" />
+        <!--
+          ClientOnly de propósito: Leaflet manipula o DOM do container por
+          fora do Vue (painéis, tiles, popups), o que não é compatível com o
+          <Suspense> de página do Nuxt (esta página tem `await useFetch` no
+          topo do script) — sem isso, navegar pra fora enquanto esse
+          Suspense ainda está resolvendo derrubava o unmount interno do Vue
+          no meio do caminho (URL mudava, tela ficava presa até um F5). Ver
+          https://github.com/nuxt/nuxt/issues/20798.
+        -->
+        <ClientOnly>
+          <MapaOcorrencias :ocorrencias="filtradas" />
+        </ClientOnly>
       </div>
 
       <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
