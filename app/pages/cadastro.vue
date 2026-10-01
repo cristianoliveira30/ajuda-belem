@@ -21,8 +21,8 @@ async function cadastrar() {
     erro.value = 'Informe seu nome completo.'
     return
   }
-  if (senha.value.length < 6) {
-    erro.value = 'A senha precisa ter pelo menos 6 caracteres.'
+  if (!validarSenha(senha.value)) {
+    erro.value = 'A senha precisa ter pelo menos 6 caracteres, com letra e número.'
     return
   }
   if (!validarCpf(cpf.value)) {
@@ -136,7 +136,7 @@ async function cadastrarComGoogle() {
             <UInput v-model="cpf" required placeholder="000.000.000-00" class="w-full" />
           </UFormField>
         </div>
-        <UFormField label="Senha" help="Mínimo de 6 caracteres">
+        <UFormField label="Senha" help="Mínimo 6 caracteres, com letra e número">
           <UInput v-model="senha" type="password" required placeholder="••••••••" class="w-full" />
         </UFormField>
 

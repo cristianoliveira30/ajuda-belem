@@ -5,6 +5,7 @@ import { Pool } from 'pg'
 // carregado direto pela CLI do Better Auth (`yarn db:migrate`), fora do
 // runtime/bundler do Nuxt, que é quem resolve o alias `#shared`.
 import { normalizarCpf, validarCpf } from '../../shared/utils/cpf'
+import { validarSenha } from '../../shared/utils/validacao'
 
 // Instância única do servidor de auth, usada tanto pelo handler HTTP
 // (server/api/auth/[...all].ts) quanto por quem precisa ler a sessão em
@@ -24,6 +25,10 @@ export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET,
   emailAndPassword: {
     enabled: true,
+    // Divergia do que a tela sempre pediu (6): o padrão da lib é 8. A regra
+    // de composição (letra + número) é forçada no hook abaixo — a lib não
+    // tem opção nativa pra isso, só tamanho.
+    minPasswordLength: 6,
   },
   socialProviders: {
     // Login/cadastro com Google. Sem GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET
@@ -81,23 +86,70 @@ export const auth = betterAuth({
         type: 'string',
         required: false,
       },
+      // Preservado — não é usado pra restringir nada hoje (nenhuma tela
+      // filtra por secretaria), só exibição e valor-padrão sugerido do
+      // campo `responsavel` no painel. Ver auditoria desta sessão.
       secretaria: {
         type: 'string',
         required: false,
       },
+      // Servidor criado pelo admin (ver server/api/admin/servidores/index.post.ts)
+      // nasce com isso `true`; cidadão, Google e admin nunca passam por lá,
+      // então sempre ficam com o default `false`. Zerado de volta pelo hook
+      // `after` abaixo, assim que a troca de senha é concluída com sucesso —
+      // nunca por um `primeiroAcesso: false` vindo do body do cliente.
+      primeiroAcesso: {
+        type: 'boolean',
+        required: false,
+        defaultValue: false,
+        input: false,
+      },
+      // Mesmo nome/formato que o plugin `admin` nativo do Better Auth usaria
+      // (ver auditoria) — sem habilitar o plugin em si, cuja autorização é
+      // presa ao campo `role` dele, separado do nosso `papel` (ver
+      // server/utils/exigirServidor.ts para onde isso é checado de verdade).
+      banned: {
+        type: 'boolean',
+        required: false,
+        defaultValue: false,
+        input: false,
+      },
     },
   },
   hooks: {
-    // Roda antes de QUALQUER endpoint do Better Auth. Filtra por `ctx.path`
-    // para só se aplicar ao cadastro tradicional — login (email ou Google),
-    // cadastro Google e todo o resto passam direto. É a garantia real: uma
-    // chamada direta a `POST /api/auth/sign-up/email` sem CPF, com CPF
-    // inválido ou com CPF já usado é rejeitada aqui, não importa o que a
-    // tela faça ou deixe de fazer.
+    // Roda antes de QUALQUER endpoint do Better Auth — cada bloco abaixo
+    // filtra por `ctx.path` pra só se aplicar onde faz sentido.
     before: createAuthMiddleware(async (ctx) => {
+      // Regra de senha (mín. 6 já é a lib, aqui só a composição: letra +
+      // número, sem maiúscula/símbolo obrigatório) — vale tanto pro
+      // cadastro tradicional quanto pra troca de senha do primeiro acesso
+      // do servidor (ver app/pages/perfil.vue).
+      if (ctx.path === '/sign-up/email' || ctx.path === '/change-password') {
+        const senha = ctx.path === '/change-password' ? ctx.body?.newPassword : ctx.body?.password
+        if (typeof senha === 'string' && !validarSenha(senha)) {
+          throw new APIError('BAD_REQUEST', {
+            message: 'A senha precisa ter pelo menos 6 caracteres, com letra e número.',
+          })
+        }
+      }
+
       if (ctx.path !== '/sign-up/email')
         return
 
+      // Cadastro de servidor pelo admin (server/api/admin/servidores/index.post.ts)
+      // repassa o header de sessão do próprio admin autenticado ao chamar
+      // `auth.api.signUpEmail` — nesse caso não exigimos CPF (servidor não
+      // precisa disso pra operar o painel). Cadastro público de cidadão
+      // nunca carrega essa sessão, então a exigência abaixo continua valendo
+      // pra ele normalmente.
+      const sessaoChamador = ctx.headers ? await auth.api.getSession({ headers: ctx.headers }).catch(() => null) : null
+      if (sessaoChamador?.user.papel === 'admin') {
+        return
+      }
+
+      // Garantia real: uma chamada direta a `POST /api/auth/sign-up/email`
+      // sem CPF, com CPF inválido ou com CPF já usado é rejeitada aqui, não
+      // importa o que a tela faça ou deixe de fazer.
       const cpfNormalizado = normalizarCpf(typeof ctx.body?.cpf === 'string' ? ctx.body.cpf : '')
 
       if (!validarCpf(cpfNormalizado)) {
@@ -122,6 +174,19 @@ export const auth = betterAuth({
       // aqui para o que fica persistido ser sempre só os 11 dígitos,
       // independente de como a tela mandou (com ou sem máscara).
       ctx.body.cpf = cpfNormalizado
+    }),
+    // Só roda depois que o endpoint terminou com sucesso — troca de senha
+    // que falhou (ex.: senha sem número) nunca chega aqui, então
+    // `primeiroAcesso` só zera quando a troca realmente aconteceu. Backend
+    // é quem garante isso, nunca um `primeiroAcesso: false` vindo do body.
+    after: createAuthMiddleware(async (ctx) => {
+      if (ctx.path !== '/change-password' || !ctx.headers)
+        return
+
+      const sessao = await auth.api.getSession({ headers: ctx.headers }).catch(() => null)
+      if (sessao?.user.id) {
+        await pool.query('update "user" set "primeiroAcesso" = false where id = $1', [sessao.user.id])
+      }
     }),
   },
 })

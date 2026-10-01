@@ -2,10 +2,20 @@
 // fazia automaticamente: exige sessão para as rotas de conta do cidadão,
 // redirecionando para /entrar quem não estiver logado. A checagem extra de
 // "é servidor?" para /painel fica em app/middleware/servidor.ts.
-const ROTAS_PROTEGIDAS = ['/perfil', '/minhas-solicitacoes']
+// /solicitacoes/nova entrou aqui junto: registrar uma ocorrência agora exige
+// sessão (ver server/api/solicitacoes/index.post.ts) — sem isso, o cidadão
+// preenchia o chat inteiro só pra descobrir um 401 no final.
+const ROTAS_PROTEGIDAS = ['/perfil', '/solicitacoes/nova']
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  const protegida = ROTAS_PROTEGIDAS.includes(to.path) || to.path.startsWith('/painel')
+  // /solicitacoes/acompanhar é dupla: com `?protocolo=` é a busca pública
+  // (usada pelo mapa e pela busca da home, sem exigir login, sem dado
+  // pessoal — ver server/api/solicitacoes/[protocolo].get.ts); sem
+  // `?protocolo=` é o dashboard pessoal do cidadão (GET /api/minhas-solicitacoes),
+  // que precisa de sessão.
+  const dashboardAcompanhar = to.path === '/solicitacoes/acompanhar' && !to.query.protocolo
+
+  const protegida = ROTAS_PROTEGIDAS.includes(to.path) || to.path.startsWith('/painel') || dashboardAcompanhar
   if (!protegida)
     return
 
@@ -22,6 +32,13 @@ export default defineNuxtRouteMiddleware(async (to) => {
   // para cidadão (ver server/api/perfil/completar-cadastro.post.ts).
   const cadastroIncompleto = usuario.papel === 'cidadao' && !usuario.cpf
 
-  if (cadastroIncompleto && to.path !== '/perfil')
+  // Mesmo padrão do CPF acima, pro servidor criado pelo admin (ver
+  // server/api/admin/servidores/index.post.ts): antes de trocar a senha
+  // inicial, só pode acessar /perfil (onde o formulário obrigatório de nova
+  // senha aparece). Backend também bloqueia isso de verdade — ver
+  // server/utils/exigirServidor.ts.
+  const primeiroAcessoPendente = usuario.papel === 'servidor' && usuario.primeiroAcesso
+
+  if ((cadastroIncompleto || primeiroAcessoPendente) && to.path !== '/perfil')
     return navigateTo('/perfil')
 })

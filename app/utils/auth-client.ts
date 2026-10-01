@@ -12,6 +12,8 @@ export const authClient = createAuthClient({
         cpf: { type: 'string', required: false },
         telefone: { type: 'string', required: false },
         secretaria: { type: 'string', required: false },
+        primeiroAcesso: { type: 'boolean', required: false },
+        banned: { type: 'boolean', required: false },
       },
     }),
   ],

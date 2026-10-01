@@ -8,6 +8,53 @@ const { perfil, status, refresh } = usePerfil()
 // nunca cai nesse caso, já nasce com CPF (ver hook em server/utils/auth.ts).
 const cadastroIncompleto = computed(() => perfil.value?.papel === 'cidadao' && !perfil.value.cpf)
 
+// Servidor criado pelo admin precisa trocar a senha inicial antes de
+// qualquer outra coisa — mesmo padrão do CPF acima, só que pra essa
+// situação (ver server/api/admin/servidores/index.post.ts e
+// app/middleware/auth.global.ts, que já redireciona pra cá).
+const primeiroAcessoPendente = computed(() => perfil.value?.papel === 'servidor' && perfil.value.primeiroAcesso)
+
+const senhaAtual = ref('')
+const novaSenha = ref('')
+const carregandoSenha = ref(false)
+const erroSenha = ref('')
+
+async function trocarSenhaInicial() {
+  erroSenha.value = ''
+
+  if (!validarSenha(novaSenha.value)) {
+    erroSenha.value = 'A nova senha precisa ter pelo menos 6 caracteres, com letra e número.'
+    return
+  }
+
+  carregandoSenha.value = true
+
+  try {
+    const { error } = await authClient.changePassword({
+      currentPassword: senhaAtual.value,
+      newPassword: novaSenha.value,
+    })
+
+    if (error) {
+      erroSenha.value = error.message || 'Não foi possível trocar sua senha agora.'
+      return
+    }
+
+    // `primeiroAcesso` já foi zerado no backend pelo hook `after` de
+    // `/change-password` (ver server/utils/auth.ts) — só precisamos de uma
+    // leitura fresca aqui pra sessão em cache (key 'sessao') refletir isso
+    // antes do middleware avaliar a próxima navegação.
+    await $fetch('/api/auth/get-session', { query: { disableCookieCache: true } })
+    await refresh()
+  }
+  catch {
+    erroSenha.value = 'Não foi possível trocar sua senha agora. Tente novamente.'
+  }
+  finally {
+    carregandoSenha.value = false
+  }
+}
+
 const cpf = ref('')
 const carregandoCpf = ref(false)
 const erroCpf = ref('')
@@ -80,6 +127,40 @@ async function sair() {
         <UButton label="Tentar novamente" color="neutral" variant="soft" class="mt-4" @click="refresh()" />
       </UPageCard>
 
+      <UPageCard v-else-if="primeiroAcessoPendente" variant="subtle">
+        <div class="mb-6 text-center">
+          <span class="mx-auto flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-600 to-primary-400 text-white shadow-sm">
+            <UIcon name="i-lucide-key-round" class="size-6" />
+          </span>
+          <h1 class="mt-4 text-xl font-bold text-highlighted">
+            Troque sua senha
+          </h1>
+          <p class="mt-1 text-sm text-muted">
+            Este é seu primeiro acesso. Troque a senha inicial antes de continuar.
+          </p>
+        </div>
+
+        <form class="space-y-4" @submit.prevent="trocarSenhaInicial">
+          <UFormField label="Senha atual (a que você recebeu)">
+            <UInput v-model="senhaAtual" type="password" required class="w-full" />
+          </UFormField>
+          <UFormField label="Nova senha" help="Mínimo 6 caracteres, com letra e número">
+            <UInput v-model="novaSenha" type="password" required class="w-full" />
+          </UFormField>
+
+          <UAlert v-if="erroSenha" color="error" variant="subtle" icon="i-lucide-alert-triangle" :description="erroSenha" />
+
+          <UButton
+            type="submit"
+            label="Trocar senha e continuar"
+            color="primary"
+            block
+            size="lg"
+            :loading="carregandoSenha"
+          />
+        </form>
+      </UPageCard>
+
       <UPageCard v-else-if="cadastroIncompleto" variant="subtle">
         <div class="mb-6 text-center">
           <span class="mx-auto flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-600 to-primary-400 text-white shadow-sm">
@@ -125,11 +206,19 @@ async function sair() {
                 {{ perfil.email }}
               </p>
               <UBadge
-                :color="perfil.papel === 'servidor' ? 'secondary' : 'primary'"
+                :color="perfil.papel === 'cidadao' ? 'primary' : 'secondary'"
                 variant="subtle"
                 class="mt-1"
               >
-                {{ perfil.papel === 'servidor' ? `Servidor · ${perfil.secretaria || 'Prefeitura'}` : 'Cidadão' }}
+                <template v-if="perfil.papel === 'servidor'">
+                  Servidor · {{ perfil.secretaria || 'Prefeitura' }}
+                </template>
+                <template v-else-if="perfil.papel === 'admin'">
+                  Administrador
+                </template>
+                <template v-else>
+                  Cidadão
+                </template>
               </UBadge>
             </div>
           </div>
@@ -158,7 +247,7 @@ async function sair() {
 
         <div class="mt-4 space-y-3">
           <UButton
-            v-if="perfil.papel === 'servidor'"
+            v-if="perfil.papel === 'servidor' || perfil.papel === 'admin'"
             to="/painel"
             label="Painel administrativo"
             icon="i-lucide-layout-dashboard"
@@ -167,7 +256,7 @@ async function sair() {
             block
           />
           <UButton
-            to="/minhas-solicitacoes"
+            to="/solicitacoes/acompanhar"
             label="Minhas solicitações"
             icon="i-lucide-list"
             color="neutral"

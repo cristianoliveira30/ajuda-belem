@@ -3,7 +3,7 @@ import { detectarAmeacaEmCampos, MENSAGEM_AMEACA_ENTRADA } from '#shared/utils/s
 import type { Solicitacao } from '#shared/types/solicitacao'
 
 export default defineEventHandler(async (event) => {
-  await exigirServidor(event)
+  const usuario = await exigirServidor(event)
 
   const protocolo = getRouterParam(event, 'protocolo')
   if (!protocolo) {
@@ -42,7 +42,12 @@ export default defineEventHandler(async (event) => {
     responsavel: responsavel || solicitacao.responsavel,
     historico: [
       ...solicitacao.historico,
-      { status, mensagem, data: new Date().toISOString() },
+      // `servidorUserId`/`servidorNome` vêm da sessão (exigirServidor acima),
+      // nunca do body — é a auditoria real de quem alterou. `responsavel`
+      // continua sendo o texto livre que já existia, preservado por
+      // compatibilidade (ex.: nome da secretaria), não é usado como
+      // identificação de quem fez a mudança.
+      { status, mensagem, data: new Date().toISOString(), servidorUserId: usuario.id, servidorNome: usuario.name },
     ],
   }
 

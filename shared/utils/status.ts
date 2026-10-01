@@ -28,6 +28,13 @@ export const STATUS_SOLICITACAO: Record<StatusSolicitacao, { label: string, colo
   },
 }
 
+// Só ocorrência "ativa" (ainda não resolvida) entra na busca por duplicidade
+// e pode receber novos relatos — ver server/api/solicitacoes/candidata.post.ts
+// e server/api/solicitacoes/[protocolo]/relato.post.ts.
+export function statusEhAtivo(status: StatusSolicitacao): boolean {
+  return status !== 'concluido'
+}
+
 export function gerarProtocolo(): string {
   const ano = new Date().getFullYear()
   const numero = Math.floor(100000 + Math.random() * 900000)

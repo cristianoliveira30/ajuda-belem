@@ -24,7 +24,8 @@ async function entrar() {
       return
     }
 
-    await router.push(data.user.papel === 'servidor' ? '/painel' : '/perfil')
+    const vaiParaPainel = data.user.papel === 'servidor' || data.user.papel === 'admin'
+    await router.push(vaiParaPainel ? '/painel' : '/perfil')
   }
   catch {
     erro.value = 'Não foi possível entrar agora. Verifique sua conexão e tente novamente.'

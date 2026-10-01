@@ -4,6 +4,13 @@ import { detectarAmeacaEmCampos, MENSAGEM_AMEACA_ENTRADA } from '#shared/utils/s
 import type { Solicitacao } from '#shared/types/solicitacao'
 
 export default defineEventHandler(async (event) => {
+  // Exige cidadão autenticado — identidade vem da sessão, nunca do body, pra
+  // ninguém conseguir registrar uma ocorrência em nome de outra pessoa.
+  const session = await auth.api.getSession({ headers: event.headers })
+  if (!session?.user) {
+    throw createError({ statusCode: 401, message: 'Não autenticado' })
+  }
+
   const body = await readBody(event)
   const resultado = solicitacaoSchema.safeParse(body)
 
@@ -16,9 +23,10 @@ export default defineEventHandler(async (event) => {
   }
 
   // Defesa em profundidade: a checagem já roda no chat, mas quem chama a API
-  // diretamente (sem passar pela UI) também precisa passar por ela.
-  const { rua, bairro, complemento, pontoReferencia, descricao, nome } = resultado.data
-  const ameaca = detectarAmeacaEmCampos([rua, bairro, complemento, pontoReferencia, descricao, nome])
+  // diretamente (sem passar pela UI) também precisa passar por ela. `nome`
+  // não entra aqui: vem da sessão, não deste body (ver abaixo).
+  const { rua, bairro, complemento, pontoReferencia, descricao } = resultado.data
+  const ameaca = detectarAmeacaEmCampos([rua, bairro, complemento, pontoReferencia, descricao])
   if (ameaca) {
     throw createError({ statusCode: 400, message: MENSAGEM_AMEACA_ENTRADA[ameaca] })
   }
@@ -34,6 +42,16 @@ export default defineEventHandler(async (event) => {
 
   const solicitacao: Solicitacao = {
     ...resultado.data,
+    // Sobrescreve nome/e-mail do body com os da sessão — o chat nem pergunta
+    // mais isso, e mesmo que perguntasse, o que fica gravado é sempre a
+    // identidade autenticada, nunca o que vier no body.
+    nome: session.user.name,
+    email: session.user.email,
+    // O chat não pergunta mais telefone/CPF (ver app/pages/solicitacoes/nova.vue)
+    // — aproveita o que já está na conta, se tiver; fica ausente se não tiver.
+    telefone: resultado.data.telefone ?? session.user.telefone ?? undefined,
+    cpf: resultado.data.cpf ?? session.user.cpf ?? undefined,
+    userId: session.user.id,
     protocolo,
     status: 'aberto',
     criadoEm: agora,
@@ -44,6 +62,8 @@ export default defineEventHandler(async (event) => {
         mensagem: 'Solicitação registrada com sucesso.',
       },
     ],
+    // Quem cria a ocorrência conta como o primeiro relato dela.
+    relatos: [{ userId: session.user.id, criadoEm: agora }],
   }
 
   await storage.setItem(`${protocolo}.json`, solicitacao)

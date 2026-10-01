@@ -1,10 +1,18 @@
 <script setup lang="ts">
 const { perfil, refresh } = usePerfil()
 
-const links = [
-  { label: 'Visão geral', icon: 'i-lucide-layout-dashboard', to: '/painel' },
-  { label: 'Solicitações', icon: 'i-lucide-list-checks', to: '/painel/solicitacoes' },
-]
+const links = computed(() => {
+  const base = [
+    { label: 'Visão geral', icon: 'i-lucide-layout-dashboard', to: '/painel' },
+    { label: 'Solicitações', icon: 'i-lucide-list-checks', to: '/painel/solicitacoes' },
+  ]
+
+  if (perfil.value?.papel === 'admin') {
+    base.push({ label: 'Servidores', icon: 'i-lucide-users', to: '/painel/servidores' })
+  }
+
+  return base
+})
 
 const erroSair = ref('')
 

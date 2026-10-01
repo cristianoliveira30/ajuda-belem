@@ -16,6 +16,7 @@ export function usePerfil() {
       telefone: user.telefone ?? null,
       papel: user.papel,
       secretaria: user.secretaria ?? null,
+      primeiroAcesso: user.primeiroAcesso ?? false,
     }
   })
 
