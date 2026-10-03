@@ -11,7 +11,8 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "test": "vitest --run",
-    "db:migrate": "npx --yes @better-auth/cli@latest migrate --config server/utils/auth.ts -y"
+    "db:migrate": "npx --yes @better-auth/cli@latest migrate --config server/utils/auth.ts -y",
+    "db:seed": "node db/seed.mjs"
   },
   "dependencies": {
     "@nuxt/ui": "^4.11.1",

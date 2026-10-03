@@ -27,6 +27,49 @@ O login/cadastro (`/entrar`, `/cadastro`, `/perfil`) usa [Better Auth](https://b
 
 Contas de servidor não têm cadastro público — são promovidas manualmente no banco (ver comentário no topo de [db/schema.sql](./db/schema.sql)).
 
+### Dados de demonstração (seed)
+
+Só para desenvolvimento. Depois de criar as tabelas (passo 3), `yarn db:seed` ([db/seed.mjs](./db/seed.mjs)) popula os dois lugares onde o app guarda dados:
+
+| Onde | O que cria |
+| --- | --- |
+| Postgres (`user` + `account`) | 4 contas de demonstração (tabela abaixo) |
+| `.data/solicitacoes` (arquivos JSON, ver `nuxt.config.ts`) | 100 solicitações simuladas de [db/seed/solicitacoes.json](./db/seed/solicitacoes.json): todas as categorias, status e bairros, com histórico e relatos |
+
+| E-mail | Papel | Observação |
+| --- | --- | --- |
+| `admin@ajudabelem.local` | admin | |
+| `servidor.obras@ajudabelem.local` | servidor | Secretaria de Obras |
+| `servidor.limpeza@ajudabelem.local` | servidor | Secretaria de Limpeza Urbana |
+| `cidadao@ajudabelem.local` | cidadão | CPF fictício válido |
+
+A senha de todas é `Belem123`. Os servidores já nascem com `primeiroAcesso = false`, para entrar direto no painel.
+
+Ao entrar em `/entrar`, cada papel cai na sua tela ([app/utils/destinoPosLogin.ts](./app/utils/destinoPosLogin.ts)): **admin** → `/painel` (visão geral + gestão de servidores), **servidor** → `/painel/solicitacoes` (fila de atendimento), **cidadão** → `/perfil`. Servidor em primeiro acesso vai para `/perfil` trocar a senha antes. Quem já está logado e abre `/entrar` vê um aviso com a conta atual (atalho para a sua tela ou "Sair") e pode entrar com outra conta direto pelo formulário; conta desativada é recusada no login.
+
+```bash
+# Com Docker (o .data pertence ao container, então rode lá dentro)
+docker compose exec dev yarn db:seed
+
+# Ou local, com DATABASE_URL no .env
+yarn db:seed
+```
+
+#### Contas pessoais (fora do seed)
+
+Além das contas acima, o banco local tem duas contas criadas à mão, **fora** do `db/seed.mjs` (projeto acadêmico, então a senha fica registrada aqui):
+
+| E-mail | Papel | Senha |
+| --- | --- | --- |
+| `renan.admin@ajudabelem.local` | admin | `renan123` |
+| `renan.servidor@ajudabelem.local` | servidor (Prefeitura de Belém) | `renan123` |
+
+Elas vivem só no volume `db-data` do Postgres: se o volume for apagado, somem junto e `yarn db:seed` não as recria. Para refazer, crie o servidor pelo próprio admin em `/painel/servidores`, ou promova uma conta já cadastrada com o `update "user" set papel = ...` do topo de [db/schema.sql](./db/schema.sql).
+
+#### Rodando o seed
+
+É idempotente: só mexe em ids `seed-*` e nos protocolos do fixture, nunca em contas ou solicitações reais. Recusa rodar com `NODE_ENV=production`. Para gravar as solicitações em outro diretório, defina `SOLICITACOES_DIR`.
+
 ## Desenvolvimento
 
 Precisa de Node/Yarn instalados localmente. Se preferir não instalar nada além do Docker, veja "Desenvolvimento com Docker" abaixo — faz a mesma coisa dentro de um container.

@@ -1,18 +1,22 @@
 <script setup lang="ts">
 const { perfil, refresh } = usePerfil()
 
+const ehAdmin = computed(() => perfil.value?.papel === 'admin')
+
+// Cada papel tem a sua tela inicial (ver app/utils/destinoPosLogin.ts): o
+// admin abre na visão geral e ainda gerencia servidores; o servidor abre
+// direto na fila de solicitações.
 const links = computed(() => {
-  const base = [
-    { label: 'Visão geral', icon: 'i-lucide-layout-dashboard', to: '/painel' },
-    { label: 'Solicitações', icon: 'i-lucide-list-checks', to: '/painel/solicitacoes' },
-  ]
+  const visaoGeral = { label: 'Visão geral', icon: 'i-lucide-layout-dashboard', to: '/painel' }
+  const solicitacoes = { label: 'Solicitações', icon: 'i-lucide-list-checks', to: '/painel/solicitacoes' }
 
-  if (perfil.value?.papel === 'admin') {
-    base.push({ label: 'Servidores', icon: 'i-lucide-users', to: '/painel/servidores' })
-  }
+  if (ehAdmin.value)
+    return [visaoGeral, solicitacoes, { label: 'Servidores', icon: 'i-lucide-users', to: '/painel/servidores' }]
 
-  return base
+  return [solicitacoes, visaoGeral]
 })
+
+const tituloPainel = computed(() => ehAdmin.value ? 'Painel do administrador' : 'Painel do servidor')
 
 const erroSair = ref('')
 
@@ -42,7 +46,7 @@ async function sair() {
           <span class="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary-600 to-primary-400 text-sm font-bold text-white">
             AB
           </span>
-          <span class="font-bold text-highlighted">Painel</span>
+          <span class="font-bold text-highlighted">{{ ehAdmin ? 'Admin' : 'Servidor' }}</span>
         </NuxtLink>
       </template>
 
@@ -62,7 +66,7 @@ async function sair() {
 
     <UDashboardPanel>
       <template #header>
-        <UDashboardNavbar title="Painel administrativo" />
+        <UDashboardNavbar :title="tituloPainel" />
       </template>
       <template #body>
         <slot />
