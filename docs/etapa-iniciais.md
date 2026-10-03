@@ -288,6 +288,25 @@ Decisões:
 
 Testado manualmente: duas execuções seguidas dão o mesmo resultado (9 contas no total, 101 arquivos, sem duplicar), e o login por `POST /api/auth/sign-in/email` retorna 200 para admin, servidor e cidadão do seed.
 
+### Correção do mapa (coordenadas do seed e marcador)
+
+Sintoma: os pontos apareciam na água (rio Guamá, baía do Guajará, Ilhas das Onças), embora o texto de cada ocorrência dissesse o bairro certo. O componente `MapaOcorrencias.vue` plotava exatamente a latitude/longitude recebidas — o erro estava nos **dados**: as 100 solicitações simuladas tinham coordenadas espalhadas por uma área bem maior que a cidade, sem relação com o bairro.
+
+- **`db/seed/solicitacoes.json`**: latitude/longitude refeitas. Cada bairro tem um centro (conferido visualmente sobre o mapa do OpenStreetMap, com todos os centros em terra) e cada ocorrência recebe um deslocamento pequeno e determinístico em volta dele (derivado do hash do protocolo; ~165 m, ou ~110 m nos bairros à beira do rio — Condor, Jurunas, Cidade Velha, Guamá, Comércio — para não cair na água). Rodar `yarn db:seed` de novo regrava os arquivos com as coordenadas corrigidas. Rua e número continuam fictícios e não correspondem ao ponto exato; só o bairro é fiel.
+- **`app/components/MapaOcorrencias.vue`**: o marcador diminuiu de 24 px para 10 px, com estilo inline e tamanho igual ao `iconSize` (âncora no centro, para o ponto cair exatamente na coordenada). O mapa agora usa `fitBounds` nos pontos (`maxZoom` 15) em vez de zoom fixo 12, que deixava tudo espremido sobre a cidade. Vale para `/mapa` e para o card de mapa do dashboard (mesmo componente).
+
+### Fotos reais nas solicitações do seed
+
+Pedido do usuário: as 100 solicitações simuladas passaram a ter fotos reais, em vez de nenhuma.
+
+- **Origem**: [Wikimedia Commons](https://commons.wikimedia.org), só arquivos com licença livre (CC BY, CC BY-SA, CC0 ou domínio público), em miniatura de 800 px. Cada candidata foi **vista antes de ser usada**: os títulos enganam (várias buscas por "broken street light" devolveram postes com adesivo, por exemplo) e as que não mostravam o problema da categoria foram descartadas. Ficaram 26 fotos: pavimentação 4, limpeza 4, saneamento 4, sinalização 5, iluminação 3, arborização 3, alagamento 3.
+- **Armazenamento**: arquivos em `public/seed/fotos/<categoria>-<n>.jpg` (~7,6 MB), e o campo `fotos` da solicitação guarda só o caminho (`/seed/fotos/pavimentacao-1.jpg`), não base64 como nas fotos enviadas pelo chat. Isso mantém o fixture pequeno; todas as telas exibem `fotos` por `<img :src>`, então funcionam com os dois formatos. A validação de `data:image/...` em `shared/utils/validacao.ts` só vale para foto **enviada**, não para o que já está salvo.
+- **Distribuição** (determinística, ordenada por protocolo): cada ocorrência recebe a foto da sua categoria em rodízio; a cada 4ª ocorrência de uma categoria ganha uma segunda foto (73 com 1 foto, 27 com 2).
+- **Créditos**: `public/seed/fotos/CREDITOS.md` lista arquivo, original, autor e licença de cada foto — necessário para as licenças CC BY/BY-SA. Limitação conhecida: os locais retratados não são de Belém (Wikimedia quase não tem fotos desse tipo de problema em Belém); a foto ilustra o tipo de problema, não o endereço.
+- **Rede**: a busca e o download usaram a API pública do Commons (com limite de requisições — houve respostas 429, contornadas com espera). Os arquivos agora estão no repositório, então rodar o seed **não** depende de internet.
+
+Testado: o `/seed/fotos/...jpg` é servido pelo app (200 `image/jpeg`) e a página `/solicitacoes/acompanhar?protocolo=...` de uma ocorrência de pavimentação exibe as duas miniaturas de buraco.
+
 ### Login por papel (depois do seed)
 
 Com contas de admin e servidor disponíveis, o login passou a levar cada papel para a sua tela:

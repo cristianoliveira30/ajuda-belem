@@ -39,6 +39,8 @@ async function desenharMarcadores() {
   camadaMarcadores?.clearLayers()
   camadaMarcadores ??= L.layerGroup().addTo(mapa)
 
+  const posicoes: [number, number][] = []
+
   for (const ocorrencia of props.ocorrencias) {
     if (ocorrencia.latitude == null || ocorrencia.longitude == null)
       continue
@@ -48,9 +50,12 @@ async function desenharMarcadores() {
 
     const icone = L.divIcon({
       className: '',
-      html: `<span style="background:${cor}" class="flex size-6 items-center justify-center rounded-full border-2 border-white shadow"></span>`,
-      iconSize: [24, 24],
-      iconAnchor: [12, 12],
+      // Estilo inline (não classes do Tailwind) e tamanho fixo igual ao
+      // `iconSize`: o ponto precisa ter exatamente o tamanho do ícone para
+      // que o centro dele caia na coordenada (âncora = metade do tamanho).
+      html: `<span style="display:block;width:10px;height:10px;box-sizing:border-box;border-radius:9999px;border:1.5px solid #fff;box-shadow:0 0 2px rgba(0,0,0,.5);background:${cor}"></span>`,
+      iconSize: [10, 10],
+      iconAnchor: [5, 5],
     })
 
     // Construído via DOM (não como string de HTML) para que `bairro` — texto
@@ -79,7 +84,15 @@ async function desenharMarcadores() {
     L.marker([ocorrencia.latitude, ocorrencia.longitude], { icon: icone })
       .bindPopup(popup)
       .addTo(camadaMarcadores)
+
+    posicoes.push([ocorrencia.latitude, ocorrencia.longitude])
   }
+
+  // Enquadra os pontos (em vez de ficar num zoom fixo): sem isso, com tudo
+  // concentrado na cidade, os marcadores ficavam espremidos no zoom 12.
+  // `maxZoom` evita aproximar demais quando há só um ponto.
+  if (posicoes.length)
+    mapa.fitBounds(posicoes, { padding: [30, 30], maxZoom: 15 })
 }
 
 onMounted(async () => {
