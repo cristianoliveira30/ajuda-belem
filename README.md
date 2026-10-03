@@ -34,7 +34,7 @@ Só para desenvolvimento. Depois de criar as tabelas (passo 3), `yarn db:seed` (
 | Onde | O que cria |
 | --- | --- |
 | Postgres (`user` + `account`) | 4 contas de demonstração (tabela abaixo) |
-| `.data/solicitacoes` (arquivos JSON, ver `nuxt.config.ts`) | 100 solicitações simuladas de [db/seed/solicitacoes.json](./db/seed/solicitacoes.json): todas as categorias, status e bairros, com histórico e relatos |
+| `.data/solicitacoes` (arquivos JSON, ver `nuxt.config.ts`) | 100 solicitações simuladas de [db/seed/solicitacoes.json](./db/seed/solicitacoes.json): todas as categorias, status e bairros, com histórico, relatos e fotos |
 
 | E-mail | Papel | Observação |
 | --- | --- | --- |
@@ -67,6 +67,8 @@ Além das contas acima, o banco local tem duas contas criadas à mão, **fora** 
 Elas vivem só no volume `db-data` do Postgres: se o volume for apagado, somem junto e `yarn db:seed` não as recria. Para refazer, crie o servidor pelo próprio admin em `/painel/servidores`, ou promova uma conta já cadastrada com o `update "user" set papel = ...` do topo de [db/schema.sql](./db/schema.sql).
 
 #### Rodando o seed
+
+As fotos das solicitações simuladas são fotos reais do Wikimedia Commons (26 arquivos em [public/seed/fotos/](./public/seed/fotos/), 1 ou 2 por ocorrência, conforme a categoria), servidas em `/seed/fotos/...`. Os locais retratados não são de Belém; autoria e licença de cada uma estão em [public/seed/fotos/CREDITOS.md](./public/seed/fotos/CREDITOS.md).
 
 É idempotente: só mexe em ids `seed-*` e nos protocolos do fixture, nunca em contas ou solicitações reais. Recusa rodar com `NODE_ENV=production`. Para gravar as solicitações em outro diretório, defina `SOLICITACOES_DIR`.
 
