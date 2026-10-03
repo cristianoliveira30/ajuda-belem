@@ -134,5 +134,12 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="containerRef" class="h-full w-full" />
+  <!--
+    `isolate` (isolation: isolate) cria um contexto de empilhamento só para o
+    mapa: os z-index internos do Leaflet (painéis 200–700, controles e
+    atribuição 800–1000) ficam presos aqui dentro, em vez de competirem com
+    o cabeçalho (z-40) e a barra inferior (z-50) — sem isso, o mapa passava
+    POR CIMA deles ao rolar a página.
+  -->
+  <div ref="containerRef" class="isolate h-full w-full" />
 </template>

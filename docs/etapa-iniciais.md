@@ -307,6 +307,26 @@ Pedido do usuário: as 100 solicitações simuladas passaram a ter fotos reais, 
 
 Testado: o `/seed/fotos/...jpg` é servido pelo app (200 `image/jpeg`) e a página `/solicitacoes/acompanhar?protocolo=...` de uma ocorrência de pavimentação exibe as duas miniaturas de buraco.
 
+### Topo da Início enxuto no celular (mobile-first)
+
+Primeira etapa do ajuste mobile-first do site do cidadão (escopo: só o site do cidadão, não o painel; conferência por prints em 390 px). O topo da Início gastava a primeira tela com coisas repetidas:
+
+- **`app/pages/index.vue`**: removida a linha de marca dentro do card azul (ícone + "Ajuda Belém" + "Prefeitura de Belém do Pará" + botões de sino e de usuário). O cabeçalho do site já mostra a marca; o ícone de usuário duplicava a aba "Perfil" da barra inferior; e o **sino não tinha função nenhuma** (nem link, nem ação). Agora o card azul começa direto na saudação. Também diminuiu o espaçamento do card no celular (`pt-6 pb-16`; de `sm:` para cima mantém `pt-12 pb-20`).
+- **`app/components/layout/AppHeader.vue`**: cabeçalho com `h-14` no celular e `md:h-16` de tablet em diante.
+- Resultado: o botão "Contar um problema" sobe cerca de 100 px e fica visível já na primeira tela.
+
+Conferência: o Chrome headless não renderiza janelas menores que ~500 px (a página sai cortada), então os prints usam um iframe de 390 px (e 360 px) dentro de uma moldura larga, que dá o viewport real para as media queries.
+
+Observação pendente, já existente antes desta mudança: em ~768 px (limite do `md`) o cabeçalho mostra os 5 links + tema + "Entrar" e fica ligeiramente mais largo que a tela (aparece rolagem horizontal).
+
+### Mapa por cima do cabeçalho e da barra inferior
+
+Sintoma (visto ao rolar a Início até o card "Mapa de ocorrências"): o mapa passava POR CIMA do cabeçalho fixo (logo e botão de tema ficavam pela metade) e da barra de navegação inferior (as abas sumiam atrás do mapa).
+
+Causa: o Leaflet usa `z-index` altos por dentro (painéis de tiles/marcadores 200–700, controles de zoom e atribuição 800–1000), e o container do mapa não criava contexto de empilhamento próprio — então esses valores competiam diretamente com o cabeçalho (`z-40`) e a barra inferior (`z-50`).
+
+Correção em `app/components/MapaOcorrencias.vue`: o container ganhou `isolate` (`isolation: isolate`), que cria um contexto de empilhamento só para o mapa. Os `z-index` do Leaflet ficam presos lá dentro, e o cabeçalho/barra inferior passam a ficar sempre acima. Vale para `/mapa` e para o card de mapa do dashboard (mesmo componente). Reproduzido e verificado com prints em 390 px, rolando a página até o mapa ficar parcialmente sob o cabeçalho e sob a barra inferior.
+
 ### Login por papel (depois do seed)
 
 Com contas de admin e servidor disponíveis, o login passou a levar cada papel para a sua tela:
