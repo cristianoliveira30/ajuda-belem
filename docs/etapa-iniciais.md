@@ -265,6 +265,44 @@ Pedido do usuário, na sequência da migração acima: rodar o projeto inteiro (
 
 Testado manualmente: `docker compose --profile dev up dev` sobe o Nuxt dev server dentro do container (`http://localhost:3000`); editar um texto em `app/pages/index.vue` no host apareceu no HTML servido pelo container quase na hora (log `✔ Vite server hmr ... files in Nms`), confirmando que o bind mount + HMR funcionam de ponta a ponta.
 
+## Seed de dados de demonstração
+
+Antes não existia nenhum seed: o schema só documentava as tabelas do Better Auth, e o banco e o `.data` estavam povoados por dados simulados de um script avulso que nunca foi versionado — o `.data` fica no `.gitignore`, então apagar o volume perdia tudo. Também não havia nenhuma conta de admin ou servidor, só cidadãos de teste e uma conta Google.
+
+Os dados vivem em **dois lugares**, e o seed cobre os dois:
+
+- **Postgres** (Better Auth): contas em `user` + `account`. As tabelas `session` e `verification` nascem vazias.
+- **Storage de arquivos do Nitro** (`./.data/solicitacoes`): as solicitações, um `<protocolo>.json` por ocorrência. Não há tabela delas no banco.
+
+O que foi adicionado:
+
+- **`db/seed.mjs`** (`yarn db:seed`): cria 4 contas (admin, 2 servidores, 1 cidadão; senha `Belem123`, só para dev) e grava as solicitações do fixture em `.data/solicitacoes`. A senha passa pelo `hashPassword` do próprio Better Auth, então o login funciona pelo fluxo normal (`/entrar`). O CPF do cidadão é calculado com o mesmo algoritmo de `shared/utils/cpf.ts`. É idempotente (`on conflict (id)` nas contas, sobrescrita por protocolo nos arquivos), recusa `NODE_ENV=production` e só toca em ids `seed-*` e nos protocolos do fixture.
+- **`db/seed/solicitacoes.json`**: snapshot das 100 solicitações simuladas que já existiam (7 categorias, 5 status, 18 bairros, de 09/05 a 01/10/2026, com relatos de 1 a 6 por ocorrência). Ficou de fora de propósito a única solicitação real, que tem CPF, telefone e foto de um usuário.
+- Script `db:seed` no `package.json` e nota no cabeçalho de `db/schema.sql`.
+
+Decisões:
+
+- **Fixture em vez de gerador aleatório**: reproduz exatamente o que já se via na tela (dashboard, mapa), sem depender de uma semente de aleatoriedade.
+- **Contas existentes fora do seed**: os cidadãos de teste e a conta Google ficam como estão — são dados locais, não de demonstração.
+- **Os `userId` das solicitações simuladas (`seed-user-N`) não existem na tabela `user`**: nada no app exige o vínculo, as telas leem nome e e-mail gravados na própria solicitação. O `userId` só é usado em "Minhas solicitações" (`minhas-solicitacoes.get.ts`) e na checagem de relato duplicado (`relato.post.ts`), e a conta `cidadao@ajudabelem.local` não é dona de nenhuma delas — então começa com "Minhas solicitações" vazio e pode relatar qualquer ocorrência.
+
+Testado manualmente: duas execuções seguidas dão o mesmo resultado (9 contas no total, 101 arquivos, sem duplicar), e o login por `POST /api/auth/sign-in/email` retorna 200 para admin, servidor e cidadão do seed.
+
+### Login por papel (depois do seed)
+
+Com contas de admin e servidor disponíveis, o login passou a levar cada papel para a sua tela:
+
+- **`app/utils/destinoPosLogin.ts`** é o único lugar que decide o destino: admin → `/painel` (visão geral + gestão de servidores), servidor → `/painel/solicitacoes` (fila de atendimento), cidadão → `/perfil`. Servidor em primeiro acesso vai para `/perfil` (troca de senha obrigatória, ver `app/middleware/auth.global.ts`).
+- **`app/pages/entrar.vue`**: depois do `signIn.email`, atualiza a sessão em cache (`refreshNuxtData('sessao')`) e navega pelo destino acima. Conta com `banned = true` é deslogada na hora, com a mensagem "Conta desativada. Fale com o administrador." — o Better Auth ainda cria a sessão de uma conta desativada, e a barreira de verdade continua em `server/utils/exigirServidor.ts`.
+- **`app/layouts/painel.vue`**: o título e o menu mudam por papel — "Painel do administrador" (Visão geral, Solicitações, Servidores) e "Painel do servidor" (Solicitações, Visão geral). Servidor que abre `/painel/servidores` vê a mensagem de área restrita, e a API devolve 403 (`exigirAdmin`).
+- **Troca de conta**: uma primeira versão redirecionava automaticamente quem já estava logado ao abrir `/entrar`, o que impedia entrar com outra conta (ex.: estava no Google e queria testar o admin). Foi trocada por um aviso "Você já está logado" com a conta atual e dois atalhos (**Ir para minha tela** e **Sair**); o formulário continua utilizável, e o novo login substitui a sessão anterior.
+
+Testado com `curl` nas contas do seed: `/entrar` logado devolve o aviso (200), logar como cidadão e depois como admin sem sair troca a sessão para a do admin, `/painel` mostra o título certo por papel, e o cidadão é redirecionado para `/` ao tentar abrir `/painel`.
+
+### Contas pessoais fora do seed
+
+Além das contas do seed, foram criadas à mão no banco local `renan.admin@ajudabelem.local` (admin) e `renan.servidor@ajudabelem.local` (servidor, secretaria "Prefeitura de Belém", `primeiroAcesso = false`), com a mesma estrutura do seed (`user` + `account` com `providerId = 'credential'`, senha pelo `hashPassword` do Better Auth). A senha de ambas é `renan123` (projeto acadêmico, por isso fica registrada aqui). Não fazem parte do `db/seed.mjs`, então vivem só no volume `db-data` e não são recriadas por `yarn db:seed`.
+
 ---
 
 Cada etapa deve ser tratada como uma entrega independente: ao iniciar uma etapa, detalhar a página correspondente (layout, componentes, dados) antes de implementar, e atualizar este documento marcando o que foi concluído.

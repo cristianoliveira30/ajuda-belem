@@ -8,6 +8,12 @@
 --   update "user" set papel = 'servidor', secretaria = 'Nome da secretaria' where email = 'email@da-conta.com';
 --   update "user" set papel = 'admin' where email = 'email@da-conta.com';
 --
+-- Dados de demonstração: `yarn db:seed` (db/seed.mjs) cria contas admin/
+-- servidor/cidadão (senha `Belem123`) e as 100 solicitações de
+-- db/seed/solicitacoes.json. Solicitações NÃO ficam neste banco: vivem em
+-- arquivos JSON em ./.data/solicitacoes (ver nuxt.config.ts) — por isso não
+-- há tabela delas neste schema.
+--
 -- Servidor criado por um admin (ver server/api/admin/servidores/index.post.ts)
 -- já nasce com "primeiroAcesso" = true e sem CPF — não precisa de UPDATE manual.
 

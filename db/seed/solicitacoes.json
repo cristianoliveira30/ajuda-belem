@@ -1,0 +1,4879 @@
+[
+  {
+    "protocolo": "2026128347",
+    "categoria": "pavimentacao",
+    "rua": "Av. Visconde de Souza Franco",
+    "numero": "305",
+    "bairro": "Marambaia",
+    "latitude": -1.454382,
+    "longitude": -48.546456,
+    "descricao": "Buraco grande no meio da rua, carros precisam desviar.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 39",
+    "email": "cidadao.simulado.39@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-08-02T15:54:18.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-02T15:54:18.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-03T15:54:18.884Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-38",
+    "relatos": [
+      {
+        "userId": "seed-user-38",
+        "criadoEm": "2026-08-02T15:54:18.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026129993",
+    "categoria": "pavimentacao",
+    "rua": "Av. Visconde de Souza Franco",
+    "numero": "1886",
+    "bairro": "Marco",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.40928,
+    "longitude": -48.463263,
+    "descricao": "Asfalto afundando perto da esquina, já tem rachadura.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 27",
+    "email": "cidadao.simulado.27@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-08-24T12:24:56.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-24T12:24:56.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-26",
+    "relatos": [
+      {
+        "userId": "seed-user-26",
+        "criadoEm": "2026-08-24T12:24:56.884Z"
+      },
+      {
+        "userId": "seed-user-137",
+        "criadoEm": "2026-08-30T12:24:56.884Z"
+      },
+      {
+        "userId": "seed-user-6",
+        "criadoEm": "2026-08-29T12:24:56.884Z"
+      },
+      {
+        "userId": "seed-user-52",
+        "criadoEm": "2026-08-27T12:24:56.884Z"
+      },
+      {
+        "userId": "seed-user-72",
+        "criadoEm": "2026-08-30T12:24:56.884Z"
+      },
+      {
+        "userId": "seed-user-318",
+        "criadoEm": "2026-08-27T12:24:56.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026137869",
+    "categoria": "iluminacao",
+    "rua": "Rua Serzedelo Corrêa",
+    "numero": "1432",
+    "bairro": "Umarizal",
+    "latitude": -1.464672,
+    "longitude": -48.530921,
+    "descricao": "Poste de luz apagado há dias, rua fica bem escura à noite.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 1",
+    "email": "cidadao.simulado.1@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-09-27T16:34:59.877Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-27T16:34:59.877Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-0",
+    "relatos": [
+      {
+        "userId": "seed-user-0",
+        "criadoEm": "2026-09-27T16:34:59.877Z"
+      },
+      {
+        "userId": "seed-user-434",
+        "criadoEm": "2026-10-01T18:30:16.881Z"
+      },
+      {
+        "userId": "seed-user-208",
+        "criadoEm": "2026-09-28T16:34:59.877Z"
+      },
+      {
+        "userId": "seed-user-154",
+        "criadoEm": "2026-10-01T18:30:16.881Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026145933",
+    "categoria": "pavimentacao",
+    "rua": "Av. Visconde de Souza Franco",
+    "numero": "1279",
+    "bairro": "Pedreira",
+    "latitude": -1.432728,
+    "longitude": -48.493904,
+    "descricao": "Asfalto afundando perto da esquina, já tem rachadura.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 75",
+    "email": "cidadao.simulado.75@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-07-15T10:06:22.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-07-15T10:06:22.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-07-17T10:06:22.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-07-20T10:06:22.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-07-24T10:06:22.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-74",
+    "relatos": [
+      {
+        "userId": "seed-user-74",
+        "criadoEm": "2026-07-15T10:06:22.886Z"
+      },
+      {
+        "userId": "seed-user-83",
+        "criadoEm": "2026-07-23T10:06:22.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026151724",
+    "categoria": "pavimentacao",
+    "rua": "Av. Nazaré",
+    "numero": "291",
+    "bairro": "Marco",
+    "latitude": -1.495133,
+    "longitude": -48.442774,
+    "descricao": "Buraco grande no meio da rua, carros precisam desviar.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 51",
+    "email": "cidadao.simulado.51@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-09-20T10:29:17.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-20T10:29:17.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-23T10:29:17.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-25T10:29:17.885Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-50",
+    "relatos": [
+      {
+        "userId": "seed-user-50",
+        "criadoEm": "2026-09-20T10:29:17.885Z"
+      },
+      {
+        "userId": "seed-user-75",
+        "criadoEm": "2026-09-29T10:29:17.885Z"
+      },
+      {
+        "userId": "seed-user-10",
+        "criadoEm": "2026-09-25T10:29:17.885Z"
+      },
+      {
+        "userId": "seed-user-199",
+        "criadoEm": "2026-09-28T10:29:17.885Z"
+      },
+      {
+        "userId": "seed-user-484",
+        "criadoEm": "2026-09-20T10:29:17.885Z"
+      },
+      {
+        "userId": "seed-user-477",
+        "criadoEm": "2026-09-23T10:29:17.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026158054",
+    "categoria": "iluminacao",
+    "rua": "Rua dos Mundurucus",
+    "numero": "639",
+    "bairro": "Umarizal",
+    "latitude": -1.439452,
+    "longitude": -48.527253,
+    "descricao": "Dois postes seguidos sem funcionar na mesma quadra.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 63",
+    "email": "cidadao.simulado.63@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-09-21T14:15:51.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-21T14:15:51.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-22T14:15:51.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-23T14:15:51.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-62",
+    "relatos": [
+      {
+        "userId": "seed-user-62",
+        "criadoEm": "2026-09-21T14:15:51.886Z"
+      },
+      {
+        "userId": "seed-user-352",
+        "criadoEm": "2026-09-25T14:15:51.886Z"
+      },
+      {
+        "userId": "seed-user-309",
+        "criadoEm": "2026-09-24T14:15:51.886Z"
+      },
+      {
+        "userId": "seed-user-227",
+        "criadoEm": "2026-09-30T14:15:51.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026199746",
+    "categoria": "pavimentacao",
+    "rua": "Travessa Padre Eutíquio",
+    "numero": "712",
+    "bairro": "Umarizal",
+    "latitude": -1.421614,
+    "longitude": -48.527056,
+    "descricao": "Vários buracos pequenos depois da última chuva forte.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 28",
+    "email": "cidadao.simulado.28@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-10-01T10:48:19.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-10-01T10:48:19.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-27",
+    "relatos": [
+      {
+        "userId": "seed-user-27",
+        "criadoEm": "2026-10-01T10:48:19.884Z"
+      },
+      {
+        "userId": "seed-user-450",
+        "criadoEm": "2026-10-01T18:30:16.884Z"
+      },
+      {
+        "userId": "seed-user-224",
+        "criadoEm": "2026-10-01T18:30:16.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026203977",
+    "categoria": "limpeza",
+    "rua": "Travessa Padre Eutíquio",
+    "numero": "1474",
+    "bairro": "Pedreira",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.442124,
+    "longitude": -48.508158,
+    "descricao": "Lixo acumulado na esquina há vários dias.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 60",
+    "email": "cidadao.simulado.60@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-08-31T08:41:29.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-31T08:41:29.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-02T08:41:29.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-04T08:41:29.885Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-59",
+    "relatos": [
+      {
+        "userId": "seed-user-59",
+        "criadoEm": "2026-08-31T08:41:29.885Z"
+      },
+      {
+        "userId": "seed-user-328",
+        "criadoEm": "2026-09-05T08:41:29.885Z"
+      },
+      {
+        "userId": "seed-user-160",
+        "criadoEm": "2026-09-06T08:41:29.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026204397",
+    "categoria": "saneamento",
+    "rua": "Rua Boaventura da Silva",
+    "numero": "73",
+    "bairro": "Terra Firme",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.442127,
+    "longitude": -48.534434,
+    "descricao": "Bueiro entupido, água não escoa direito.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 6",
+    "email": "cidadao.simulado.6@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-08-23T18:33:25.882Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-23T18:33:25.882Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-5",
+    "relatos": [
+      {
+        "userId": "seed-user-5",
+        "criadoEm": "2026-08-23T18:33:25.882Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026210846",
+    "categoria": "iluminacao",
+    "rua": "Rua João Diogo",
+    "numero": "1100",
+    "bairro": "Umarizal",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.487163,
+    "longitude": -48.514556,
+    "descricao": "Dois postes seguidos sem funcionar na mesma quadra.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 44",
+    "email": "cidadao.simulado.44@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-06-07T12:51:44.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-06-07T12:51:44.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-06-10T12:51:44.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-43",
+    "relatos": [
+      {
+        "userId": "seed-user-43",
+        "criadoEm": "2026-06-07T12:51:44.885Z"
+      },
+      {
+        "userId": "seed-user-379",
+        "criadoEm": "2026-06-12T12:51:44.885Z"
+      },
+      {
+        "userId": "seed-user-32",
+        "criadoEm": "2026-06-11T12:51:44.885Z"
+      },
+      {
+        "userId": "seed-user-38",
+        "criadoEm": "2026-06-15T12:51:44.885Z"
+      },
+      {
+        "userId": "seed-user-317",
+        "criadoEm": "2026-06-09T12:51:44.885Z"
+      },
+      {
+        "userId": "seed-user-497",
+        "criadoEm": "2026-06-09T12:51:44.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026212297",
+    "categoria": "alagamento",
+    "rua": "Rua João Diogo",
+    "numero": "1502",
+    "bairro": "Guamá",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.407563,
+    "longitude": -48.420469,
+    "descricao": "Água acumulada há dois dias depois da chuva.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 74",
+    "email": "cidadao.simulado.74@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-09-13T15:11:29.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-13T15:11:29.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-15T15:11:29.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-17T15:11:29.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-21T15:11:29.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-73",
+    "relatos": [
+      {
+        "userId": "seed-user-73",
+        "criadoEm": "2026-09-13T15:11:29.886Z"
+      },
+      {
+        "userId": "seed-user-76",
+        "criadoEm": "2026-09-15T15:11:29.886Z"
+      },
+      {
+        "userId": "seed-user-395",
+        "criadoEm": "2026-09-21T15:11:29.886Z"
+      },
+      {
+        "userId": "seed-user-247",
+        "criadoEm": "2026-09-18T15:11:29.886Z"
+      },
+      {
+        "userId": "seed-user-223",
+        "criadoEm": "2026-09-19T15:11:29.886Z"
+      },
+      {
+        "userId": "seed-user-375",
+        "criadoEm": "2026-09-15T15:11:29.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026222778",
+    "categoria": "alagamento",
+    "rua": "Travessa Piedade",
+    "numero": "176",
+    "bairro": "São Brás",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.407872,
+    "longitude": -48.441683,
+    "descricao": "Alagamento constante dificulta a passagem de pedestres.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 30",
+    "email": "cidadao.simulado.30@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-09-30T17:39:28.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-30T17:39:28.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-29",
+    "relatos": [
+      {
+        "userId": "seed-user-29",
+        "criadoEm": "2026-09-30T17:39:28.884Z"
+      },
+      {
+        "userId": "seed-user-393",
+        "criadoEm": "2026-09-30T17:39:28.884Z"
+      },
+      {
+        "userId": "seed-user-418",
+        "criadoEm": "2026-10-01T18:30:16.884Z"
+      },
+      {
+        "userId": "seed-user-278",
+        "criadoEm": "2026-10-01T18:30:16.884Z"
+      },
+      {
+        "userId": "seed-user-359",
+        "criadoEm": "2026-10-01T18:30:16.884Z"
+      },
+      {
+        "userId": "seed-user-297",
+        "criadoEm": "2026-10-01T18:30:16.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026254507",
+    "categoria": "alagamento",
+    "rua": "Av. Almirante Barroso",
+    "numero": "228",
+    "bairro": "Reduto",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.472866,
+    "longitude": -48.443006,
+    "descricao": "Alagamento constante dificulta a passagem de pedestres.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 55",
+    "email": "cidadao.simulado.55@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-08-23T14:47:15.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-23T14:47:15.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-25T14:47:15.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-08-28T14:47:15.885Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-54",
+    "relatos": [
+      {
+        "userId": "seed-user-54",
+        "criadoEm": "2026-08-23T14:47:15.885Z"
+      },
+      {
+        "userId": "seed-user-287",
+        "criadoEm": "2026-08-28T14:47:15.885Z"
+      },
+      {
+        "userId": "seed-user-169",
+        "criadoEm": "2026-08-31T14:47:15.885Z"
+      },
+      {
+        "userId": "seed-user-231",
+        "criadoEm": "2026-08-26T14:47:15.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026261092",
+    "categoria": "limpeza",
+    "rua": "Travessa Quintino Bocaiúva",
+    "numero": "1587",
+    "bairro": "Jurunas",
+    "latitude": -1.514893,
+    "longitude": -48.482848,
+    "descricao": "Entulho de obra jogado na calçada bloqueando a passagem.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 7",
+    "email": "cidadao.simulado.7@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-06-22T10:08:17.882Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-06-22T10:08:17.882Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-6",
+    "relatos": [
+      {
+        "userId": "seed-user-6",
+        "criadoEm": "2026-06-22T10:08:17.882Z"
+      },
+      {
+        "userId": "seed-user-237",
+        "criadoEm": "2026-06-27T10:08:17.882Z"
+      },
+      {
+        "userId": "seed-user-91",
+        "criadoEm": "2026-06-30T10:08:17.882Z"
+      },
+      {
+        "userId": "seed-user-267",
+        "criadoEm": "2026-06-25T10:08:17.882Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026270514",
+    "categoria": "saneamento",
+    "rua": "Rua Boaventura da Silva",
+    "numero": "287",
+    "bairro": "Condor",
+    "latitude": -1.495632,
+    "longitude": -48.55052,
+    "descricao": "Esgoto a céu aberto perto da praça.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 93",
+    "email": "cidadao.simulado.93@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-08-28T14:05:25.889Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-28T14:05:25.889Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-31T14:05:25.889Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-04T14:05:25.889Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-07T14:05:25.889Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-09-09T14:05:25.889Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-92",
+    "relatos": [
+      {
+        "userId": "seed-user-92",
+        "criadoEm": "2026-08-28T14:05:25.889Z"
+      },
+      {
+        "userId": "seed-user-215",
+        "criadoEm": "2026-08-28T14:05:25.889Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026272325",
+    "categoria": "iluminacao",
+    "rua": "Travessa Quintino Bocaiúva",
+    "numero": "794",
+    "bairro": "Batista Campos",
+    "latitude": -1.506595,
+    "longitude": -48.476945,
+    "descricao": "Dois postes seguidos sem funcionar na mesma quadra.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 66",
+    "email": "cidadao.simulado.66@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-05-09T13:08:40.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-05-09T13:08:40.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-05-12T13:08:40.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-05-15T13:08:40.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-05-19T13:08:40.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-65",
+    "relatos": [
+      {
+        "userId": "seed-user-65",
+        "criadoEm": "2026-05-09T13:08:40.886Z"
+      },
+      {
+        "userId": "seed-user-397",
+        "criadoEm": "2026-05-11T13:08:40.886Z"
+      },
+      {
+        "userId": "seed-user-305",
+        "criadoEm": "2026-05-15T13:08:40.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026275242",
+    "categoria": "limpeza",
+    "rua": "Av. Almirante Barroso",
+    "numero": "1266",
+    "bairro": "Nazaré",
+    "latitude": -1.412675,
+    "longitude": -48.53486,
+    "descricao": "Lixo acumulado na esquina há vários dias.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 31",
+    "email": "cidadao.simulado.31@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-09-20T09:45:04.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-20T09:45:04.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-22T09:45:04.884Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-30",
+    "relatos": [
+      {
+        "userId": "seed-user-30",
+        "criadoEm": "2026-09-20T09:45:04.884Z"
+      },
+      {
+        "userId": "seed-user-161",
+        "criadoEm": "2026-09-28T09:45:04.884Z"
+      },
+      {
+        "userId": "seed-user-243",
+        "criadoEm": "2026-09-26T09:45:04.884Z"
+      },
+      {
+        "userId": "seed-user-394",
+        "criadoEm": "2026-09-21T09:45:04.884Z"
+      },
+      {
+        "userId": "seed-user-159",
+        "criadoEm": "2026-09-20T09:45:04.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026277168",
+    "categoria": "pavimentacao",
+    "rua": "Rua dos Mundurucus",
+    "numero": "1415",
+    "bairro": "Cidade Velha",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.469888,
+    "longitude": -48.446978,
+    "descricao": "Vários buracos pequenos depois da última chuva forte.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 76",
+    "email": "cidadao.simulado.76@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-09-30T08:05:26.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-30T08:05:26.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-75",
+    "relatos": [
+      {
+        "userId": "seed-user-75",
+        "criadoEm": "2026-09-30T08:05:26.886Z"
+      },
+      {
+        "userId": "seed-user-499",
+        "criadoEm": "2026-10-01T18:30:16.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026289138",
+    "categoria": "saneamento",
+    "rua": "Travessa Rui Barbosa",
+    "numero": "147",
+    "bairro": "Marambaia",
+    "latitude": -1.487831,
+    "longitude": -48.511498,
+    "descricao": "Bueiro entupido, água não escoa direito.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 96",
+    "email": "cidadao.simulado.96@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-09-15T12:32:43.889Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-15T12:32:43.889Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-17T12:32:43.889Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-22T12:32:43.889Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-26T12:32:43.889Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-09-27T12:32:43.889Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-95",
+    "relatos": [
+      {
+        "userId": "seed-user-95",
+        "criadoEm": "2026-09-15T12:32:43.889Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026289991",
+    "categoria": "limpeza",
+    "rua": "Rua João Diogo",
+    "numero": "1435",
+    "bairro": "Marco",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.511139,
+    "longitude": -48.502253,
+    "descricao": "Terreno baldio virou depósito de entulho.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 52",
+    "email": "cidadao.simulado.52@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-07-01T14:56:26.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-07-01T14:56:26.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-07-04T14:56:26.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-07-08T14:56:26.885Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-51",
+    "relatos": [
+      {
+        "userId": "seed-user-51",
+        "criadoEm": "2026-07-01T14:56:26.885Z"
+      },
+      {
+        "userId": "seed-user-481",
+        "criadoEm": "2026-07-10T14:56:26.885Z"
+      },
+      {
+        "userId": "seed-user-144",
+        "criadoEm": "2026-07-08T14:56:26.885Z"
+      },
+      {
+        "userId": "seed-user-348",
+        "criadoEm": "2026-07-02T14:56:26.885Z"
+      },
+      {
+        "userId": "seed-user-328",
+        "criadoEm": "2026-07-10T14:56:26.885Z"
+      },
+      {
+        "userId": "seed-user-460",
+        "criadoEm": "2026-07-01T14:56:26.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026311050",
+    "categoria": "iluminacao",
+    "rua": "Av. Governador José Malcher",
+    "numero": "1059",
+    "bairro": "Cidade Velha",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.421384,
+    "longitude": -48.530781,
+    "descricao": "Poste de luz apagado há dias, rua fica bem escura à noite.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 92",
+    "email": "cidadao.simulado.92@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-09-24T11:45:10.888Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-24T11:45:10.888Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-28T11:45:10.888Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-10-01T18:30:16.888Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-10-01T18:30:16.888Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-10-01T18:30:16.888Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-91",
+    "relatos": [
+      {
+        "userId": "seed-user-91",
+        "criadoEm": "2026-09-24T11:45:10.888Z"
+      },
+      {
+        "userId": "seed-user-413",
+        "criadoEm": "2026-09-29T11:45:10.888Z"
+      },
+      {
+        "userId": "seed-user-0",
+        "criadoEm": "2026-09-25T11:45:10.888Z"
+      },
+      {
+        "userId": "seed-user-359",
+        "criadoEm": "2026-09-26T11:45:10.888Z"
+      },
+      {
+        "userId": "seed-user-285",
+        "criadoEm": "2026-09-28T11:45:10.888Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026343415",
+    "categoria": "saneamento",
+    "rua": "Av. Gentil Bittencourt",
+    "numero": "1737",
+    "bairro": "Marco",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.455518,
+    "longitude": -48.486428,
+    "descricao": "Bueiro entupido, água não escoa direito.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 8",
+    "email": "cidadao.simulado.8@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-09-24T10:47:56.882Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-24T10:47:56.882Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-7",
+    "relatos": [
+      {
+        "userId": "seed-user-7",
+        "criadoEm": "2026-09-24T10:47:56.882Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026345887",
+    "categoria": "pavimentacao",
+    "rua": "Av. Almirante Barroso",
+    "numero": "1627",
+    "bairro": "Guamá",
+    "latitude": -1.511077,
+    "longitude": -48.54549,
+    "descricao": "Vários buracos pequenos depois da última chuva forte.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 81",
+    "email": "cidadao.simulado.81@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-09-21T18:02:18.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-21T18:02:18.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-22T18:02:18.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-24T18:02:18.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-28T18:02:18.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-80",
+    "relatos": [
+      {
+        "userId": "seed-user-80",
+        "criadoEm": "2026-09-21T18:02:18.886Z"
+      },
+      {
+        "userId": "seed-user-489",
+        "criadoEm": "2026-09-25T18:02:18.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026352591",
+    "categoria": "pavimentacao",
+    "rua": "Travessa Rui Barbosa",
+    "numero": "1109",
+    "bairro": "Umarizal",
+    "latitude": -1.428565,
+    "longitude": -48.426864,
+    "descricao": "Vários buracos pequenos depois da última chuva forte.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 78",
+    "email": "cidadao.simulado.78@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-08-26T14:50:28.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-26T14:50:28.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-31T14:50:28.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-03T14:50:28.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-04T14:50:28.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-77",
+    "relatos": [
+      {
+        "userId": "seed-user-77",
+        "criadoEm": "2026-08-26T14:50:28.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026362734",
+    "categoria": "pavimentacao",
+    "rua": "Rua Serzedelo Corrêa",
+    "numero": "1478",
+    "bairro": "Batista Campos",
+    "latitude": -1.484508,
+    "longitude": -48.519608,
+    "descricao": "Asfalto afundando perto da esquina, já tem rachadura.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 35",
+    "email": "cidadao.simulado.35@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-09-19T08:47:03.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-19T08:47:03.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-20T08:47:03.884Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-34",
+    "relatos": [
+      {
+        "userId": "seed-user-34",
+        "criadoEm": "2026-09-19T08:47:03.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026363070",
+    "categoria": "saneamento",
+    "rua": "Travessa Piedade",
+    "numero": "101",
+    "bairro": "Comércio",
+    "latitude": -1.465171,
+    "longitude": -48.474408,
+    "descricao": "Esgoto a céu aberto perto da praça.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 23",
+    "email": "cidadao.simulado.23@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-07-01T15:12:42.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-07-01T15:12:42.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-22",
+    "relatos": [
+      {
+        "userId": "seed-user-22",
+        "criadoEm": "2026-07-01T15:12:42.884Z"
+      },
+      {
+        "userId": "seed-user-310",
+        "criadoEm": "2026-07-10T15:12:42.884Z"
+      },
+      {
+        "userId": "seed-user-452",
+        "criadoEm": "2026-07-10T15:12:42.884Z"
+      },
+      {
+        "userId": "seed-user-405",
+        "criadoEm": "2026-07-08T15:12:42.884Z"
+      },
+      {
+        "userId": "seed-user-23",
+        "criadoEm": "2026-07-09T15:12:42.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026373844",
+    "categoria": "alagamento",
+    "rua": "Rua Serzedelo Corrêa",
+    "numero": "1680",
+    "bairro": "Marambaia",
+    "latitude": -1.501153,
+    "longitude": -48.538573,
+    "descricao": "Água acumulada há dois dias depois da chuva.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 11",
+    "email": "cidadao.simulado.11@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-09-24T12:43:57.882Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-24T12:43:57.882Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-10",
+    "relatos": [
+      {
+        "userId": "seed-user-10",
+        "criadoEm": "2026-09-24T12:43:57.882Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026378190",
+    "categoria": "limpeza",
+    "rua": "Av. Almirante Barroso",
+    "numero": "918",
+    "bairro": "Sacramenta",
+    "latitude": -1.402225,
+    "longitude": -48.439304,
+    "descricao": "Entulho de obra jogado na calçada bloqueando a passagem.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 62",
+    "email": "cidadao.simulado.62@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-08-21T10:36:11.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-21T10:36:11.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-26T10:36:11.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-08-30T10:36:11.885Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-61",
+    "relatos": [
+      {
+        "userId": "seed-user-61",
+        "criadoEm": "2026-08-21T10:36:11.885Z"
+      },
+      {
+        "userId": "seed-user-362",
+        "criadoEm": "2026-08-29T10:36:11.885Z"
+      },
+      {
+        "userId": "seed-user-70",
+        "criadoEm": "2026-08-30T10:36:11.885Z"
+      },
+      {
+        "userId": "seed-user-455",
+        "criadoEm": "2026-08-25T10:36:11.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026389812",
+    "categoria": "sinalizacao",
+    "rua": "Rua Serzedelo Corrêa",
+    "numero": "160",
+    "bairro": "Jurunas",
+    "latitude": -1.511652,
+    "longitude": -48.4892,
+    "descricao": "Semáforo apagado no cruzamento movimentado.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 32",
+    "email": "cidadao.simulado.32@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-09-30T08:47:28.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-30T08:47:28.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-10-01T08:47:28.884Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-31",
+    "relatos": [
+      {
+        "userId": "seed-user-31",
+        "criadoEm": "2026-09-30T08:47:28.884Z"
+      },
+      {
+        "userId": "seed-user-47",
+        "criadoEm": "2026-09-30T08:47:28.884Z"
+      },
+      {
+        "userId": "seed-user-297",
+        "criadoEm": "2026-10-01T18:30:16.884Z"
+      },
+      {
+        "userId": "seed-user-71",
+        "criadoEm": "2026-10-01T18:30:16.884Z"
+      },
+      {
+        "userId": "seed-user-492",
+        "criadoEm": "2026-10-01T18:30:16.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026392357",
+    "categoria": "limpeza",
+    "rua": "Rua João Diogo",
+    "numero": "680",
+    "bairro": "Souza",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.486579,
+    "longitude": -48.515601,
+    "descricao": "Terreno baldio virou depósito de entulho.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 83",
+    "email": "cidadao.simulado.83@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-09-23T17:23:05.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-23T17:23:05.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-28T17:23:05.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-10-01T17:23:05.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-82",
+    "relatos": [
+      {
+        "userId": "seed-user-82",
+        "criadoEm": "2026-09-23T17:23:05.886Z"
+      },
+      {
+        "userId": "seed-user-29",
+        "criadoEm": "2026-10-01T17:23:05.886Z"
+      },
+      {
+        "userId": "seed-user-437",
+        "criadoEm": "2026-09-26T17:23:05.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026401018",
+    "categoria": "limpeza",
+    "rua": "Travessa Benjamin Constant",
+    "numero": "813",
+    "bairro": "Umarizal",
+    "latitude": -1.513266,
+    "longitude": -48.467539,
+    "descricao": "Entulho de obra jogado na calçada bloqueando a passagem.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 87",
+    "email": "cidadao.simulado.87@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-06-12T14:32:26.887Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-06-12T14:32:26.887Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-06-15T14:32:26.887Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-06-17T14:32:26.887Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-06-22T14:32:26.887Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-06-24T14:32:26.887Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-86",
+    "relatos": [
+      {
+        "userId": "seed-user-86",
+        "criadoEm": "2026-06-12T14:32:26.887Z"
+      },
+      {
+        "userId": "seed-user-474",
+        "criadoEm": "2026-06-21T14:32:26.887Z"
+      },
+      {
+        "userId": "seed-user-274",
+        "criadoEm": "2026-06-15T14:32:26.887Z"
+      },
+      {
+        "userId": "seed-user-492",
+        "criadoEm": "2026-06-17T14:32:26.887Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026403277",
+    "categoria": "pavimentacao",
+    "rua": "Travessa Piedade",
+    "numero": "434",
+    "bairro": "Jurunas",
+    "latitude": -1.41176,
+    "longitude": -48.490205,
+    "descricao": "Vários buracos pequenos depois da última chuva forte.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 91",
+    "email": "cidadao.simulado.91@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-06-18T12:24:43.887Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-06-18T12:24:43.887Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-06-21T12:24:43.887Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-06-23T12:24:43.887Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-06-25T12:24:43.887Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-06-30T12:24:43.887Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-90",
+    "relatos": [
+      {
+        "userId": "seed-user-90",
+        "criadoEm": "2026-06-18T12:24:43.887Z"
+      },
+      {
+        "userId": "seed-user-18",
+        "criadoEm": "2026-06-20T12:24:43.887Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026412101",
+    "categoria": "iluminacao",
+    "rua": "Av. Gentil Bittencourt",
+    "numero": "1243",
+    "bairro": "Sacramenta",
+    "latitude": -1.415798,
+    "longitude": -48.53087,
+    "descricao": "Poste de luz apagado há dias, rua fica bem escura à noite.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 2",
+    "email": "cidadao.simulado.2@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-09-19T10:17:08.882Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-19T10:17:08.882Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-1",
+    "relatos": [
+      {
+        "userId": "seed-user-1",
+        "criadoEm": "2026-09-19T10:17:08.882Z"
+      },
+      {
+        "userId": "seed-user-315",
+        "criadoEm": "2026-09-28T10:17:08.882Z"
+      },
+      {
+        "userId": "seed-user-38",
+        "criadoEm": "2026-09-26T10:17:08.882Z"
+      },
+      {
+        "userId": "seed-user-276",
+        "criadoEm": "2026-09-22T10:17:08.882Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026436729",
+    "categoria": "alagamento",
+    "rua": "Travessa Quintino Bocaiúva",
+    "numero": "910",
+    "bairro": "Marambaia",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.464306,
+    "longitude": -48.476844,
+    "descricao": "Alagamento constante dificulta a passagem de pedestres.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 19",
+    "email": "cidadao.simulado.19@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-09-25T17:12:14.883Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-25T17:12:14.883Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-18",
+    "relatos": [
+      {
+        "userId": "seed-user-18",
+        "criadoEm": "2026-09-25T17:12:14.883Z"
+      },
+      {
+        "userId": "seed-user-341",
+        "criadoEm": "2026-10-01T18:30:16.883Z"
+      },
+      {
+        "userId": "seed-user-231",
+        "criadoEm": "2026-09-29T17:12:14.883Z"
+      },
+      {
+        "userId": "seed-user-104",
+        "criadoEm": "2026-10-01T18:30:16.883Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026448259",
+    "categoria": "arborizacao",
+    "rua": "Rua Serzedelo Corrêa",
+    "numero": "889",
+    "bairro": "Pedreira",
+    "latitude": -1.405637,
+    "longitude": -48.428012,
+    "descricao": "Raiz da árvore está quebrando a calçada.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 12",
+    "email": "cidadao.simulado.12@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-07-16T09:46:16.882Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-07-16T09:46:16.882Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-11",
+    "relatos": [
+      {
+        "userId": "seed-user-11",
+        "criadoEm": "2026-07-16T09:46:16.882Z"
+      },
+      {
+        "userId": "seed-user-97",
+        "criadoEm": "2026-07-18T09:46:16.882Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026449057",
+    "categoria": "arborizacao",
+    "rua": "Rua João Diogo",
+    "numero": "1132",
+    "bairro": "Reduto",
+    "latitude": -1.451707,
+    "longitude": -48.487274,
+    "descricao": "Árvore parece estar caindo depois do temporal.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 33",
+    "email": "cidadao.simulado.33@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-08-15T09:43:37.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-15T09:43:37.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-18T09:43:37.884Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-32",
+    "relatos": [
+      {
+        "userId": "seed-user-32",
+        "criadoEm": "2026-08-15T09:43:37.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026466270",
+    "categoria": "limpeza",
+    "rua": "Rua Serzedelo Corrêa",
+    "numero": "840",
+    "bairro": "Batista Campos",
+    "latitude": -1.509224,
+    "longitude": -48.493235,
+    "descricao": "Lixo acumulado na esquina há vários dias.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 99",
+    "email": "cidadao.simulado.99@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-06-13T14:14:34.891Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-06-13T14:14:34.891Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-06-16T14:14:34.891Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-06-20T14:14:34.891Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-06-21T14:14:34.891Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-06-22T14:14:34.891Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-98",
+    "relatos": [
+      {
+        "userId": "seed-user-98",
+        "criadoEm": "2026-06-13T14:14:34.891Z"
+      },
+      {
+        "userId": "seed-user-300",
+        "criadoEm": "2026-06-13T14:14:34.891Z"
+      },
+      {
+        "userId": "seed-user-184",
+        "criadoEm": "2026-06-14T14:14:34.891Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026476310",
+    "categoria": "iluminacao",
+    "rua": "Travessa Piedade",
+    "numero": "1794",
+    "bairro": "Terra Firme",
+    "latitude": -1.417113,
+    "longitude": -48.438486,
+    "descricao": "Poste de luz apagado há dias, rua fica bem escura à noite.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 49",
+    "email": "cidadao.simulado.49@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-09-19T14:14:12.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-19T14:14:12.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-21T14:14:12.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-48",
+    "relatos": [
+      {
+        "userId": "seed-user-48",
+        "criadoEm": "2026-09-19T14:14:12.885Z"
+      },
+      {
+        "userId": "seed-user-38",
+        "criadoEm": "2026-09-20T14:14:12.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026484527",
+    "categoria": "limpeza",
+    "rua": "Av. Almirante Barroso",
+    "numero": "642",
+    "bairro": "Nazaré",
+    "latitude": -1.496912,
+    "longitude": -48.472135,
+    "descricao": "Entulho de obra jogado na calçada bloqueando a passagem.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 15",
+    "email": "cidadao.simulado.15@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-05-09T14:03:35.883Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-05-09T14:03:35.883Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-14",
+    "relatos": [
+      {
+        "userId": "seed-user-14",
+        "criadoEm": "2026-05-09T14:03:35.883Z"
+      },
+      {
+        "userId": "seed-user-14",
+        "criadoEm": "2026-05-15T14:03:35.883Z"
+      },
+      {
+        "userId": "seed-user-38",
+        "criadoEm": "2026-05-16T14:03:35.883Z"
+      },
+      {
+        "userId": "seed-user-466",
+        "criadoEm": "2026-05-15T14:03:35.883Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026484996",
+    "categoria": "pavimentacao",
+    "rua": "Travessa Piedade",
+    "numero": "1526",
+    "bairro": "Souza",
+    "latitude": -1.439667,
+    "longitude": -48.513568,
+    "descricao": "Asfalto afundando perto da esquina, já tem rachadura.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 50",
+    "email": "cidadao.simulado.50@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-09-08T12:35:28.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-08T12:35:28.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-12T12:35:28.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-49",
+    "relatos": [
+      {
+        "userId": "seed-user-49",
+        "criadoEm": "2026-09-08T12:35:28.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026509555",
+    "categoria": "sinalizacao",
+    "rua": "Rua João Diogo",
+    "numero": "1790",
+    "bairro": "Reduto",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.420534,
+    "longitude": -48.430094,
+    "descricao": "Semáforo apagado no cruzamento movimentado.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 69",
+    "email": "cidadao.simulado.69@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-09-18T16:46:49.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-18T16:46:49.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-19T16:46:49.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-20T16:46:49.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-24T16:46:49.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-68",
+    "relatos": [
+      {
+        "userId": "seed-user-68",
+        "criadoEm": "2026-09-18T16:46:49.886Z"
+      },
+      {
+        "userId": "seed-user-233",
+        "criadoEm": "2026-09-18T16:46:49.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026510073",
+    "categoria": "pavimentacao",
+    "rua": "Rua Serzedelo Corrêa",
+    "numero": "1025",
+    "bairro": "Nazaré",
+    "latitude": -1.468215,
+    "longitude": -48.427982,
+    "descricao": "Asfalto afundando perto da esquina, já tem rachadura.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 72",
+    "email": "cidadao.simulado.72@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-05-26T12:40:36.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-05-26T12:40:36.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-05-27T12:40:36.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-05-29T12:40:36.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-06-03T12:40:36.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-71",
+    "relatos": [
+      {
+        "userId": "seed-user-71",
+        "criadoEm": "2026-05-26T12:40:36.886Z"
+      },
+      {
+        "userId": "seed-user-296",
+        "criadoEm": "2026-05-27T12:40:36.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026514284",
+    "categoria": "iluminacao",
+    "rua": "Travessa Rui Barbosa",
+    "numero": "1209",
+    "bairro": "Nazaré",
+    "latitude": -1.412541,
+    "longitude": -48.487038,
+    "descricao": "Poste de luz apagado há dias, rua fica bem escura à noite.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 94",
+    "email": "cidadao.simulado.94@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-09-11T18:54:30.889Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-11T18:54:30.889Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-13T18:54:30.889Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-18T18:54:30.889Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-20T18:54:30.889Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-09-21T18:54:30.889Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-93",
+    "relatos": [
+      {
+        "userId": "seed-user-93",
+        "criadoEm": "2026-09-11T18:54:30.889Z"
+      },
+      {
+        "userId": "seed-user-58",
+        "criadoEm": "2026-09-16T18:54:30.889Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026514889",
+    "categoria": "saneamento",
+    "rua": "Travessa Benjamin Constant",
+    "numero": "301",
+    "bairro": "Condor",
+    "latitude": -1.410759,
+    "longitude": -48.533196,
+    "descricao": "Vazamento de água na calçada há mais de uma semana.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 9",
+    "email": "cidadao.simulado.9@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-09-01T11:36:09.882Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-01T11:36:09.882Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-8",
+    "relatos": [
+      {
+        "userId": "seed-user-8",
+        "criadoEm": "2026-09-01T11:36:09.882Z"
+      },
+      {
+        "userId": "seed-user-25",
+        "criadoEm": "2026-09-05T11:36:09.882Z"
+      },
+      {
+        "userId": "seed-user-130",
+        "criadoEm": "2026-09-02T11:36:09.882Z"
+      },
+      {
+        "userId": "seed-user-414",
+        "criadoEm": "2026-09-06T11:36:09.882Z"
+      },
+      {
+        "userId": "seed-user-54",
+        "criadoEm": "2026-09-04T11:36:09.882Z"
+      },
+      {
+        "userId": "seed-user-334",
+        "criadoEm": "2026-09-08T11:36:09.882Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026519902",
+    "categoria": "limpeza",
+    "rua": "Av. Almirante Barroso",
+    "numero": "1365",
+    "bairro": "Guamá",
+    "latitude": -1.441271,
+    "longitude": -48.532489,
+    "descricao": "Terreno baldio virou depósito de entulho.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 98",
+    "email": "cidadao.simulado.98@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-08-17T16:40:36.891Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-17T16:40:36.891Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-22T16:40:36.891Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-08-27T16:40:36.891Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-08-30T16:40:36.891Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-09-01T16:40:36.891Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-97",
+    "relatos": [
+      {
+        "userId": "seed-user-97",
+        "criadoEm": "2026-08-17T16:40:36.891Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026534763",
+    "categoria": "alagamento",
+    "rua": "Av. Nazaré",
+    "numero": "1290",
+    "bairro": "Umarizal",
+    "latitude": -1.44596,
+    "longitude": -48.461128,
+    "descricao": "Rua alaga toda vez que chove, água passa da calçada.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 82",
+    "email": "cidadao.simulado.82@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-08-24T08:11:46.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-24T08:11:46.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-25T08:11:46.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-08-30T08:11:46.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-04T08:11:46.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-09-07T08:11:46.886Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-81",
+    "relatos": [
+      {
+        "userId": "seed-user-81",
+        "criadoEm": "2026-08-24T08:11:46.886Z"
+      },
+      {
+        "userId": "seed-user-44",
+        "criadoEm": "2026-09-01T08:11:46.886Z"
+      },
+      {
+        "userId": "seed-user-46",
+        "criadoEm": "2026-09-01T08:11:46.886Z"
+      },
+      {
+        "userId": "seed-user-239",
+        "criadoEm": "2026-08-31T08:11:46.886Z"
+      },
+      {
+        "userId": "seed-user-77",
+        "criadoEm": "2026-08-30T08:11:46.886Z"
+      },
+      {
+        "userId": "seed-user-181",
+        "criadoEm": "2026-08-26T08:11:46.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026534917",
+    "categoria": "limpeza",
+    "rua": "Rua dos Mundurucus",
+    "numero": "942",
+    "bairro": "Pedreira",
+    "latitude": -1.466445,
+    "longitude": -48.490578,
+    "descricao": "Terreno baldio virou depósito de entulho.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 29",
+    "email": "cidadao.simulado.29@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-08-30T17:38:50.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-30T17:38:50.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-28",
+    "relatos": [
+      {
+        "userId": "seed-user-28",
+        "criadoEm": "2026-08-30T17:38:50.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026538174",
+    "categoria": "saneamento",
+    "rua": "Av. Almirante Barroso",
+    "numero": "302",
+    "bairro": "Reduto",
+    "latitude": -1.453826,
+    "longitude": -48.541783,
+    "descricao": "Vazamento de água na calçada há mais de uma semana.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 65",
+    "email": "cidadao.simulado.65@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-09-26T16:24:41.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-26T16:24:41.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-30T16:24:41.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-64",
+    "relatos": [
+      {
+        "userId": "seed-user-64",
+        "criadoEm": "2026-09-26T16:24:41.886Z"
+      },
+      {
+        "userId": "seed-user-291",
+        "criadoEm": "2026-09-30T16:24:41.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026557579",
+    "categoria": "pavimentacao",
+    "rua": "Rua João Diogo",
+    "numero": "1944",
+    "bairro": "Umarizal",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.428275,
+    "longitude": -48.436174,
+    "descricao": "Asfalto afundando perto da esquina, já tem rachadura.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 40",
+    "email": "cidadao.simulado.40@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-05-15T11:45:53.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-05-15T11:45:53.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-05-19T11:45:53.884Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-39",
+    "relatos": [
+      {
+        "userId": "seed-user-39",
+        "criadoEm": "2026-05-15T11:45:53.884Z"
+      },
+      {
+        "userId": "seed-user-88",
+        "criadoEm": "2026-05-15T11:45:53.884Z"
+      },
+      {
+        "userId": "seed-user-274",
+        "criadoEm": "2026-05-22T11:45:53.884Z"
+      },
+      {
+        "userId": "seed-user-344",
+        "criadoEm": "2026-05-21T11:45:53.884Z"
+      },
+      {
+        "userId": "seed-user-322",
+        "criadoEm": "2026-05-21T11:45:53.884Z"
+      },
+      {
+        "userId": "seed-user-263",
+        "criadoEm": "2026-05-21T11:45:53.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026564745",
+    "categoria": "pavimentacao",
+    "rua": "Rua Boaventura da Silva",
+    "numero": "768",
+    "bairro": "Marco",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.452572,
+    "longitude": -48.435942,
+    "descricao": "Vários buracos pequenos depois da última chuva forte.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 3",
+    "email": "cidadao.simulado.3@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-07-01T10:11:55.882Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-07-01T10:11:55.882Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-2",
+    "relatos": [
+      {
+        "userId": "seed-user-2",
+        "criadoEm": "2026-07-01T10:11:55.882Z"
+      },
+      {
+        "userId": "seed-user-41",
+        "criadoEm": "2026-07-09T10:11:55.882Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026568736",
+    "categoria": "pavimentacao",
+    "rua": "Av. Governador José Malcher",
+    "numero": "1605",
+    "bairro": "Jurunas",
+    "latitude": -1.418908,
+    "longitude": -48.47937,
+    "descricao": "Buraco grande no meio da rua, carros precisam desviar.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 37",
+    "email": "cidadao.simulado.37@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-09-27T11:09:28.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-27T11:09:28.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-10-01T11:09:28.884Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-36",
+    "relatos": [
+      {
+        "userId": "seed-user-36",
+        "criadoEm": "2026-09-27T11:09:28.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026570864",
+    "categoria": "iluminacao",
+    "rua": "Av. Governador José Malcher",
+    "numero": "1931",
+    "bairro": "Marambaia",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.454444,
+    "longitude": -48.495036,
+    "descricao": "Poste de luz apagado há dias, rua fica bem escura à noite.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 56",
+    "email": "cidadao.simulado.56@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-07-09T14:06:21.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-07-09T14:06:21.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-07-10T14:06:21.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-07-15T14:06:21.885Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-55",
+    "relatos": [
+      {
+        "userId": "seed-user-55",
+        "criadoEm": "2026-07-09T14:06:21.885Z"
+      },
+      {
+        "userId": "seed-user-155",
+        "criadoEm": "2026-07-18T14:06:21.885Z"
+      },
+      {
+        "userId": "seed-user-91",
+        "criadoEm": "2026-07-10T14:06:21.885Z"
+      },
+      {
+        "userId": "seed-user-214",
+        "criadoEm": "2026-07-12T14:06:21.885Z"
+      },
+      {
+        "userId": "seed-user-434",
+        "criadoEm": "2026-07-18T14:06:21.885Z"
+      },
+      {
+        "userId": "seed-user-328",
+        "criadoEm": "2026-07-18T14:06:21.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026571318",
+    "categoria": "pavimentacao",
+    "rua": "Travessa Padre Eutíquio",
+    "numero": "445",
+    "bairro": "Pedreira",
+    "latitude": -1.467957,
+    "longitude": -48.491749,
+    "descricao": "Buraco grande no meio da rua, carros precisam desviar.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 77",
+    "email": "cidadao.simulado.77@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-09-22T12:46:28.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-22T12:46:28.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-27T12:46:28.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-28T12:46:28.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-76",
+    "relatos": [
+      {
+        "userId": "seed-user-76",
+        "criadoEm": "2026-09-22T12:46:28.886Z"
+      },
+      {
+        "userId": "seed-user-383",
+        "criadoEm": "2026-10-01T12:46:28.886Z"
+      },
+      {
+        "userId": "seed-user-443",
+        "criadoEm": "2026-09-22T12:46:28.886Z"
+      },
+      {
+        "userId": "seed-user-113",
+        "criadoEm": "2026-09-30T12:46:28.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026579677",
+    "categoria": "pavimentacao",
+    "rua": "Av. Almirante Barroso",
+    "numero": "998",
+    "bairro": "Marco",
+    "latitude": -1.403152,
+    "longitude": -48.435433,
+    "descricao": "Buraco grande no meio da rua, carros precisam desviar.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 67",
+    "email": "cidadao.simulado.67@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-09-14T09:46:17.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-14T09:46:17.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-16T09:46:17.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-21T09:46:17.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-25T09:46:17.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-66",
+    "relatos": [
+      {
+        "userId": "seed-user-66",
+        "criadoEm": "2026-09-14T09:46:17.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026582005",
+    "categoria": "arborizacao",
+    "rua": "Travessa Piedade",
+    "numero": "661",
+    "bairro": "Telégrafo",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.45866,
+    "longitude": -48.504345,
+    "descricao": "Árvore com galho grande pendendo sobre a fiação.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 68",
+    "email": "cidadao.simulado.68@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-10-01T11:23:45.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-10-01T11:23:45.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-67",
+    "relatos": [
+      {
+        "userId": "seed-user-67",
+        "criadoEm": "2026-10-01T11:23:45.886Z"
+      },
+      {
+        "userId": "seed-user-379",
+        "criadoEm": "2026-10-01T18:30:16.886Z"
+      },
+      {
+        "userId": "seed-user-438",
+        "criadoEm": "2026-10-01T18:30:16.886Z"
+      },
+      {
+        "userId": "seed-user-66",
+        "criadoEm": "2026-10-01T11:23:45.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026583000",
+    "categoria": "arborizacao",
+    "rua": "Av. Nazaré",
+    "numero": "1951",
+    "bairro": "São Brás",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.503719,
+    "longitude": -48.559921,
+    "descricao": "Árvore com galho grande pendendo sobre a fiação.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 13",
+    "email": "cidadao.simulado.13@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-09-23T11:52:58.883Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-23T11:52:58.883Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-12",
+    "relatos": [
+      {
+        "userId": "seed-user-12",
+        "criadoEm": "2026-09-23T11:52:58.883Z"
+      },
+      {
+        "userId": "seed-user-491",
+        "criadoEm": "2026-09-28T11:52:58.883Z"
+      },
+      {
+        "userId": "seed-user-92",
+        "criadoEm": "2026-09-29T11:52:58.883Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026595416",
+    "categoria": "sinalizacao",
+    "rua": "Travessa Quintino Bocaiúva",
+    "numero": "1908",
+    "bairro": "Guamá",
+    "latitude": -1.424238,
+    "longitude": -48.509737,
+    "descricao": "Faixa de pedestre quase apagada, difícil de ver à noite.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 26",
+    "email": "cidadao.simulado.26@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-10-01T08:12:15.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-10-01T08:12:15.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-25",
+    "relatos": [
+      {
+        "userId": "seed-user-25",
+        "criadoEm": "2026-10-01T08:12:15.884Z"
+      },
+      {
+        "userId": "seed-user-398",
+        "criadoEm": "2026-10-01T18:30:16.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026596174",
+    "categoria": "limpeza",
+    "rua": "Travessa Rui Barbosa",
+    "numero": "1420",
+    "bairro": "Jurunas",
+    "latitude": -1.435089,
+    "longitude": -48.53968,
+    "descricao": "Entulho de obra jogado na calçada bloqueando a passagem.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 90",
+    "email": "cidadao.simulado.90@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-08-29T08:23:56.887Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-29T08:23:56.887Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-01T08:23:56.887Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-05T08:23:56.887Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-09T08:23:56.887Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-09-11T08:23:56.887Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-89",
+    "relatos": [
+      {
+        "userId": "seed-user-89",
+        "criadoEm": "2026-08-29T08:23:56.887Z"
+      },
+      {
+        "userId": "seed-user-113",
+        "criadoEm": "2026-09-04T08:23:56.887Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026604549",
+    "categoria": "alagamento",
+    "rua": "Rua Serzedelo Corrêa",
+    "numero": "834",
+    "bairro": "Pedreira",
+    "latitude": -1.49793,
+    "longitude": -48.491482,
+    "descricao": "Alagamento constante dificulta a passagem de pedestres.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 53",
+    "email": "cidadao.simulado.53@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-09-23T11:46:18.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-23T11:46:18.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-25T11:46:18.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-29T11:46:18.885Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-52",
+    "relatos": [
+      {
+        "userId": "seed-user-52",
+        "criadoEm": "2026-09-23T11:46:18.885Z"
+      },
+      {
+        "userId": "seed-user-91",
+        "criadoEm": "2026-09-30T11:46:18.885Z"
+      },
+      {
+        "userId": "seed-user-62",
+        "criadoEm": "2026-10-01T11:46:18.885Z"
+      },
+      {
+        "userId": "seed-user-48",
+        "criadoEm": "2026-10-01T11:46:18.885Z"
+      },
+      {
+        "userId": "seed-user-407",
+        "criadoEm": "2026-09-28T11:46:18.885Z"
+      },
+      {
+        "userId": "seed-user-280",
+        "criadoEm": "2026-10-01T11:46:18.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026621962",
+    "categoria": "pavimentacao",
+    "rua": "Travessa Rui Barbosa",
+    "numero": "1924",
+    "bairro": "Jurunas",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.441156,
+    "longitude": -48.44671,
+    "descricao": "Vários buracos pequenos depois da última chuva forte.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 54",
+    "email": "cidadao.simulado.54@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-09-18T14:49:42.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-18T14:49:42.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-22T14:49:42.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-24T14:49:42.885Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-53",
+    "relatos": [
+      {
+        "userId": "seed-user-53",
+        "criadoEm": "2026-09-18T14:49:42.885Z"
+      },
+      {
+        "userId": "seed-user-262",
+        "criadoEm": "2026-09-26T14:49:42.885Z"
+      },
+      {
+        "userId": "seed-user-138",
+        "criadoEm": "2026-09-23T14:49:42.885Z"
+      },
+      {
+        "userId": "seed-user-242",
+        "criadoEm": "2026-09-27T14:49:42.885Z"
+      },
+      {
+        "userId": "seed-user-355",
+        "criadoEm": "2026-09-25T14:49:42.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026627573",
+    "categoria": "iluminacao",
+    "rua": "Rua dos Mundurucus",
+    "numero": "1535",
+    "bairro": "Marco",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.501481,
+    "longitude": -48.456311,
+    "descricao": "Dois postes seguidos sem funcionar na mesma quadra.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 57",
+    "email": "cidadao.simulado.57@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-06-06T15:05:49.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-06-06T15:05:49.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-06-08T15:05:49.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-06-10T15:05:49.885Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-56",
+    "relatos": [
+      {
+        "userId": "seed-user-56",
+        "criadoEm": "2026-06-06T15:05:49.885Z"
+      },
+      {
+        "userId": "seed-user-433",
+        "criadoEm": "2026-06-06T15:05:49.885Z"
+      },
+      {
+        "userId": "seed-user-327",
+        "criadoEm": "2026-06-11T15:05:49.885Z"
+      },
+      {
+        "userId": "seed-user-120",
+        "criadoEm": "2026-06-11T15:05:49.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026635584",
+    "categoria": "sinalizacao",
+    "rua": "Av. Nazaré",
+    "numero": "1315",
+    "bairro": "Pedreira",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.484232,
+    "longitude": -48.451477,
+    "descricao": "Faixa de pedestre quase apagada, difícil de ver à noite.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 25",
+    "email": "cidadao.simulado.25@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-06-13T10:41:17.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-06-13T10:41:17.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-24",
+    "relatos": [
+      {
+        "userId": "seed-user-24",
+        "criadoEm": "2026-06-13T10:41:17.884Z"
+      },
+      {
+        "userId": "seed-user-153",
+        "criadoEm": "2026-06-19T10:41:17.884Z"
+      },
+      {
+        "userId": "seed-user-150",
+        "criadoEm": "2026-06-13T10:41:17.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026641328",
+    "categoria": "arborizacao",
+    "rua": "Rua João Diogo",
+    "numero": "788",
+    "bairro": "Jurunas",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.421197,
+    "longitude": -48.444097,
+    "descricao": "Raiz da árvore está quebrando a calçada.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 10",
+    "email": "cidadao.simulado.10@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-05-30T09:46:57.882Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-05-30T09:46:57.882Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-9",
+    "relatos": [
+      {
+        "userId": "seed-user-9",
+        "criadoEm": "2026-05-30T09:46:57.882Z"
+      },
+      {
+        "userId": "seed-user-263",
+        "criadoEm": "2026-05-30T09:46:57.882Z"
+      },
+      {
+        "userId": "seed-user-290",
+        "criadoEm": "2026-05-31T09:46:57.882Z"
+      },
+      {
+        "userId": "seed-user-74",
+        "criadoEm": "2026-06-03T09:46:57.882Z"
+      },
+      {
+        "userId": "seed-user-485",
+        "criadoEm": "2026-06-03T09:46:57.882Z"
+      },
+      {
+        "userId": "seed-user-66",
+        "criadoEm": "2026-06-03T09:46:57.882Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026643965",
+    "categoria": "pavimentacao",
+    "rua": "Rua dos Mundurucus",
+    "numero": "348",
+    "bairro": "Jurunas",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.44622,
+    "longitude": -48.5444,
+    "descricao": "Vários buracos pequenos depois da última chuva forte.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 48",
+    "email": "cidadao.simulado.48@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-09-11T14:19:34.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-11T14:19:34.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-13T14:19:34.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-47",
+    "relatos": [
+      {
+        "userId": "seed-user-47",
+        "criadoEm": "2026-09-11T14:19:34.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026650896",
+    "categoria": "pavimentacao",
+    "rua": "Travessa Padre Eutíquio",
+    "numero": "1477",
+    "bairro": "Nazaré",
+    "latitude": -1.419941,
+    "longitude": -48.422106,
+    "descricao": "Asfalto afundando perto da esquina, já tem rachadura.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 100",
+    "email": "cidadao.simulado.100@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-09-23T17:29:58.891Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-23T17:29:58.891Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-26T17:29:58.891Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-27T17:29:58.891Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-28T17:29:58.891Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-10-01T18:30:16.891Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-99",
+    "relatos": [
+      {
+        "userId": "seed-user-99",
+        "criadoEm": "2026-09-23T17:29:58.891Z"
+      },
+      {
+        "userId": "seed-user-307",
+        "criadoEm": "2026-09-25T17:29:58.891Z"
+      },
+      {
+        "userId": "seed-user-465",
+        "criadoEm": "2026-10-01T17:29:58.891Z"
+      },
+      {
+        "userId": "seed-user-489",
+        "criadoEm": "2026-10-01T17:29:58.891Z"
+      },
+      {
+        "userId": "seed-user-381",
+        "criadoEm": "2026-09-27T17:29:58.891Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026666673",
+    "categoria": "saneamento",
+    "rua": "Av. Almirante Barroso",
+    "numero": "1404",
+    "bairro": "Marco",
+    "latitude": -1.502311,
+    "longitude": -48.430573,
+    "descricao": "Esgoto a céu aberto perto da praça.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 97",
+    "email": "cidadao.simulado.97@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-09-22T17:01:21.891Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-22T17:01:21.891Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-25T17:01:21.891Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-27T17:01:21.891Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-28T17:01:21.891Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-09-30T17:01:21.891Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-96",
+    "relatos": [
+      {
+        "userId": "seed-user-96",
+        "criadoEm": "2026-09-22T17:01:21.891Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026672198",
+    "categoria": "alagamento",
+    "rua": "Rua João Diogo",
+    "numero": "1603",
+    "bairro": "Nazaré",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.427102,
+    "longitude": -48.513971,
+    "descricao": "Alagamento constante dificulta a passagem de pedestres.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 38",
+    "email": "cidadao.simulado.38@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-09-23T10:57:30.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-23T10:57:30.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-24T10:57:30.884Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-37",
+    "relatos": [
+      {
+        "userId": "seed-user-37",
+        "criadoEm": "2026-09-23T10:57:30.884Z"
+      },
+      {
+        "userId": "seed-user-205",
+        "criadoEm": "2026-09-24T10:57:30.884Z"
+      },
+      {
+        "userId": "seed-user-234",
+        "criadoEm": "2026-09-30T10:57:30.884Z"
+      },
+      {
+        "userId": "seed-user-303",
+        "criadoEm": "2026-09-25T10:57:30.884Z"
+      },
+      {
+        "userId": "seed-user-314",
+        "criadoEm": "2026-09-28T10:57:30.884Z"
+      },
+      {
+        "userId": "seed-user-263",
+        "criadoEm": "2026-09-27T10:57:30.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026672564",
+    "categoria": "sinalizacao",
+    "rua": "Travessa Piedade",
+    "numero": "45",
+    "bairro": "Condor",
+    "latitude": -1.473203,
+    "longitude": -48.462391,
+    "descricao": "Semáforo apagado no cruzamento movimentado.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 4",
+    "email": "cidadao.simulado.4@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-09-24T15:54:02.882Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-24T15:54:02.882Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-3",
+    "relatos": [
+      {
+        "userId": "seed-user-3",
+        "criadoEm": "2026-09-24T15:54:02.882Z"
+      },
+      {
+        "userId": "seed-user-199",
+        "criadoEm": "2026-09-30T15:54:02.882Z"
+      },
+      {
+        "userId": "seed-user-266",
+        "criadoEm": "2026-09-29T15:54:02.882Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026685760",
+    "categoria": "alagamento",
+    "rua": "Travessa Rui Barbosa",
+    "numero": "808",
+    "bairro": "São Brás",
+    "latitude": -1.495894,
+    "longitude": -48.500561,
+    "descricao": "Alagamento constante dificulta a passagem de pedestres.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 58",
+    "email": "cidadao.simulado.58@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-08-07T17:28:52.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-07T17:28:52.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-12T17:28:52.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-08-16T17:28:52.885Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-57",
+    "relatos": [
+      {
+        "userId": "seed-user-57",
+        "criadoEm": "2026-08-07T17:28:52.885Z"
+      },
+      {
+        "userId": "seed-user-62",
+        "criadoEm": "2026-08-11T17:28:52.885Z"
+      },
+      {
+        "userId": "seed-user-442",
+        "criadoEm": "2026-08-13T17:28:52.885Z"
+      },
+      {
+        "userId": "seed-user-181",
+        "criadoEm": "2026-08-14T17:28:52.885Z"
+      },
+      {
+        "userId": "seed-user-250",
+        "criadoEm": "2026-08-11T17:28:52.885Z"
+      },
+      {
+        "userId": "seed-user-244",
+        "criadoEm": "2026-08-08T17:28:52.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026730732",
+    "categoria": "iluminacao",
+    "rua": "Rua Boaventura da Silva",
+    "numero": "728",
+    "bairro": "Pedreira",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.422922,
+    "longitude": -48.525328,
+    "descricao": "Lâmpada piscando sem parar, parece que vai queimar.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 80",
+    "email": "cidadao.simulado.80@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-06-28T12:31:22.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-06-28T12:31:22.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-06-30T12:31:22.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-07-04T12:31:22.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-07-07T12:31:22.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-79",
+    "relatos": [
+      {
+        "userId": "seed-user-79",
+        "criadoEm": "2026-06-28T12:31:22.886Z"
+      },
+      {
+        "userId": "seed-user-25",
+        "criadoEm": "2026-06-30T12:31:22.886Z"
+      },
+      {
+        "userId": "seed-user-430",
+        "criadoEm": "2026-07-04T12:31:22.886Z"
+      },
+      {
+        "userId": "seed-user-466",
+        "criadoEm": "2026-07-03T12:31:22.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026739654",
+    "categoria": "iluminacao",
+    "rua": "Av. Almirante Barroso",
+    "numero": "1998",
+    "bairro": "Jurunas",
+    "latitude": -1.410345,
+    "longitude": -48.511972,
+    "descricao": "Lâmpada piscando sem parar, parece que vai queimar.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 59",
+    "email": "cidadao.simulado.59@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-10-01T16:30:06.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-10-01T16:30:06.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-10-01T18:30:16.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-10-01T18:30:16.885Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-58",
+    "relatos": [
+      {
+        "userId": "seed-user-58",
+        "criadoEm": "2026-10-01T16:30:06.885Z"
+      },
+      {
+        "userId": "seed-user-178",
+        "criadoEm": "2026-10-01T18:30:16.885Z"
+      },
+      {
+        "userId": "seed-user-293",
+        "criadoEm": "2026-10-01T18:30:16.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026746144",
+    "categoria": "arborizacao",
+    "rua": "Travessa Quintino Bocaiúva",
+    "numero": "1647",
+    "bairro": "Guamá",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.436978,
+    "longitude": -48.472803,
+    "descricao": "Raiz da árvore está quebrando a calçada.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 34",
+    "email": "cidadao.simulado.34@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-08-22T11:15:45.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-22T11:15:45.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-27T11:15:45.884Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-33",
+    "relatos": [
+      {
+        "userId": "seed-user-33",
+        "criadoEm": "2026-08-22T11:15:45.884Z"
+      },
+      {
+        "userId": "seed-user-210",
+        "criadoEm": "2026-08-30T11:15:45.884Z"
+      },
+      {
+        "userId": "seed-user-306",
+        "criadoEm": "2026-08-27T11:15:45.884Z"
+      },
+      {
+        "userId": "seed-user-136",
+        "criadoEm": "2026-08-30T11:15:45.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026748622",
+    "categoria": "saneamento",
+    "rua": "Av. Almirante Barroso",
+    "numero": "1842",
+    "bairro": "Guamá",
+    "latitude": -1.44151,
+    "longitude": -48.536375,
+    "descricao": "Bueiro entupido, água não escoa direito.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 17",
+    "email": "cidadao.simulado.17@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-08-30T12:50:32.883Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-30T12:50:32.883Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-16",
+    "relatos": [
+      {
+        "userId": "seed-user-16",
+        "criadoEm": "2026-08-30T12:50:32.883Z"
+      },
+      {
+        "userId": "seed-user-160",
+        "criadoEm": "2026-09-07T12:50:32.883Z"
+      },
+      {
+        "userId": "seed-user-153",
+        "criadoEm": "2026-08-30T12:50:32.883Z"
+      },
+      {
+        "userId": "seed-user-66",
+        "criadoEm": "2026-08-30T12:50:32.883Z"
+      },
+      {
+        "userId": "seed-user-7",
+        "criadoEm": "2026-08-30T12:50:32.883Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026752185",
+    "categoria": "saneamento",
+    "rua": "Travessa Benjamin Constant",
+    "numero": "1152",
+    "bairro": "Guamá",
+    "latitude": -1.431313,
+    "longitude": -48.511447,
+    "descricao": "Vazamento de água na calçada há mais de uma semana.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 41",
+    "email": "cidadao.simulado.41@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-09-23T11:32:33.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-23T11:32:33.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-28T11:32:33.884Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-40",
+    "relatos": [
+      {
+        "userId": "seed-user-40",
+        "criadoEm": "2026-09-23T11:32:33.884Z"
+      },
+      {
+        "userId": "seed-user-438",
+        "criadoEm": "2026-09-27T11:32:33.884Z"
+      },
+      {
+        "userId": "seed-user-211",
+        "criadoEm": "2026-09-30T11:32:33.884Z"
+      },
+      {
+        "userId": "seed-user-393",
+        "criadoEm": "2026-09-28T11:32:33.884Z"
+      },
+      {
+        "userId": "seed-user-385",
+        "criadoEm": "2026-10-01T11:32:33.884Z"
+      },
+      {
+        "userId": "seed-user-239",
+        "criadoEm": "2026-09-24T11:32:33.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026760909",
+    "categoria": "sinalizacao",
+    "rua": "Av. Nazaré",
+    "numero": "251",
+    "bairro": "Guamá",
+    "latitude": -1.489467,
+    "longitude": -48.558399,
+    "descricao": "Placa de pare caída, ninguém está respeitando a preferência.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 79",
+    "email": "cidadao.simulado.79@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-10-01T16:33:10.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-10-01T16:33:10.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-78",
+    "relatos": [
+      {
+        "userId": "seed-user-78",
+        "criadoEm": "2026-10-01T16:33:10.886Z"
+      },
+      {
+        "userId": "seed-user-106",
+        "criadoEm": "2026-10-01T18:30:16.886Z"
+      },
+      {
+        "userId": "seed-user-303",
+        "criadoEm": "2026-10-01T18:30:16.886Z"
+      },
+      {
+        "userId": "seed-user-367",
+        "criadoEm": "2026-10-01T18:30:16.886Z"
+      },
+      {
+        "userId": "seed-user-61",
+        "criadoEm": "2026-10-01T18:30:16.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026762084",
+    "categoria": "limpeza",
+    "rua": "Travessa Padre Eutíquio",
+    "numero": "688",
+    "bairro": "Umarizal",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.435103,
+    "longitude": -48.493931,
+    "descricao": "Entulho de obra jogado na calçada bloqueando a passagem.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 14",
+    "email": "cidadao.simulado.14@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-05-26T17:28:38.883Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-05-26T17:28:38.883Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-13",
+    "relatos": [
+      {
+        "userId": "seed-user-13",
+        "criadoEm": "2026-05-26T17:28:38.883Z"
+      },
+      {
+        "userId": "seed-user-361",
+        "criadoEm": "2026-05-28T17:28:38.883Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026788539",
+    "categoria": "arborizacao",
+    "rua": "Rua Boaventura da Silva",
+    "numero": "454",
+    "bairro": "São Brás",
+    "latitude": -1.469204,
+    "longitude": -48.522931,
+    "descricao": "Raiz da árvore está quebrando a calçada.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 5",
+    "email": "cidadao.simulado.5@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-09-07T17:10:37.882Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-07T17:10:37.882Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-4",
+    "relatos": [
+      {
+        "userId": "seed-user-4",
+        "criadoEm": "2026-09-07T17:10:37.882Z"
+      },
+      {
+        "userId": "seed-user-15",
+        "criadoEm": "2026-09-11T17:10:37.882Z"
+      },
+      {
+        "userId": "seed-user-139",
+        "criadoEm": "2026-09-11T17:10:37.882Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026799176",
+    "categoria": "iluminacao",
+    "rua": "Av. Gentil Bittencourt",
+    "numero": "545",
+    "bairro": "Condor",
+    "latitude": -1.50593,
+    "longitude": -48.474726,
+    "descricao": "Lâmpada piscando sem parar, parece que vai queimar.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 21",
+    "email": "cidadao.simulado.21@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-08-30T11:35:13.883Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-30T11:35:13.883Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-20",
+    "relatos": [
+      {
+        "userId": "seed-user-20",
+        "criadoEm": "2026-08-30T11:35:13.883Z"
+      },
+      {
+        "userId": "seed-user-240",
+        "criadoEm": "2026-08-31T11:35:13.883Z"
+      },
+      {
+        "userId": "seed-user-292",
+        "criadoEm": "2026-08-31T11:35:13.883Z"
+      },
+      {
+        "userId": "seed-user-313",
+        "criadoEm": "2026-09-01T11:35:13.883Z"
+      },
+      {
+        "userId": "seed-user-80",
+        "criadoEm": "2026-09-03T11:35:13.883Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026809430",
+    "categoria": "limpeza",
+    "rua": "Travessa Benjamin Constant",
+    "numero": "727",
+    "bairro": "Jurunas",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.436261,
+    "longitude": -48.467934,
+    "descricao": "Lixo acumulado na esquina há vários dias.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 86",
+    "email": "cidadao.simulado.86@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-09-06T15:36:05.887Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-06T15:36:05.887Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-08T15:36:05.887Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-12T15:36:05.887Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-13T15:36:05.887Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-09-15T15:36:05.887Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-85",
+    "relatos": [
+      {
+        "userId": "seed-user-85",
+        "criadoEm": "2026-09-06T15:36:05.887Z"
+      },
+      {
+        "userId": "seed-user-244",
+        "criadoEm": "2026-09-06T15:36:05.887Z"
+      },
+      {
+        "userId": "seed-user-289",
+        "criadoEm": "2026-09-09T15:36:05.887Z"
+      },
+      {
+        "userId": "seed-user-328",
+        "criadoEm": "2026-09-06T15:36:05.887Z"
+      },
+      {
+        "userId": "seed-user-376",
+        "criadoEm": "2026-09-07T15:36:05.887Z"
+      },
+      {
+        "userId": "seed-user-449",
+        "criadoEm": "2026-09-12T15:36:05.887Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026828774",
+    "categoria": "saneamento",
+    "rua": "Rua Boaventura da Silva",
+    "numero": "461",
+    "bairro": "Guamá",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.396874,
+    "longitude": -48.475218,
+    "descricao": "Vazamento de água na calçada há mais de uma semana.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 45",
+    "email": "cidadao.simulado.45@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-06-21T09:57:03.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-06-21T09:57:03.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-06-22T09:57:03.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-44",
+    "relatos": [
+      {
+        "userId": "seed-user-44",
+        "criadoEm": "2026-06-21T09:57:03.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026833885",
+    "categoria": "saneamento",
+    "rua": "Av. Visconde de Souza Franco",
+    "numero": "686",
+    "bairro": "Marco",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.420429,
+    "longitude": -48.514909,
+    "descricao": "Vazamento de água na calçada há mais de uma semana.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 43",
+    "email": "cidadao.simulado.43@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-06-23T16:49:16.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-06-23T16:49:16.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-06-28T16:49:16.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-42",
+    "relatos": [
+      {
+        "userId": "seed-user-42",
+        "criadoEm": "2026-06-23T16:49:16.885Z"
+      },
+      {
+        "userId": "seed-user-112",
+        "criadoEm": "2026-06-26T16:49:16.885Z"
+      },
+      {
+        "userId": "seed-user-245",
+        "criadoEm": "2026-06-29T16:49:16.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026849407",
+    "categoria": "iluminacao",
+    "rua": "Rua Boaventura da Silva",
+    "numero": "783",
+    "bairro": "Jurunas",
+    "latitude": -1.467169,
+    "longitude": -48.472266,
+    "descricao": "Dois postes seguidos sem funcionar na mesma quadra.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 71",
+    "email": "cidadao.simulado.71@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-09-24T15:13:33.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-24T15:13:33.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-26T15:13:33.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-27T15:13:33.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-10-01T18:30:16.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-70",
+    "relatos": [
+      {
+        "userId": "seed-user-70",
+        "criadoEm": "2026-09-24T15:13:33.886Z"
+      },
+      {
+        "userId": "seed-user-119",
+        "criadoEm": "2026-09-25T15:13:33.886Z"
+      },
+      {
+        "userId": "seed-user-79",
+        "criadoEm": "2026-09-24T15:13:33.886Z"
+      },
+      {
+        "userId": "seed-user-240",
+        "criadoEm": "2026-09-26T15:13:33.886Z"
+      },
+      {
+        "userId": "seed-user-10",
+        "criadoEm": "2026-10-01T18:30:16.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026853596",
+    "categoria": "iluminacao",
+    "rua": "Av. Visconde de Souza Franco",
+    "numero": "912",
+    "bairro": "Terra Firme",
+    "latitude": -1.505101,
+    "longitude": -48.516745,
+    "descricao": "Poste de luz apagado há dias, rua fica bem escura à noite.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 22",
+    "email": "cidadao.simulado.22@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-09-13T16:47:24.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-13T16:47:24.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-21",
+    "relatos": [
+      {
+        "userId": "seed-user-21",
+        "criadoEm": "2026-09-13T16:47:24.884Z"
+      },
+      {
+        "userId": "seed-user-314",
+        "criadoEm": "2026-09-16T16:47:24.884Z"
+      },
+      {
+        "userId": "seed-user-312",
+        "criadoEm": "2026-09-19T16:47:24.884Z"
+      },
+      {
+        "userId": "seed-user-184",
+        "criadoEm": "2026-09-13T16:47:24.884Z"
+      },
+      {
+        "userId": "seed-user-41",
+        "criadoEm": "2026-09-20T16:47:24.884Z"
+      },
+      {
+        "userId": "seed-user-47",
+        "criadoEm": "2026-09-17T16:47:24.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026875090",
+    "categoria": "limpeza",
+    "rua": "Travessa Quintino Bocaiúva",
+    "numero": "901",
+    "bairro": "Guamá",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.455076,
+    "longitude": -48.491448,
+    "descricao": "Lixo acumulado na esquina há vários dias.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 61",
+    "email": "cidadao.simulado.61@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-09-29T14:57:25.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-29T14:57:25.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-10-01T18:30:16.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-10-01T18:30:16.885Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-60",
+    "relatos": [
+      {
+        "userId": "seed-user-60",
+        "criadoEm": "2026-09-29T14:57:25.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026893777",
+    "categoria": "saneamento",
+    "rua": "Rua Boaventura da Silva",
+    "numero": "1895",
+    "bairro": "São Brás",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.410358,
+    "longitude": -48.473942,
+    "descricao": "Esgoto a céu aberto perto da praça.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 88",
+    "email": "cidadao.simulado.88@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-09-14T15:42:05.887Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-14T15:42:05.887Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-18T15:42:05.887Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-22T15:42:05.887Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-25T15:42:05.887Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-09-28T15:42:05.887Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-87",
+    "relatos": [
+      {
+        "userId": "seed-user-87",
+        "criadoEm": "2026-09-14T15:42:05.887Z"
+      },
+      {
+        "userId": "seed-user-5",
+        "criadoEm": "2026-09-20T15:42:05.887Z"
+      },
+      {
+        "userId": "seed-user-420",
+        "criadoEm": "2026-09-18T15:42:05.887Z"
+      },
+      {
+        "userId": "seed-user-327",
+        "criadoEm": "2026-09-19T15:42:05.887Z"
+      },
+      {
+        "userId": "seed-user-39",
+        "criadoEm": "2026-09-20T15:42:05.887Z"
+      },
+      {
+        "userId": "seed-user-460",
+        "criadoEm": "2026-09-14T15:42:05.887Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026921470",
+    "categoria": "limpeza",
+    "rua": "Rua João Diogo",
+    "numero": "1951",
+    "bairro": "Pedreira",
+    "latitude": -1.467203,
+    "longitude": -48.468742,
+    "descricao": "Lixo acumulado na esquina há vários dias.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 18",
+    "email": "cidadao.simulado.18@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-05-14T09:02:27.883Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-05-14T09:02:27.883Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-17",
+    "relatos": [
+      {
+        "userId": "seed-user-17",
+        "criadoEm": "2026-05-14T09:02:27.883Z"
+      },
+      {
+        "userId": "seed-user-64",
+        "criadoEm": "2026-05-22T09:02:27.883Z"
+      },
+      {
+        "userId": "seed-user-96",
+        "criadoEm": "2026-05-16T09:02:27.883Z"
+      },
+      {
+        "userId": "seed-user-96",
+        "criadoEm": "2026-05-18T09:02:27.883Z"
+      },
+      {
+        "userId": "seed-user-390",
+        "criadoEm": "2026-05-14T09:02:27.883Z"
+      },
+      {
+        "userId": "seed-user-373",
+        "criadoEm": "2026-05-18T09:02:27.883Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026927442",
+    "categoria": "iluminacao",
+    "rua": "Av. Visconde de Souza Franco",
+    "numero": "838",
+    "bairro": "Umarizal",
+    "latitude": -1.502547,
+    "longitude": -48.497953,
+    "descricao": "Dois postes seguidos sem funcionar na mesma quadra.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 95",
+    "email": "cidadao.simulado.95@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-08-27T09:22:47.889Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-27T09:22:47.889Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-29T09:22:47.889Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-02T09:22:47.889Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-06T09:22:47.889Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-09-08T09:22:47.889Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-94",
+    "relatos": [
+      {
+        "userId": "seed-user-94",
+        "criadoEm": "2026-08-27T09:22:47.889Z"
+      },
+      {
+        "userId": "seed-user-450",
+        "criadoEm": "2026-08-27T09:22:47.889Z"
+      },
+      {
+        "userId": "seed-user-76",
+        "criadoEm": "2026-08-31T09:22:47.889Z"
+      },
+      {
+        "userId": "seed-user-221",
+        "criadoEm": "2026-09-05T09:22:47.889Z"
+      },
+      {
+        "userId": "seed-user-69",
+        "criadoEm": "2026-08-29T09:22:47.889Z"
+      },
+      {
+        "userId": "seed-user-406",
+        "criadoEm": "2026-08-28T09:22:47.889Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026928517",
+    "categoria": "iluminacao",
+    "rua": "Av. Governador José Malcher",
+    "numero": "1311",
+    "bairro": "Cremação",
+    "latitude": -1.481765,
+    "longitude": -48.512174,
+    "descricao": "Lâmpada piscando sem parar, parece que vai queimar.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 70",
+    "email": "cidadao.simulado.70@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-09-24T17:59:13.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-24T17:59:13.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-26T17:59:13.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-09-29T17:59:13.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-09-30T17:59:13.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-69",
+    "relatos": [
+      {
+        "userId": "seed-user-69",
+        "criadoEm": "2026-09-24T17:59:13.886Z"
+      },
+      {
+        "userId": "seed-user-194",
+        "criadoEm": "2026-10-01T18:30:16.886Z"
+      },
+      {
+        "userId": "seed-user-390",
+        "criadoEm": "2026-10-01T18:30:16.886Z"
+      },
+      {
+        "userId": "seed-user-35",
+        "criadoEm": "2026-09-24T17:59:13.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026932636",
+    "categoria": "arborizacao",
+    "rua": "Av. Nazaré",
+    "numero": "1648",
+    "bairro": "Reduto",
+    "latitude": -1.418711,
+    "longitude": -48.470791,
+    "descricao": "Árvore com galho grande pendendo sobre a fiação.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 42",
+    "email": "cidadao.simulado.42@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-09-15T14:20:21.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-15T14:20:21.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-17T14:20:21.884Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-41",
+    "relatos": [
+      {
+        "userId": "seed-user-41",
+        "criadoEm": "2026-09-15T14:20:21.884Z"
+      },
+      {
+        "userId": "seed-user-71",
+        "criadoEm": "2026-09-21T14:20:21.884Z"
+      },
+      {
+        "userId": "seed-user-140",
+        "criadoEm": "2026-09-18T14:20:21.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026941525",
+    "categoria": "pavimentacao",
+    "rua": "Travessa Rui Barbosa",
+    "numero": "1695",
+    "bairro": "Guamá",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.407762,
+    "longitude": -48.520071,
+    "descricao": "Asfalto afundando perto da esquina, já tem rachadura.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 46",
+    "email": "cidadao.simulado.46@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-08-27T13:20:02.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-27T13:20:02.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-31T13:20:02.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-45",
+    "relatos": [
+      {
+        "userId": "seed-user-45",
+        "criadoEm": "2026-08-27T13:20:02.885Z"
+      },
+      {
+        "userId": "seed-user-318",
+        "criadoEm": "2026-08-31T13:20:02.885Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026946916",
+    "categoria": "pavimentacao",
+    "rua": "Rua dos Mundurucus",
+    "numero": "78",
+    "bairro": "Nazaré",
+    "latitude": -1.50027,
+    "longitude": -48.474975,
+    "descricao": "Buraco grande no meio da rua, carros precisam desviar.",
+    "fotos": [],
+    "risco": "sim",
+    "nome": "Cidadão Simulado 85",
+    "email": "cidadao.simulado.85@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-09-27T09:05:32.887Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-27T09:05:32.887Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-09-29T09:05:32.887Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-10-01T18:30:16.887Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-10-01T18:30:16.887Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-10-01T18:30:16.887Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-84",
+    "relatos": [
+      {
+        "userId": "seed-user-84",
+        "criadoEm": "2026-09-27T09:05:32.887Z"
+      },
+      {
+        "userId": "seed-user-141",
+        "criadoEm": "2026-09-29T09:05:32.887Z"
+      },
+      {
+        "userId": "seed-user-189",
+        "criadoEm": "2026-10-01T18:30:16.887Z"
+      },
+      {
+        "userId": "seed-user-120",
+        "criadoEm": "2026-09-28T09:05:32.887Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026948511",
+    "categoria": "saneamento",
+    "rua": "Travessa Benjamin Constant",
+    "numero": "161",
+    "bairro": "Telégrafo",
+    "latitude": -1.41097,
+    "longitude": -48.434571,
+    "descricao": "Vazamento de água na calçada há mais de uma semana.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 16",
+    "email": "cidadao.simulado.16@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-09-22T09:15:01.883Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-09-22T09:15:01.883Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-15",
+    "relatos": [
+      {
+        "userId": "seed-user-15",
+        "criadoEm": "2026-09-22T09:15:01.883Z"
+      },
+      {
+        "userId": "seed-user-375",
+        "criadoEm": "2026-09-23T09:15:01.883Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026949761",
+    "categoria": "pavimentacao",
+    "rua": "Travessa Piedade",
+    "numero": "1622",
+    "bairro": "Cremação",
+    "latitude": -1.493277,
+    "longitude": -48.460784,
+    "descricao": "Vários buracos pequenos depois da última chuva forte.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 36",
+    "email": "cidadao.simulado.36@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-08-15T12:07:00.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-15T12:07:00.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-19T12:07:00.884Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-35",
+    "relatos": [
+      {
+        "userId": "seed-user-35",
+        "criadoEm": "2026-08-15T12:07:00.884Z"
+      },
+      {
+        "userId": "seed-user-86",
+        "criadoEm": "2026-08-22T12:07:00.884Z"
+      },
+      {
+        "userId": "seed-user-238",
+        "criadoEm": "2026-08-19T12:07:00.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026964401",
+    "categoria": "alagamento",
+    "rua": "Av. Gentil Bittencourt",
+    "numero": "1881",
+    "bairro": "Telégrafo",
+    "latitude": -1.431005,
+    "longitude": -48.493361,
+    "descricao": "Água acumulada há dois dias depois da chuva.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 64",
+    "email": "cidadao.simulado.64@example.com",
+    "status": "encaminhado",
+    "criadoEm": "2026-06-17T11:37:48.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-06-17T11:37:48.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-06-19T11:37:48.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-06-22T11:37:48.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      }
+    ],
+    "userId": "seed-user-63",
+    "relatos": [
+      {
+        "userId": "seed-user-63",
+        "criadoEm": "2026-06-17T11:37:48.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026969805",
+    "categoria": "alagamento",
+    "rua": "Av. Nazaré",
+    "numero": "116",
+    "bairro": "Jurunas",
+    "latitude": -1.515595,
+    "longitude": -48.44888,
+    "descricao": "Alagamento constante dificulta a passagem de pedestres.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 84",
+    "email": "cidadao.simulado.84@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-05-18T12:56:04.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-05-18T12:56:04.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-05-19T12:56:04.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-05-24T12:56:04.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-05-26T12:56:04.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-05-30T12:56:04.886Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-83",
+    "relatos": [
+      {
+        "userId": "seed-user-83",
+        "criadoEm": "2026-05-18T12:56:04.886Z"
+      },
+      {
+        "userId": "seed-user-287",
+        "criadoEm": "2026-05-18T12:56:04.886Z"
+      },
+      {
+        "userId": "seed-user-389",
+        "criadoEm": "2026-05-26T12:56:04.886Z"
+      },
+      {
+        "userId": "seed-user-183",
+        "criadoEm": "2026-05-20T12:56:04.886Z"
+      },
+      {
+        "userId": "seed-user-484",
+        "criadoEm": "2026-05-25T12:56:04.886Z"
+      },
+      {
+        "userId": "seed-user-330",
+        "criadoEm": "2026-05-22T12:56:04.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026979595",
+    "categoria": "saneamento",
+    "rua": "Rua Serzedelo Corrêa",
+    "numero": "1335",
+    "bairro": "Jurunas",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.44361,
+    "longitude": -48.49526,
+    "descricao": "Bueiro entupido, água não escoa direito.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 20",
+    "email": "cidadao.simulado.20@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-07-17T18:03:18.883Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-07-17T18:03:18.883Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-19",
+    "relatos": [
+      {
+        "userId": "seed-user-19",
+        "criadoEm": "2026-07-17T18:03:18.883Z"
+      },
+      {
+        "userId": "seed-user-361",
+        "criadoEm": "2026-07-25T18:03:18.883Z"
+      },
+      {
+        "userId": "seed-user-246",
+        "criadoEm": "2026-07-23T18:03:18.883Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026985970",
+    "categoria": "arborizacao",
+    "rua": "Travessa Rui Barbosa",
+    "numero": "705",
+    "bairro": "Pedreira",
+    "latitude": -1.487435,
+    "longitude": -48.435884,
+    "descricao": "Árvore parece estar caindo depois do temporal.",
+    "fotos": [],
+    "risco": "nao",
+    "nome": "Cidadão Simulado 73",
+    "email": "cidadao.simulado.73@example.com",
+    "status": "em_execucao",
+    "criadoEm": "2026-08-18T10:06:20.886Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-18T10:06:20.886Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-23T10:06:20.886Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-08-24T10:06:20.886Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-08-29T10:06:20.886Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      }
+    ],
+    "userId": "seed-user-72",
+    "relatos": [
+      {
+        "userId": "seed-user-72",
+        "criadoEm": "2026-08-18T10:06:20.886Z"
+      },
+      {
+        "userId": "seed-user-392",
+        "criadoEm": "2026-08-20T10:06:20.886Z"
+      },
+      {
+        "userId": "seed-user-66",
+        "criadoEm": "2026-08-18T10:06:20.886Z"
+      },
+      {
+        "userId": "seed-user-316",
+        "criadoEm": "2026-08-23T10:06:20.886Z"
+      },
+      {
+        "userId": "seed-user-46",
+        "criadoEm": "2026-08-20T10:06:20.886Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026991684",
+    "categoria": "alagamento",
+    "rua": "Travessa Padre Eutíquio",
+    "numero": "1204",
+    "bairro": "Nazaré",
+    "latitude": -1.481978,
+    "longitude": -48.549927,
+    "descricao": "Água acumulada há dois dias depois da chuva.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 89",
+    "email": "cidadao.simulado.89@example.com",
+    "status": "concluido",
+    "criadoEm": "2026-05-19T09:35:38.887Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-05-19T09:35:38.887Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-05-23T09:35:38.887Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      },
+      {
+        "status": "encaminhado",
+        "data": "2026-05-26T09:35:38.887Z",
+        "mensagem": "Ocorrência encaminhada para a equipe responsável."
+      },
+      {
+        "status": "em_execucao",
+        "data": "2026-05-27T09:35:38.887Z",
+        "mensagem": "Equipe iniciou o atendimento no local."
+      },
+      {
+        "status": "concluido",
+        "data": "2026-05-28T09:35:38.887Z",
+        "mensagem": "Problema resolvido e ocorrência concluída."
+      }
+    ],
+    "userId": "seed-user-88",
+    "relatos": [
+      {
+        "userId": "seed-user-88",
+        "criadoEm": "2026-05-19T09:35:38.887Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026992661",
+    "categoria": "iluminacao",
+    "rua": "Av. Gentil Bittencourt",
+    "numero": "1784",
+    "bairro": "Nazaré",
+    "pontoReferencia": "Perto da praça do bairro",
+    "latitude": -1.50503,
+    "longitude": -48.458905,
+    "descricao": "Dois postes seguidos sem funcionar na mesma quadra.",
+    "fotos": [],
+    "nome": "Cidadão Simulado 24",
+    "email": "cidadao.simulado.24@example.com",
+    "status": "aberto",
+    "criadoEm": "2026-08-17T13:57:58.884Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-17T13:57:58.884Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      }
+    ],
+    "userId": "seed-user-23",
+    "relatos": [
+      {
+        "userId": "seed-user-23",
+        "criadoEm": "2026-08-17T13:57:58.884Z"
+      },
+      {
+        "userId": "seed-user-86",
+        "criadoEm": "2026-08-23T13:57:58.884Z"
+      },
+      {
+        "userId": "seed-user-386",
+        "criadoEm": "2026-08-17T13:57:58.884Z"
+      },
+      {
+        "userId": "seed-user-217",
+        "criadoEm": "2026-08-23T13:57:58.884Z"
+      }
+    ]
+  },
+  {
+    "protocolo": "2026993407",
+    "categoria": "iluminacao",
+    "rua": "Rua João Diogo",
+    "numero": "1831",
+    "bairro": "Guamá",
+    "latitude": -1.402244,
+    "longitude": -48.471987,
+    "descricao": "Lâmpada piscando sem parar, parece que vai queimar.",
+    "fotos": [],
+    "risco": "nao_sei",
+    "nome": "Cidadão Simulado 47",
+    "email": "cidadao.simulado.47@example.com",
+    "status": "em_analise",
+    "criadoEm": "2026-08-17T10:40:56.885Z",
+    "historico": [
+      {
+        "status": "aberto",
+        "data": "2026-08-17T10:40:56.885Z",
+        "mensagem": "Solicitação registrada com sucesso."
+      },
+      {
+        "status": "em_analise",
+        "data": "2026-08-21T10:40:56.885Z",
+        "mensagem": "Equipe iniciou a análise do problema."
+      }
+    ],
+    "userId": "seed-user-46",
+    "relatos": [
+      {
+        "userId": "seed-user-46",
+        "criadoEm": "2026-08-17T10:40:56.885Z"
+      },
+      {
+        "userId": "seed-user-220",
+        "criadoEm": "2026-08-19T10:40:56.885Z"
+      },
+      {
+        "userId": "seed-user-363",
+        "criadoEm": "2026-08-17T10:40:56.885Z"
+      },
+      {
+        "userId": "seed-user-342",
+        "criadoEm": "2026-08-22T10:40:56.885Z"
+      },
+      {
+        "userId": "seed-user-68",
+        "criadoEm": "2026-08-25T10:40:56.885Z"
+      },
+      {
+        "userId": "seed-user-337",
+        "criadoEm": "2026-08-20T10:40:56.885Z"
+      }
+    ]
+  }
+]

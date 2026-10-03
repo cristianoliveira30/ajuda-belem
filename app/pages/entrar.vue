@@ -1,7 +1,23 @@
 <script setup lang="ts">
 useSeoMeta({ title: 'Entrar — Ajuda Belém' })
 
-const router = useRouter()
+// Quem já está logado continua podendo usar o formulário (para trocar de
+// conta): a tela só avisa quem é a sessão atual e oferece atalho para a tela
+// do papel dela ou para sair (ver app/utils/destinoPosLogin.ts).
+const { data: sessao, refresh: atualizarSessao } = await useSessao()
+const usuarioLogado = computed(() => sessao.value?.user ?? null)
+const saindo = ref(false)
+
+async function sairDaContaAtual() {
+  saindo.value = true
+  try {
+    await authClient.signOut()
+    await atualizarSessao()
+  }
+  finally {
+    saindo.value = false
+  }
+}
 
 const email = ref('')
 const senha = ref('')
@@ -24,8 +40,19 @@ async function entrar() {
       return
     }
 
-    const vaiParaPainel = data.user.papel === 'servidor' || data.user.papel === 'admin'
-    await router.push(vaiParaPainel ? '/painel' : '/perfil')
+    // Conta desativada pelo admin (ver `banned` em server/utils/auth.ts):
+    // o Better Auth ainda cria a sessão, então desfazemos aqui em vez de
+    // mandar a pessoa para uma tela que vai rejeitá-la.
+    if (data.user.banned) {
+      await authClient.signOut()
+      erro.value = 'Conta desativada. Fale com o administrador.'
+      return
+    }
+
+    // Atualiza a sessão em cache (key 'sessao', compartilhada com o
+    // cabeçalho e os middlewares) antes de navegar.
+    await refreshNuxtData('sessao')
+    await navigateTo(destinoPosLogin(data.user))
   }
   catch {
     erro.value = 'Não foi possível entrar agora. Verifique sua conexão e tente novamente.'
@@ -74,6 +101,20 @@ async function entrarComGoogle() {
           Acesse sua conta de cidadão ou servidor da Prefeitura.
         </p>
       </div>
+
+      <UAlert
+        v-if="usuarioLogado"
+        class="mb-6"
+        color="info"
+        variant="subtle"
+        icon="i-lucide-user-check"
+        title="Você já está logado"
+        :description="`${usuarioLogado.name} (${usuarioLogado.email}). Para entrar com outra conta, saia primeiro ou preencha abaixo.`"
+        :actions="[
+          { label: 'Ir para minha tela', color: 'primary', variant: 'soft', to: destinoPosLogin(usuarioLogado) },
+          { label: 'Sair', color: 'neutral', variant: 'outline', loading: saindo, onClick: sairDaContaAtual },
+        ]"
+      />
 
       <UButton
         label="Continuar com Google"
