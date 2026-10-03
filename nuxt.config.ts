@@ -1,7 +1,11 @@
 export default defineNuxtConfig({
   modules: ['@nuxt/ui', '@nuxt/eslint', '@vite-pwa/nuxt'],
 
-  devtools: { enabled: true },
+  // Desligado: o botão flutuante do DevTools (tempo de página + ícone)
+  // aparecia por cima da barra de navegação inferior no celular. Para ligar
+  // de novo durante o desenvolvimento, troque para `true` (ou use Shift+Alt+D
+  // com ele habilitado).
+  devtools: { enabled: false },
   compatibilityDate: '2026-09-18',
 
   css: ['~/assets/css/main.css'],

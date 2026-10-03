@@ -17,7 +17,7 @@ function toggleColorMode() {
 
 <template>
   <header class="sticky top-0 z-40 border-b border-default bg-default/80 backdrop-blur">
-    <UContainer class="flex h-16 items-center justify-between gap-4">
+    <UContainer class="flex h-14 items-center justify-between gap-4 md:h-16">
       <NuxtLink to="/" class="flex items-center gap-2 shrink-0">
         <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary-600 to-primary-400 text-sm font-bold text-white shadow-sm">
           AB

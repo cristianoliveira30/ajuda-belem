@@ -4,7 +4,6 @@ import type { DashboardResposta } from '#shared/types/dashboard'
 const protocolo = ref('')
 const busca = ref('')
 const router = useRouter()
-const { data: sessao } = useSessao()
 
 // Dashboard de transparência ("Belém em números") — endpoint público e
 // agregado, mesmo usado pelo painel (ver server/api/dashboard.get.ts e
@@ -74,47 +73,14 @@ const passos = [
 
 <template>
   <div>
-    <div class="relative overflow-hidden bg-gradient-to-br from-primary-800 via-primary-600 to-primary-500 px-4 pb-20 pt-8 sm:pt-12">
+    <div class="relative overflow-hidden bg-gradient-to-br from-primary-800 via-primary-600 to-primary-500 px-4 pb-16 pt-6 sm:pb-20 sm:pt-12">
       <svg class="pointer-events-none absolute inset-x-0 bottom-0 text-white/10" viewBox="0 0 400 90" preserveAspectRatio="none" fill="currentColor">
         <path d="M0 45 Q100 5 200 45 T400 45 V90 H0 Z" />
         <path d="M0 62 Q100 25 200 62 T400 62 V90 H0 Z" opacity="0.7" />
       </svg>
 
       <UContainer class="relative">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <span class="flex size-11 items-center justify-center rounded-2xl bg-white/15 text-white">
-              <UIcon name="i-lucide-landmark" class="size-6" />
-            </span>
-            <div>
-              <p class="text-lg font-extrabold leading-none text-white">
-                Ajuda Belém
-              </p>
-              <p class="mt-1 text-xs text-white/70">
-                Prefeitura de Belém do Pará
-              </p>
-            </div>
-          </div>
-          <div class="flex gap-2">
-            <UButton
-              icon="i-lucide-bell"
-              color="neutral"
-              variant="ghost"
-              class="bg-white/15 text-white hover:bg-white/25"
-              aria-label="Notificações"
-            />
-            <UButton
-              :to="sessao?.user ? '/perfil' : '/entrar'"
-              icon="i-lucide-user"
-              color="neutral"
-              variant="ghost"
-              class="bg-white/15 text-white hover:bg-white/25"
-              :aria-label="sessao?.user ? 'Minha conta' : 'Entrar'"
-            />
-          </div>
-        </div>
-
-        <p class="mt-8 text-sm font-medium text-white/80">
+        <p class="text-sm font-medium text-white/80">
           {{ saudacao }}, cidadão! 👋
         </p>
         <h1 class="mt-1 text-2xl font-extrabold leading-snug text-white sm:text-3xl">
