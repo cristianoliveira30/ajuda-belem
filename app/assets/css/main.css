@@ -8,3 +8,18 @@
 :root {
   --ui-radius: 0.65rem;
 }
+
+.dark.black {
+  --ui-bg: #000000;
+  --ui-bg-muted: #090909;
+  --ui-bg-elevated: #111111;
+  --ui-bg-accented: #1a1a1a;
+
+  --ui-text: #e4e4e7;
+  --ui-text-muted: #a1a1aa;
+  --ui-text-highlighted: #ffffff;
+
+  --ui-border: #272727;
+  --ui-border-muted: #1f1f1f;
+  --ui-border-accented: #3f3f46;
+}

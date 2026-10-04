@@ -1,5 +1,8 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
+
+const modoPreto = ref(false)
+
 const { data: sessao } = useSessao()
 
 const links = [
@@ -10,9 +13,47 @@ const links = [
   { label: 'Avisos', to: '/avisos' },
 ]
 
-function toggleColorMode() {
-  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+function alternarTema() {
+  if (colorMode.value === 'light') {
+    colorMode.preference = 'dark'
+    modoPreto.value = false
+  } else if (!modoPreto.value) {
+    modoPreto.value = true
+    colorMode.preference = 'dark'
+  } else {
+    modoPreto.value = false
+    colorMode.preference = 'light'
+  }
+
+  localStorage.setItem(
+    'tema-preto-ajuda-belem',
+    String(modoPreto.value),
+  )
 }
+
+function atualizarClasseBlack() {
+  if (!import.meta.client) return
+
+  document.documentElement.classList.toggle(
+    'black',
+    colorMode.value === 'dark' && modoPreto.value,
+  )
+}
+
+watch(
+  [modoPreto, () => colorMode.value],
+  () => {
+    atualizarClasseBlack()
+  },
+)
+
+onMounted(() => {
+  modoPreto.value = localStorage.getItem('tema-preto-ajuda-belem') === 'true'
+
+  nextTick(() => {
+    atualizarClasseBlack()
+  })
+})
 </script>
 
 <template>
@@ -39,13 +80,27 @@ function toggleColorMode() {
       </nav>
 
       <div class="flex items-center gap-2">
-        <UButton
-          :icon="colorMode.value === 'dark' ? 'i-lucide-sun' : 'i-lucide-moon'"
-          color="neutral"
-          variant="ghost"
-          aria-label="Alternar tema claro/escuro"
-          @click="toggleColorMode"
-        />
+        <ClientOnly>
+  <UButton
+    :icon="
+      colorMode.value === 'light'
+        ? 'i-lucide-sun'
+        : modoPreto
+          ? 'i-lucide-contrast'
+          : 'i-lucide-moon'
+    "
+    color="neutral"
+    variant="ghost"
+    :aria-label="
+      colorMode.value === 'light'
+        ? 'Tema claro'
+        : modoPreto
+          ? 'Tema preto'
+          : 'Tema escuro'
+    "
+    @click="alternarTema"
+  />
+</ClientOnly>
         <UButton
           :to="sessao?.user ? '/perfil' : '/entrar'"
           :icon="sessao?.user ? 'i-lucide-user' : undefined"
