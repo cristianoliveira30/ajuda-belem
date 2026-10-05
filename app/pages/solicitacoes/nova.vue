@@ -504,8 +504,10 @@ async function confirmarEnvio() {
     etapa.value = 'concluido'
     await mensagemBot('✅ Ocorrência registrada! Sua solicitação foi enviada para a equipe responsável.', 300)
   }
-  catch {
-    erroEnvio.value = 'Não foi possível enviar sua solicitação agora. Tente novamente em instantes.'
+  catch (erro) {
+    erroEnvio.value = (erro as { statusCode?: number }).statusCode === 401
+      ? 'Sua sessão expirou. Entre novamente para enviar a solicitação.'
+      : 'Não foi possível enviar sua solicitação agora. Tente novamente em instantes.'
     await mensagemBot('Ops, não consegui enviar sua solicitação agora. Podemos tentar de novo?')
     etapa.value = 'resumo'
   }
