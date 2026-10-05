@@ -20,7 +20,7 @@ Veja o roadmap de construção do projeto, por etapas, em [docs/etapa-iniciais.m
 O login/cadastro (`/entrar`, `/cadastro`, `/perfil`) usa [Better Auth](https://better-auth.com) contra um Postgres próprio e precisa do banco rodando para funcionar:
 
 1. Copie `.env.example` para `.env` e gere um valor para `BETTER_AUTH_SECRET` (ex.: `openssl rand -base64 32`).
-2. Suba o banco com `docker compose up -d db` (ou use um Postgres já instalado, ajustando `DATABASE_URL`).
+2. Suba o banco com `docker compose up -d db` (o banco fica exposto na porta **5433** do host, para não colidir com outro Postgres local na 5432; ou use um Postgres já instalado, ajustando `DATABASE_URL`).
 3. Crie as tabelas do Better Auth (usuário, sessão etc., ver [server/utils/auth.ts](./server/utils/auth.ts)):
    - Com Docker, sem precisar de yarn/node local: `docker compose run --rm migrate`.
    - Ou local (se já tem `yarn install` feito e `DATABASE_URL` no `.env` apontando pro banco): `yarn db:migrate`.
@@ -36,14 +36,18 @@ Só para desenvolvimento. Depois de criar as tabelas (passo 3), `yarn db:seed` (
 | Postgres (`user` + `account`) | 4 contas de demonstração (tabela abaixo) |
 | `.data/solicitacoes` (arquivos JSON, ver `nuxt.config.ts`) | 100 solicitações simuladas de [db/seed/solicitacoes.json](./db/seed/solicitacoes.json): todas as categorias, status e bairros, com histórico, relatos e fotos |
 
-| E-mail | Papel | Observação |
-| --- | --- | --- |
-| `admin@ajudabelem.local` | admin | |
-| `servidor.obras@ajudabelem.local` | servidor | Secretaria de Obras |
-| `servidor.limpeza@ajudabelem.local` | servidor | Secretaria de Limpeza Urbana |
-| `cidadao@ajudabelem.local` | cidadão | CPF fictício válido |
+### Usuários padrão (para testar)
 
-A senha de todas é `Belem123`. Os servidores já nascem com `primeiroAcesso = false`, para entrar direto no painel.
+Depois do seed existem exatamente estas 4 contas (verificadas no banco e testadas com login real). Não há contas pessoais: todo mundo usa as mesmas.
+
+| E-mail | Papel | Senha | O que pode fazer |
+| --- | --- | --- | --- |
+| `admin@ajudabelem.local` | admin | `Belem123` | Painel com visão geral (KPIs e gráficos), gestão de servidores em `/painel/servidores` (criar, ativar/desativar) e todas as solicitações |
+| `servidor.obras@ajudabelem.local` | servidor (Secretaria de Obras) | `Belem123` | Fila de atendimento em `/painel/solicitacoes`: atualizar status e acompanhar as ocorrências |
+| `servidor.limpeza@ajudabelem.local` | servidor (Secretaria de Limpeza Urbana) | `Belem123` | Mesma fila de atendimento, pela Secretaria de Limpeza Urbana |
+| `cidadao@ajudabelem.local` | cidadão (CPF fictício válido) | `Belem123` | Registrar ocorrências (exige login), acompanhar por protocolo e editar o perfil em `/perfil` |
+
+Os servidores já nascem com `primeiroAcesso = false`, para entrar direto no painel.
 
 Ao entrar em `/entrar`, cada papel cai na sua tela ([app/utils/destinoPosLogin.ts](./app/utils/destinoPosLogin.ts)): **admin** → `/painel` (visão geral + gestão de servidores), **servidor** → `/painel/solicitacoes` (fila de atendimento), **cidadão** → `/perfil`. Servidor em primeiro acesso vai para `/perfil` trocar a senha antes. Quem já está logado e abre `/entrar` vê um aviso com a conta atual (atalho para a sua tela ou "Sair") e pode entrar com outra conta direto pelo formulário; conta desativada é recusada no login.
 
@@ -54,17 +58,6 @@ docker compose exec dev yarn db:seed
 # Ou local, com DATABASE_URL no .env
 yarn db:seed
 ```
-
-#### Contas pessoais (fora do seed)
-
-Além das contas acima, o banco local tem duas contas criadas à mão, **fora** do `db/seed.mjs` (projeto acadêmico, então a senha fica registrada aqui):
-
-| E-mail | Papel | Senha |
-| --- | --- | --- |
-| `renan.admin@ajudabelem.local` | admin | `renan123` |
-| `renan.servidor@ajudabelem.local` | servidor (Prefeitura de Belém) | `renan123` |
-
-Elas vivem só no volume `db-data` do Postgres: se o volume for apagado, somem junto e `yarn db:seed` não as recria. Para refazer, crie o servidor pelo próprio admin em `/painel/servidores`, ou promova uma conta já cadastrada com o `update "user" set papel = ...` do topo de [db/schema.sql](./db/schema.sql).
 
 #### Rodando o seed
 
