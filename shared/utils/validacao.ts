@@ -26,7 +26,7 @@ export const solicitacaoSchema = z.object({
   longitude: z.number().min(-180).max(180).optional(),
   descricao: z
     .string()
-    .min(20, 'Descreva o problema com mais detalhes (mínimo 20 caracteres)')
+    .min(1, 'Descreva o problema com mais detalhes')
     .max(1000, 'Descrição muito longa (máximo 1000 caracteres)'),
   fotos: z.array(fotoSchema).max(3, 'Envie no máximo 3 fotos').optional(),
   risco: z.enum(['sim', 'nao', 'nao_sei']).optional(),
