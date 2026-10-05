@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
 
+const CHAVE_TEMA_PRETO = 'tema-preto-ajuda-belem'
+
 const modoPreto = ref(false)
 
 const { data: sessao } = useSessao()
@@ -13,46 +15,69 @@ const links = [
   { label: 'Avisos', to: '/avisos' },
 ]
 
+type Tema = 'light' | 'dark' | 'black'
+
+const tema = computed<Tema>(() => {
+  if (colorMode.value === 'light') return 'light'
+  return modoPreto.value ? 'black' : 'dark'
+})
+
+const temaUi: Record<Tema, { icon: string, label: string }> = {
+  light: { icon: 'i-lucide-sun', label: 'Tema claro' },
+  dark: { icon: 'i-lucide-moon', label: 'Tema escuro' },
+  black: { icon: 'i-lucide-contrast', label: 'Tema preto' },
+}
+
+const temaAtual = computed(() => temaUi[tema.value as Tema])
+
+// Aplica a classe "black" antes da hidratação para evitar flash do tema escuro padrão
+useHead({
+  script: [
+    {
+      key: 'tema-preto-inicial',
+      innerHTML: `try{if(localStorage.getItem('${CHAVE_TEMA_PRETO}')==='true'){document.documentElement.classList.add('black')}}catch(e){}`,
+      tagPosition: 'head',
+    },
+  ],
+})
+
+function salvarTemaPreto() {
+  try {
+    localStorage.setItem(CHAVE_TEMA_PRETO, String(modoPreto.value))
+  } catch {
+    // armazenamento indisponível (modo privado/bloqueado)
+  }
+}
+
 function alternarTema() {
-  if (colorMode.value === 'light') {
-    colorMode.preference = 'dark'
+  // claro -> escuro -> preto -> claro
+  if (tema.value === 'light') {
     modoPreto.value = false
-  } else if (!modoPreto.value) {
-    modoPreto.value = true
     colorMode.preference = 'dark'
+  } else if (tema.value === 'dark') {
+    modoPreto.value = true
   } else {
     modoPreto.value = false
     colorMode.preference = 'light'
   }
 
-  localStorage.setItem(
-    'tema-preto-ajuda-belem',
-    String(modoPreto.value),
-  )
+  salvarTemaPreto()
 }
 
 function atualizarClasseBlack() {
-  if (!import.meta.client) return
-
-  document.documentElement.classList.toggle(
-    'black',
-    colorMode.value === 'dark' && modoPreto.value,
-  )
+  document.documentElement.classList.toggle('black', tema.value === 'black')
 }
 
-watch(
-  [modoPreto, () => colorMode.value],
-  () => {
-    atualizarClasseBlack()
-  },
-)
+watch(tema, atualizarClasseBlack)
 
 onMounted(() => {
-  modoPreto.value = localStorage.getItem('tema-preto-ajuda-belem') === 'true'
+  try {
+    modoPreto.value = localStorage.getItem(CHAVE_TEMA_PRETO) === 'true'
+  } catch {
+    modoPreto.value = false
+  }
 
-  nextTick(() => {
-    atualizarClasseBlack()
-  })
+  atualizarClasseBlack()
 })
 </script>
 
@@ -81,26 +106,14 @@ onMounted(() => {
 
       <div class="flex items-center gap-2">
         <ClientOnly>
-  <UButton
-    :icon="
-      colorMode.value === 'light'
-        ? 'i-lucide-sun'
-        : modoPreto
-          ? 'i-lucide-contrast'
-          : 'i-lucide-moon'
-    "
-    color="neutral"
-    variant="ghost"
-    :aria-label="
-      colorMode.value === 'light'
-        ? 'Tema claro'
-        : modoPreto
-          ? 'Tema preto'
-          : 'Tema escuro'
-    "
-    @click="alternarTema"
-  />
-</ClientOnly>
+          <UButton
+            :icon="temaAtual.icon"
+            color="neutral"
+            variant="ghost"
+            :aria-label="temaAtual.label"
+            @click="alternarTema"
+          />
+        </ClientOnly>
         <UButton
           :to="sessao?.user ? '/perfil' : '/entrar'"
           :icon="sessao?.user ? 'i-lucide-user' : undefined"
