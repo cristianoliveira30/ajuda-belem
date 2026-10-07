@@ -30,6 +30,11 @@ async function cadastrar() {
     return
   }
 
+  if (telefone.value.trim() && !validarTelefone(telefone.value)) {
+    erro.value = 'Informe um telefone válido, com DDD.'
+    return
+  }
+
   const ameaca = detectarAmeacaEntrada(nome.value) || detectarAmeacaEntrada(telefone.value)
   if (ameaca) {
     erro.value = MENSAGEM_AMEACA_ENTRADA[ameaca]
@@ -54,6 +59,7 @@ async function cadastrar() {
       return
     }
 
+    await refreshNuxtData('sessao')
     await navigateTo('/perfil')
   }
   catch {

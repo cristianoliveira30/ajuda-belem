@@ -1,17 +1,14 @@
 import { normalizarCpf, validarCpf } from '#shared/utils/cpf'
 
-// Único uso: cidadão que entrou pelo Google (que não fornece CPF) completa
-// esse campo depois do OAuth (ver app/middleware/auth.global.ts, que
-// redireciona pra /completar-cadastro enquanto isso não acontece). Cadastro
-// tradicional nunca chama isso — já nasce com CPF (ver hook de
-// `/sign-up/email` em server/utils/auth.ts).
+// Cidadão que entrou pelo Google (que não fornece CPF) informa o CPF depois
+// do OAuth, em /perfil. O CPF só pode ser gravado uma vez: quem já tem CPF
+// não consegue trocá-lo por aqui.
 //
-// Só a coluna `cpf` é lida/gravada aqui: `email`, `name`, `papel`,
-// `secretaria`, `id` nunca são tocados por este endpoint, então não existe
-// payload que altere mais que isso, mesmo chamando a API direto.
+// Só a coluna `cpf` é gravada: `email`, `name`, `papel`, `secretaria` e `id`
+// nunca são tocados por este endpoint.
 export default defineEventHandler(async (event) => {
-  // `disableCookieCache`: mesmo motivo de exigirServidor — checagem de
-  // autorização aqui não pode confiar num cookie cacheado de até 60s.
+  // `disableCookieCache`: a checagem não pode confiar num cookie cacheado de
+  // até 60s (senão um CPF recém-gravado ainda apareceria como vazio).
   const session = await auth.api.getSession({
     headers: event.headers,
     query: { disableCookieCache: true },
@@ -21,6 +18,10 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: 'Não autenticado' })
   }
 
+  if (session.user.cpf) {
+    throw createError({ statusCode: 400, message: 'Seu CPF já está cadastrado e não pode ser alterado.' })
+  }
+
   const body = await readBody(event)
   const cpf = normalizarCpf(typeof body?.cpf === 'string' ? body.cpf : '')
 
@@ -28,16 +29,34 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Informe um CPF válido.' })
   }
 
-  // Pré-checagem só para mensagem amigável — a garantia definitiva contra
-  // duplicidade é o índice único `user_cpf_uidx` no Postgres (ver
-  // db/schema.sql); se essa checagem passar mas o UPDATE ainda assim violar
-  // a constraint, a requisição falha do mesmo jeito.
+  const mensagemCpfEmUso = 'Este CPF já está vinculado a outra conta.'
+
+  // A pré-checagem dá a mensagem amigável; quem garante a unicidade de fato
+  // é a constraint `user_cpf_key` no Postgres (ver o UPDATE abaixo).
   const { rows } = await pool.query('select 1 from "user" where cpf = $1 limit 1', [cpf])
   if (rows.length > 0) {
-    throw createError({ statusCode: 400, message: 'Este CPF já está vinculado a outra conta.' })
+    throw createError({ statusCode: 400, message: mensagemCpfEmUso })
   }
 
-  await pool.query('update "user" set cpf = $1, "updatedAt" = now() where id = $2', [cpf, session.user.id])
+  try {
+    // `cpf is null` evita sobrescrever um CPF gravado por outra requisição
+    // entre a leitura da sessão e este UPDATE.
+    const resultado = await pool.query(
+      'update "user" set cpf = $1, "updatedAt" = now() where id = $2 and cpf is null',
+      [cpf, session.user.id],
+    )
+
+    if (!resultado.rowCount) {
+      throw createError({ statusCode: 400, message: 'Seu CPF já está cadastrado e não pode ser alterado.' })
+    }
+  }
+  catch (erro) {
+    // 23505 = violação de unique: outro cadastro pegou o mesmo CPF agora.
+    if ((erro as { code?: string }).code === '23505') {
+      throw createError({ statusCode: 400, message: mensagemCpfEmUso })
+    }
+    throw erro
+  }
 
   return { ok: true }
 })

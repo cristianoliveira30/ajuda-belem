@@ -5,7 +5,8 @@ import { Pool } from 'pg'
 // carregado direto pela CLI do Better Auth (`yarn db:migrate`), fora do
 // runtime/bundler do Nuxt, que é quem resolve o alias `#shared`.
 import { normalizarCpf, validarCpf } from '../../shared/utils/cpf'
-import { validarSenha } from '../../shared/utils/validacao'
+import { validarSenha, validarTelefone } from '../../shared/utils/validacao'
+import { detectarAmeacaEntrada, MENSAGEM_AMEACA_ENTRADA } from '../../shared/utils/segurancaEntrada'
 
 // Instância única do servidor de auth, usada tanto pelo handler HTTP
 // (server/api/auth/[...all].ts) quanto por quem precisa ler a sessão em
@@ -19,6 +20,33 @@ import { validarSenha } from '../../shared/utils/validacao'
 // porque server/api/perfil/completar-cadastro.post.ts (fluxo de CPF do
 // Google) reaproveita a mesma conexão em vez de abrir outra.
 export const pool = new Pool({ connectionString: process.env.DATABASE_URL })
+
+// Nome e telefone chegam direto no corpo de /sign-up/email e /update-user,
+// então a validação precisa estar aqui e não só na tela.
+function validarNomeETelefone(body: Record<string, unknown> | undefined) {
+  const nome = body?.name
+  const telefone = body?.telefone
+
+  if (typeof nome === 'string') {
+    if (nome.trim().length < 3) {
+      throw new APIError('BAD_REQUEST', { message: 'Informe seu nome completo.' })
+    }
+    const ameaca = detectarAmeacaEntrada(nome)
+    if (ameaca) {
+      throw new APIError('BAD_REQUEST', { message: MENSAGEM_AMEACA_ENTRADA[ameaca] })
+    }
+  }
+
+  if (typeof telefone === 'string' && telefone.trim()) {
+    const ameaca = detectarAmeacaEntrada(telefone)
+    if (ameaca) {
+      throw new APIError('BAD_REQUEST', { message: MENSAGEM_AMEACA_ENTRADA[ameaca] })
+    }
+    if (!validarTelefone(telefone)) {
+      throw new APIError('BAD_REQUEST', { message: 'Informe um telefone válido, com DDD.' })
+    }
+  }
+}
 
 export const auth = betterAuth({
   database: pool,
@@ -133,8 +161,20 @@ export const auth = betterAuth({
         }
       }
 
+      // CPF e secretaria não podem ser alterados depois do cadastro por
+      // aqui: o CPF só entra pelo cadastro ou por /api/perfil/completar-cadastro.
+      if (ctx.path === '/update-user') {
+        if (ctx.body && (Object.hasOwn(ctx.body, 'cpf') || Object.hasOwn(ctx.body, 'secretaria'))) {
+          throw new APIError('BAD_REQUEST', { message: 'Esses dados não podem ser alterados por aqui.' })
+        }
+        validarNomeETelefone(ctx.body)
+        return
+      }
+
       if (ctx.path !== '/sign-up/email')
         return
+
+      validarNomeETelefone(ctx.body)
 
       // Cadastro de servidor pelo admin (server/api/admin/servidores/index.post.ts)
       // repassa o header de sessão do próprio admin autenticado ao chamar
@@ -145,6 +185,10 @@ export const auth = betterAuth({
       const sessaoChamador = ctx.headers ? await auth.api.getSession({ headers: ctx.headers }).catch(() => null) : null
       if (sessaoChamador?.user.papel === 'admin') {
         return
+      }
+
+      if (ctx.body && Object.hasOwn(ctx.body, 'secretaria')) {
+        throw new APIError('BAD_REQUEST', { message: 'Campo não permitido no cadastro.' })
       }
 
       // Garantia real: uma chamada direta a `POST /api/auth/sign-up/email`

@@ -152,6 +152,62 @@ describe('ssr', async () => {
     ).rejects.toMatchObject({ statusCode: 400 })
   })
 
+  it('keeps the dashboard data private: 401 without session, 403 for a citizen', async () => {
+    await expect($fetch('/api/dashboard')).rejects.toMatchObject({ statusCode: 401 })
+
+    await expect(
+      $fetch('/api/dashboard', { headers: { cookie: cookieCidadao } }),
+    ).rejects.toMatchObject({ statusCode: 403 })
+  })
+
+  describe('cadastro de cidadão', () => {
+    const cadastro = (extra: Record<string, unknown>) => $fetch('/api/auth/sign-up/email', {
+      method: 'POST',
+      body: {
+        name: 'Maria da Silva',
+        email: `cadastro.${Date.now()}.${Math.random().toString(36).slice(2)}@example.com`,
+        password: 'SenhaTeste123!',
+        cpf: gerarCpfValido(),
+        ...extra,
+      },
+    })
+
+    it('rejects a name that is too short', async () => {
+      await expect(cadastro({ name: 'ab' })).rejects.toMatchObject({ statusCode: 400 })
+    })
+
+    it('rejects an invalid telefone', async () => {
+      await expect(cadastro({ telefone: '123' })).rejects.toMatchObject({ statusCode: 400 })
+    })
+
+    it('rejects a script-like name', async () => {
+      await expect(cadastro({ name: '<script>alert(1)</script>' })).rejects.toMatchObject({ statusCode: 400 })
+    })
+
+    it('rejects an invalid CPF', async () => {
+      await expect(cadastro({ cpf: '11111111111' })).rejects.toMatchObject({ statusCode: 400 })
+    })
+
+    it('does not accept secretaria in the public sign-up', async () => {
+      await expect(cadastro({ secretaria: 'Obras' })).rejects.toMatchObject({ statusCode: 400 })
+    })
+
+    it('does not let an account that already has a CPF replace it', async () => {
+      await expect(
+        $fetch('/api/perfil/completar-cadastro', {
+          method: 'POST',
+          headers: { cookie: cookieCidadao },
+          body: { cpf: gerarCpfValido() },
+        }),
+      ).rejects.toMatchObject({ statusCode: 400 })
+    })
+  })
+
+  it('does not render the dashboard numbers on the public home page', async () => {
+    const html = await $fetch<string>('/')
+    expect(html).not.toContain('Belém em números')
+  })
+
   it('rejects a solicitação payload containing a SQL injection-like pattern', async () => {
     await expect(
       $fetch('/api/solicitacoes', {

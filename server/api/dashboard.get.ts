@@ -13,11 +13,6 @@ import type {
 } from '#shared/types/dashboard'
 import type { Solicitacao, StatusSolicitacao } from '#shared/types/solicitacao'
 
-// Endpoint público de transparência (GET /api/dashboard) — usado pela home,
-// pelo painel do servidor e do admin (mesmos dados, mesmos gráficos; ver
-// app/components/dashboard/*). Uma leitura do storage, uma agregação —
-// nenhum dos 9 gráficos/8 KPIs faz sua própria chamada separada.
-//
 // DTO montado campo a campo abaixo: nunca inclui foto, CPF, e-mail,
 // telefone, nome do cidadão, userId ou auditoria interna (servidorUserId/
 // servidorNome do histórico) — mesmo que esses campos existam no registro
@@ -43,6 +38,8 @@ function chaveData(data: Date, granularidade: 'dia' | 'mes'): string {
 }
 
 export default defineEventHandler(async (event): Promise<DashboardResposta> => {
+  await exigirServidor(event)
+
   const query = getQuery(event)
   const periodo = typeof query.periodo === 'string' ? query.periodo : undefined
 

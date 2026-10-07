@@ -1,7 +1,6 @@
 import type { RiscoPercebido, StatusSolicitacao } from './solicitacao'
 
-// Contrato de GET /api/dashboard — endpoint público e agregado (ver
-// server/api/dashboard.get.ts). Nunca inclui foto, CPF, e-mail, telefone,
+// Contrato de GET /api/dashboard (ver server/api/dashboard.get.ts). Nunca inclui foto, CPF, e-mail, telefone,
 // nome do cidadão, userId ou auditoria interna; é montado campo a campo no
 // backend, nunca espalhando um objeto Solicitacao inteiro.
 
@@ -38,7 +37,6 @@ export interface PontoRisco extends ContagemRotulada {
   risco: RiscoPercebido | 'nao_informado'
 }
 
-// Só dado público — sem PII (ver server/api/dashboard.get.ts).
 export interface OcorrenciaMaisRelatada {
   protocolo: string
   categoria: string

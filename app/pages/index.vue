@@ -1,19 +1,7 @@
 <script setup lang="ts">
-import type { DashboardResposta } from '#shared/types/dashboard'
-
 const protocolo = ref('')
 const busca = ref('')
 const router = useRouter()
-
-// Dashboard de transparência ("Belém em números") — endpoint público e
-// agregado, mesmo usado pelo painel (ver server/api/dashboard.get.ts e
-// app/components/dashboard/GraficosAnaliticos.vue). Se falhar, o resto da
-// home continua funcionando normalmente — só essa seção fica indisponível.
-const periodo = ref('todos')
-const { data: dashboard, status: statusDashboard, error: erroDashboard } = await useFetch<DashboardResposta>('/api/dashboard', {
-  query: { periodo },
-})
-const carregandoDashboard = computed(() => statusDashboard.value === 'pending')
 
 function consultarProtocolo() {
   if (!protocolo.value.trim())
@@ -26,9 +14,7 @@ function consultarProtocolo() {
 // então "a hora agora" no servidor quase nunca bate com o horário local de
 // quem está acessando — isso gerava um "Hydration text content mismatch" no
 // Vue (texto renderizado no servidor diferente do esperado no cliente), que
-// descartava e remontava o resto da árvore a partir daqui — incluindo a
-// seção do dashboard logo abaixo, o que deixava os gráficos sem conseguir
-// se conectar ao elemento na tela a tempo de desenhar.
+// descartava e remontava o resto da árvore a partir daqui.
 const saudacao = ref('Olá')
 onMounted(() => {
   const hora = new Date().getHours()
@@ -110,93 +96,6 @@ const passos = [
       </UContainer>
 
       <UContainer class="mt-8 space-y-8">
-        <section id="numeros" class="scroll-mt-20">
-          <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h2 class="text-lg font-bold text-highlighted">
-                Belém em números
-              </h2>
-              <p class="text-sm text-muted">
-                Acompanhe os problemas urbanos registrados pela população e o andamento dos atendimentos.
-              </p>
-            </div>
-            <DashboardFiltroPeriodo v-model="periodo" />
-          </div>
-
-          <UAlert
-            v-if="erroDashboard"
-            class="mb-4"
-            color="warning"
-            variant="subtle"
-            icon="i-lucide-alert-triangle"
-            description="Não foi possível carregar os indicadores agora."
-          />
-
-          <template v-else>
-            <div class="mb-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <DashboardKpiCard
-                titulo="Total de ocorrências"
-                :valor="dashboard?.kpis.totalOcorrencias ?? 0"
-                icon="i-lucide-file-text"
-                :carregando="carregandoDashboard"
-              />
-              <DashboardKpiCard
-                titulo="Em aberto"
-                :valor="dashboard?.kpis.abertas ?? 0"
-                icon="i-lucide-file-plus"
-                :carregando="carregandoDashboard"
-              />
-              <DashboardKpiCard
-                titulo="Em atendimento"
-                :valor="dashboard?.kpis.emAtendimento ?? 0"
-                icon="i-lucide-hammer"
-                :carregando="carregandoDashboard"
-              />
-              <DashboardKpiCard
-                titulo="Concluídas"
-                :valor="dashboard?.kpis.concluidas ?? 0"
-                icon="i-lucide-check-circle-2"
-                :carregando="carregandoDashboard"
-              />
-            </div>
-
-            <DashboardBox class="mb-4">
-              <DashboardKpiCard
-                compacto
-                titulo="Total de relatos"
-                :valor="dashboard?.kpis.totalRelatos ?? 0"
-                icon="i-lucide-users"
-                :carregando="carregandoDashboard"
-              />
-              <DashboardKpiCard
-                compacto
-                titulo="Taxa de conclusão"
-                :valor="`${dashboard?.kpis.taxaConclusao ?? 0}%`"
-                icon="i-lucide-percent"
-                :carregando="carregandoDashboard"
-              />
-              <DashboardKpiCard
-                compacto
-                titulo="Bairro com mais ocorrências"
-                :valor="dashboard?.kpis.bairroMaisOcorrencias?.bairro ?? '—'"
-                :descricao="dashboard?.kpis.bairroMaisOcorrencias ? `${dashboard.kpis.bairroMaisOcorrencias.quantidade} ocorrências` : undefined"
-                icon="i-lucide-map-pin"
-                :carregando="carregandoDashboard"
-              />
-              <DashboardKpiCard
-                compacto
-                titulo="Categoria mais registrada"
-                :valor="dashboard?.kpis.categoriaMaisRegistrada?.label ?? '—'"
-                :descricao="dashboard?.kpis.categoriaMaisRegistrada ? `${dashboard.kpis.categoriaMaisRegistrada.quantidade} ocorrências` : undefined"
-                icon="i-lucide-tag"
-                :carregando="carregandoDashboard"
-              />
-            </DashboardBox>
-
-            <DashboardGraficosAnaliticos :dashboard="dashboard" :carregando="carregandoDashboard" :periodo="periodo" />
-          </template>
-        </section>
-
         <section>
           <h2 class="mb-4 text-lg font-bold text-highlighted">
             Atalhos rápidos

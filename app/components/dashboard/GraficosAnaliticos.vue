@@ -2,10 +2,6 @@
 import type { DashboardResposta } from '#shared/types/dashboard'
 import type { OcorrenciaMapa } from '#shared/types/solicitacao'
 
-// Os 10 cards analíticos — reaproveitado tal e qual pela home (dashboard
-// público) e pelo painel do servidor/admin (ver seção 18 do pedido: "mesmo
-// endpoint agregado, mesmo ChartCard, mesmos cálculos"). A diferença entre
-// os dois contextos fica na página que usa este componente, não aqui.
 const props = defineProps<{
   dashboard: DashboardResposta | null | undefined
   carregando: boolean

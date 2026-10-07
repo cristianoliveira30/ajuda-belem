@@ -6,11 +6,6 @@ definePageMeta({ middleware: 'servidor', layout: 'painel' })
 
 const { perfil } = usePerfil()
 
-// Mesmo endpoint agregado, mesmo componente de gráficos da home — nenhum
-// cálculo novo aqui (ver server/api/dashboard.get.ts e
-// app/components/dashboard/GraficosAnaliticos.vue). A diferença do painel
-// pro dashboard público é só o agrupamento dos KPIs (aqui cada status
-// aparece separado, sem juntar em "em atendimento") e as ações de gestão.
 const periodo = ref('todos')
 const { data: dashboard, status: statusDashboard, error: erroDashboard } = await useFetch<DashboardResposta>('/api/dashboard', {
   query: { periodo },

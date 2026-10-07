@@ -2,123 +2,184 @@
 
 Portal de solicitações de serviços de infraestrutura urbana da Prefeitura de Belém, inspirado no modelo do [SP156](https://www.prefeitura.sp.gov.br/) (São Paulo).
 
-Permite que o cidadão registre ocorrências de infraestrutura (iluminação pública, buracos e pavimentação, saneamento, poda de árvores, limpeza urbana, sinalização de trânsito, entre outras), acompanhe o andamento por número de protocolo e, para a Prefeitura, gerencie e priorize os atendimentos.
+O cidadão registra ocorrências (iluminação pública, buracos e pavimentação, saneamento, poda de árvores, limpeza urbana, sinalização de trânsito, entre outras), acompanha o andamento pelo número de protocolo e vê as ocorrências no mapa. A Prefeitura, por meio dos servidores e do administrador, gerencia e prioriza os atendimentos em um painel restrito.
 
-## Stack
+## O que o sistema faz
 
-- [Nuxt 4](https://nuxt.com)
-- [Nuxt UI v4](https://ui.nuxt.com) (componentes + Tailwind CSS v4 + ícones + modo escuro)
-- [Better Auth](https://better-auth.com) + PostgreSQL (autenticação de cidadão/servidor)
-- [Leaflet](https://leafletjs.com) + OpenStreetMap (mapa de ocorrências)
-- PWA instalável (`@vite-pwa/nuxt`)
-- TypeScript
-
-Veja o roadmap de construção do projeto, por etapas, em [docs/etapa-iniciais.md](./docs/etapa-iniciais.md).
-
-## Configuração
-
-O login/cadastro (`/entrar`, `/cadastro`, `/perfil`) usa [Better Auth](https://better-auth.com) contra um Postgres próprio e precisa do banco rodando para funcionar:
-
-1. Copie `.env.example` para `.env` e gere um valor para `BETTER_AUTH_SECRET` (ex.: `openssl rand -base64 32`).
-2. Suba o banco com `docker compose up -d db` (o banco fica exposto na porta **5433** do host, para não colidir com outro Postgres local na 5432; ou use um Postgres já instalado, ajustando `DATABASE_URL`).
-3. Crie as tabelas do Better Auth (usuário, sessão etc., ver [server/utils/auth.ts](./server/utils/auth.ts)):
-   - Com Docker, sem precisar de yarn/node local: `docker compose run --rm migrate`.
-   - Ou local (se já tem `yarn install` feito e `DATABASE_URL` no `.env` apontando pro banco): `yarn db:migrate`.
-
-Contas de servidor não têm cadastro público — são promovidas manualmente no banco (ver comentário no topo de [db/schema.sql](./db/schema.sql)).
-
-### Dados de demonstração (seed)
-
-Só para desenvolvimento. Depois de criar as tabelas (passo 3), `yarn db:seed` ([db/seed.mjs](./db/seed.mjs)) popula os dois lugares onde o app guarda dados:
-
-| Onde | O que cria |
+| Quem | Acesso |
 | --- | --- |
-| Postgres (`user` + `account`) | 4 contas de demonstração (tabela abaixo) |
-| `.data/solicitacoes` (arquivos JSON, ver `nuxt.config.ts`) | 100 solicitações simuladas de [db/seed/solicitacoes.json](./db/seed/solicitacoes.json): todas as categorias, status e bairros, com histórico, relatos e fotos |
+| Visitante (sem login) | Home, mapa de ocorrências, avisos, contatos úteis e consulta de uma ocorrência pelo protocolo (sem dados pessoais do cidadão) |
+| Cidadão | Tudo acima, mais registrar ocorrências pelo assistente (exige login e CPF), ver as próprias ocorrências e editar o perfil |
+| Servidor | Painel em `/painel`: dashboard com indicadores e gráficos, fila de atendimento e atualização de status das ocorrências |
+| Administrador | Tudo do servidor, mais a gestão das contas de servidor em `/painel/servidores` (criar, ativar e desativar) |
 
-### Usuários padrão (para testar)
+O dashboard com os números agregados **não é público**: a API (`GET /api/dashboard`) devolve 401 sem login e 403 para cidadão.
 
-Depois do seed existem exatamente estas 4 contas (verificadas no banco e testadas com login real). Não há contas pessoais: todo mundo usa as mesmas.
+Regras do cadastro de cidadão:
 
-| E-mail | Papel | Senha | O que pode fazer |
-| --- | --- | --- | --- |
-| `admin@ajudabelem.local` | admin | `Belem123` | Painel com visão geral (KPIs e gráficos), gestão de servidores em `/painel/servidores` (criar, ativar/desativar) e todas as solicitações |
-| `servidor.obras@ajudabelem.local` | servidor (Secretaria de Obras) | `Belem123` | Fila de atendimento em `/painel/solicitacoes`: atualizar status e acompanhar as ocorrências |
-| `servidor.limpeza@ajudabelem.local` | servidor (Secretaria de Limpeza Urbana) | `Belem123` | Mesma fila de atendimento, pela Secretaria de Limpeza Urbana |
-| `cidadao@ajudabelem.local` | cidadão (CPF fictício válido) | `Belem123` | Registrar ocorrências (exige login), acompanhar por protocolo e editar o perfil em `/perfil` |
+- CPF obrigatório, com os dois dígitos verificadores validados, e único por conta. A validação é feita no servidor, não só na tela.
+- Senha com no mínimo 6 caracteres, com letra e número.
+- Telefone opcional, mas, se informado, precisa ter DDD (10 ou 11 dígitos).
+- Também é possível entrar com Google (opcional, ver [Login com Google](#login-com-google-opcional)). Nesse caso o CPF é pedido depois, em `/perfil`.
+- Servidores não se cadastram sozinhos: a conta é criada pelo administrador e exige troca de senha no primeiro acesso.
 
-Os servidores já nascem com `primeiroAcesso = false`, para entrar direto no painel.
+## Tecnologias
 
-Ao entrar em `/entrar`, cada papel cai na sua tela ([app/utils/destinoPosLogin.ts](./app/utils/destinoPosLogin.ts)): **admin** → `/painel` (visão geral + gestão de servidores), **servidor** → `/painel/solicitacoes` (fila de atendimento), **cidadão** → `/perfil`. Servidor em primeiro acesso vai para `/perfil` trocar a senha antes. Quem já está logado e abre `/entrar` vê um aviso com a conta atual (atalho para a sua tela ou "Sair") e pode entrar com outra conta direto pelo formulário; conta desativada é recusada no login.
+- [Nuxt 4](https://nuxt.com) e TypeScript
+- [Nuxt UI v4](https://ui.nuxt.com) (componentes, Tailwind CSS v4, ícones e modo escuro)
+- [Better Auth](https://better-auth.com) + PostgreSQL 16 (autenticação e contas)
+- [ApexCharts](https://apexcharts.com) (gráficos do painel)
+- [Leaflet](https://leafletjs.com) + OpenStreetMap (mapa)
+- PWA instalável (`@vite-pwa/nuxt`)
+- [Zod](https://zod.dev) (validação) e [Vitest](https://vitest.dev) (testes)
+- Docker e Docker Compose
+
+## Como executar
+
+### Opção 1: com Docker (recomendada)
+
+Só precisa de **Docker com Compose v2**. Não é preciso instalar Node, Yarn nem Postgres.
 
 ```bash
-# Com Docker (o .data pertence ao container, então rode lá dentro)
-docker compose exec dev yarn db:seed
+# 1. Variáveis de ambiente. Gera um BETTER_AUTH_SECRET aleatório (Linux/macOS/WSL).
+#    No Windows sem WSL, copie o arquivo e preencha BETTER_AUTH_SECRET à mão com qualquer texto longo.
+cp .env.example .env
+sed -i "s|^BETTER_AUTH_SECRET=.*|BETTER_AUTH_SECRET=$(openssl rand -base64 32)|" .env
 
-# Ou local, com DATABASE_URL no .env
-yarn db:seed
+# 2. Sobe o Postgres e o app em modo desenvolvimento (a primeira vez demora, pois constrói a imagem)
+docker compose --profile dev up -d --build dev
+
+# 3. Cria as tabelas do Better Auth no banco
+docker compose run --rm migrate
+
+# 4. Carrega os dados de demonstração (4 contas + 100 ocorrências)
+docker compose exec dev yarn db:seed
 ```
 
-#### Rodando o seed
+Abra <http://localhost:3000> e entre com uma das [contas de demonstração](#contas-de-demonstração).
 
-As fotos das solicitações simuladas são fotos reais do Wikimedia Commons (26 arquivos em [public/seed/fotos/](./public/seed/fotos/), 1 ou 2 por ocorrência, conforme a categoria), servidas em `/seed/fotos/...`. Os locais retratados não são de Belém; autoria e licença de cada uma estão em [public/seed/fotos/CREDITOS.md](./public/seed/fotos/CREDITOS.md).
+A primeira abertura de cada página em modo dev pode levar alguns segundos, porque o Nuxt compila sob demanda. Para acompanhar o log: `docker compose logs -f dev`.
 
-É idempotente: só mexe em ids `seed-*` e nos protocolos do fixture, nunca em contas ou solicitações reais. Recusa rodar com `NODE_ENV=production`. Para gravar as solicitações em outro diretório, defina `SOLICITACOES_DIR`.
-
-## Desenvolvimento
-
-Precisa de Node/Yarn instalados localmente. Se preferir não instalar nada além do Docker, veja "Desenvolvimento com Docker" abaixo — faz a mesma coisa dentro de um container.
+Para parar:
 
 ```bash
-# Instalar dependências
+docker compose --profile dev down        # mantém o banco
+docker compose --profile dev down -v     # apaga também o banco (recomeça do zero)
+rm -rf .data                             # apaga as ocorrências (ficam em arquivos, ver "Limitações")
+```
+
+Se mudar `server/utils/auth.ts`, rode o passo 3 de novo.
+
+### Opção 2: sem Docker para o app (Node local)
+
+Precisa de **Node 24** e **Yarn 4** (`corepack enable`) e de um Postgres. O Postgres pode vir do Docker (`docker compose up -d db`, que expõe a porta **5433**) ou ser um já instalado, ajustando `DATABASE_URL`.
+
+```bash
+cp .env.example .env            # preencha BETTER_AUTH_SECRET
+docker compose up -d db         # só o banco, na porta 5433
 yarn install
+yarn db:migrate                 # cria as tabelas
+DATABASE_URL=postgres://ajuda_belem:ajuda_belem@localhost:5433/ajuda_belem yarn db:seed
+yarn dev                        # http://localhost:3000
+```
 
-# Ambiente de desenvolvimento
-yarn dev
+O `yarn db:seed` não lê o `.env`; por isso o `DATABASE_URL` vai na frente do comando.
 
-# Build de produção
-yarn build
+### Contas de demonstração
 
-# Lint
+Criadas pelo `yarn db:seed`. Todas usam a senha `Belem123` (apenas para demonstração; o seed se recusa a rodar com `NODE_ENV=production`).
+
+| E-mail | Papel | O que testar |
+| --- | --- | --- |
+| `admin@ajudabelem.local` | Administrador | `/painel` (dashboard), `/painel/servidores` (criar e desativar servidores), todas as ocorrências |
+| `servidor.obras@ajudabelem.local` | Servidor (Secretaria de Obras) | `/painel/solicitacoes`: atualizar o status das ocorrências |
+| `servidor.limpeza@ajudabelem.local` | Servidor (Secretaria de Limpeza Urbana) | Mesma fila de atendimento |
+| `cidadao@ajudabelem.local` | Cidadão | Registrar ocorrência, acompanhar por protocolo, editar perfil |
+
+Depois do login, cada papel cai na sua tela: administrador em `/painel`, servidor em `/painel/solicitacoes` e cidadão em `/perfil`.
+
+Para testar o **cadastro** em `/cadastro`, use um CPF válido (por exemplo, de um gerador de CPF de teste) e uma senha com letra e número. Um CPF já usado em outra conta é recusado.
+
+### Roteiro sugerido para avaliar
+
+1. Na home, sem login, confira que **não** há indicadores: o dashboard é restrito.
+2. Entre como `cidadao@ajudabelem.local`, clique em "Contar um problema" e registre uma ocorrência pelo assistente. Anote o protocolo.
+3. Consulte o protocolo na home (sem login) e veja a ocorrência no `/mapa`.
+4. Saia, entre como `servidor.obras@ajudabelem.local`, abra `/painel/solicitacoes`, ache a ocorrência e mude o status.
+5. Em `/painel`, veja os KPIs e os gráficos, e o filtro de período.
+6. Entre como `admin@ajudabelem.local` e crie um servidor em `/painel/servidores`. No primeiro acesso dele, o sistema exige trocar a senha.
+7. Como cidadão, tente abrir `/painel`: você é redirecionado, e `GET /api/dashboard` responde 403.
+
+## Testes e qualidade
+
+```bash
 yarn lint
-
-# Testes
 yarn test
 ```
 
-## Docker
+Os testes ([test/basic.test.ts](./test/basic.test.ts)) sobem o app e fazem requisições reais, então precisam do Postgres no ar, das tabelas criadas (`yarn db:migrate`) e do `.env` preenchido. Cobrem, entre outros pontos: exigência de login para registrar ocorrência, ocultação de dados pessoais na consulta pública, bloqueio de payloads com XSS/SQL, regras do cadastro (nome, telefone, CPF) e restrição do dashboard. Os testes apagam as ocorrências que criam.
 
-### Desenvolvimento com Docker
+Com Docker: `docker compose exec dev yarn test`.
 
-Não precisa de Node/Yarn instalados — só Docker. O projeto roda com hot-reload (`yarn dev` dentro do container), montando o diretório local por bind mount: editar um arquivo aqui já reflete no container na hora.
+## Scripts
+
+| Comando | O que faz |
+| --- | --- |
+| `yarn dev` | Servidor de desenvolvimento |
+| `yarn build` / `yarn preview` | Build de produção e pré-visualização |
+| `yarn lint` | ESLint |
+| `yarn test` | Testes (Vitest) |
+| `yarn db:migrate` | Cria/atualiza as tabelas do Better Auth |
+| `yarn db:seed` | Dados de demonstração |
+
+## Estrutura do projeto
+
+```
+app/          Interface (Nuxt): páginas, componentes, layouts, middlewares e composables
+server/api/   Rotas da API (solicitações, painel, admin, perfil, dashboard, mapa)
+server/utils/ Configuração do Better Auth e controle de acesso (exigirServidor/exigirAdmin)
+shared/       Tipos e validações usados pelo front e pelo back (CPF, senha, schemas Zod)
+db/           schema.sql (referência), seed.mjs e o fixture das 100 ocorrências
+test/         Testes
+docs/         Histórico de desenvolvimento por etapas
+```
+
+## Banco de dados e armazenamento
+
+- **Postgres:** contas e sessões (tabelas `user`, `account`, `session`, `verification` do Better Auth). O `db/schema.sql` é só referência; a fonte da verdade é a configuração em [server/utils/auth.ts](./server/utils/auth.ts), aplicada por `yarn db:migrate`.
+- **Arquivos JSON** em `.data/solicitacoes`: as ocorrências. Foi uma escolha de simplicidade para o trabalho (ver Limitações).
+
+## Limitações conhecidas
+
+- As ocorrências ficam em arquivos locais, não no Postgres. Serve para o escopo do trabalho, mas um sistema real usaria o banco.
+- O e-mail do cadastro não é verificado por mensagem de confirmação.
+- As fotos do seed são do Wikimedia Commons e não retratam Belém. Autoria e licenças em [public/seed/fotos/CREDITOS.md](./public/seed/fotos/CREDITOS.md).
+- O mapa público mostra de cada ocorrência o protocolo, a categoria, a rua, o bairro, as coordenadas, o status e a descrição. Nome, e-mail, telefone e CPF do cidadão ficam de fora, mas a descrição é texto livre digitado por ele.
+
+## Login com Google (opcional)
+
+O botão "Continuar com Google" só funciona com credenciais OAuth. Sem elas, o resto do sistema funciona normalmente e o botão apenas falha ao tentar entrar. Para ativar, crie um OAuth Client (tipo "Web application") no Google Cloud Console, cadastre `http://localhost:3000/api/auth/callback/google` como URI de redirecionamento e preencha `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` no `.env`.
+
+## Produção com Docker
 
 ```bash
-# Copie e preencha BETTER_AUTH_SECRET (ver seção Configuração)
-cp .env.example .env
-
-# Sobe o Postgres + o app em modo dev (http://localhost:3000)
-docker compose --profile dev up dev
-
-# Uma única vez (ou após mudar server/utils/auth.ts): cria as tabelas do
-# Better Auth
+cp .env.example .env            # preencha BETTER_AUTH_SECRET
+docker compose up -d --build    # app (porta 3000) + Postgres
 docker compose run --rm migrate
 ```
 
-Usa [Dockerfile.dev](./Dockerfile.dev) — só instala as dependências, sem copiar o código (que vem do bind mount). `node_modules` fica de fora do bind mount (volume anônimo, ver `docker-compose.yml`) para não ser sobrescrito pelo `node_modules` do host.
+O `Dockerfile` usa build em dois estágios: o primeiro instala as dependências e roda `yarn build`; o segundo copia só o `.output` e instala as dependências de runtime. Os volumes `db-data` (Postgres) e `app-data` (ocorrências em `/app/.data`) preservam os dados entre execuções. O seed não roda em produção por segurança; para avaliar com dados de demonstração, use a Opção 1.
 
-### Produção
+## Problemas comuns
 
-```bash
-# Copie e preencha BETTER_AUTH_SECRET (ver seção Configuração)
-cp .env.example .env
+| Sintoma | Causa e solução |
+| --- | --- |
+| `defina BETTER_AUTH_SECRET no .env` ao subir o Docker | O `.env` não existe ou está com `BETTER_AUTH_SECRET` vazio. Refaça o passo 1. |
+| Login ou cadastro dá erro de servidor | As tabelas não existem. Rode `docker compose run --rm migrate`. |
+| Login recusa as contas de demonstração | O seed não foi executado. Rode `docker compose exec dev yarn db:seed`. |
+| Porta 3000 ou 5433 já em uso | Pare o outro serviço que usa a porta, ou mude o mapeamento em `docker-compose.yml`. |
+| Quero recomeçar do zero | `docker compose --profile dev down -v` e `rm -rf .data`, depois refaça os passos 2 a 4. |
 
-# Builda a imagem de produção e sobe o app + o Postgres (db-data e app-data
-# são volumes nomeados, persistem entre execuções)
-docker compose up -d
+## Documentação adicional
 
-# Uma única vez (ou após mudar server/utils/auth.ts): cria as tabelas do
-# Better Auth. Não precisa de yarn/node instalado no host.
-docker compose run --rm migrate
-```
-
-O `Dockerfile` usa build multi-stage: primeiro instala as dependências e roda `yarn build`; a imagem final copia apenas o resultado (`.output`) e instala só as dependências de runtime do Nitro, sem o restante do projeto. O volume `app-data` (`/app/.data` dentro do container) é onde o armazenamento local das solicitações (`useStorage`, ver [docs/etapa-iniciais.md](./docs/etapa-iniciais.md)) grava os arquivos — sem ele, os dados somem a cada `docker compose up` novo. O volume `db-data` guarda os dados do Postgres (contas de usuário).
+O histórico de desenvolvimento por etapas está em [docs/etapa-iniciais.md](./docs/etapa-iniciais.md). As primeiras etapas usaram Supabase, que depois foi substituído pelo Better Auth; vale a leitura como registro de decisões, não como descrição do estado atual.

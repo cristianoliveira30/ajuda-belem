@@ -6,9 +6,18 @@ import type { Solicitacao } from '#shared/types/solicitacao'
 export default defineEventHandler(async (event) => {
   // Exige cidadão autenticado — identidade vem da sessão, nunca do body, pra
   // ninguém conseguir registrar uma ocorrência em nome de outra pessoa.
-  const session = await auth.api.getSession({ headers: event.headers })
+  const session = await auth.api.getSession({
+    headers: event.headers,
+    query: { disableCookieCache: true },
+  })
   if (!session?.user) {
     throw createError({ statusCode: 401, message: 'Não autenticado' })
+  }
+
+  // Cidadão que entrou pelo Google ainda sem CPF precisa completar o
+  // cadastro em /perfil antes de registrar uma ocorrência.
+  if (session.user.papel === 'cidadao' && !session.user.cpf) {
+    throw createError({ statusCode: 403, message: 'Complete seu cadastro informando o CPF antes de registrar uma ocorrência.' })
   }
 
   const body = await readBody(event)
@@ -47,10 +56,10 @@ export default defineEventHandler(async (event) => {
     // identidade autenticada, nunca o que vier no body.
     nome: session.user.name,
     email: session.user.email,
-    // O chat não pergunta mais telefone/CPF (ver app/pages/solicitacoes/nova.vue)
-    // — aproveita o que já está na conta, se tiver; fica ausente se não tiver.
-    telefone: resultado.data.telefone ?? session.user.telefone ?? undefined,
-    cpf: resultado.data.cpf ?? session.user.cpf ?? undefined,
+    // Telefone e CPF vêm sempre da conta (já validados no cadastro), nunca
+    // do corpo da requisição.
+    telefone: session.user.telefone ?? undefined,
+    cpf: session.user.cpf ?? undefined,
     userId: session.user.id,
     protocolo,
     status: 'aberto',

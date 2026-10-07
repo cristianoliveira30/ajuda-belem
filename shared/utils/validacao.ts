@@ -54,11 +54,16 @@ export function validarSenha(senha: string): boolean {
   return senha.length >= 6 && /[a-zA-ZÀ-ü]/.test(senha) && /\d/.test(senha)
 }
 
+export function validarTelefone(telefone: string): boolean {
+  const digitos = telefone.replace(/\D/g, '')
+  return digitos.length === 10 || digitos.length === 11
+}
+
 export const criarServidorSchema = z.object({
   nome: z.string().min(3, 'Informe o nome completo'),
   email: z.string().email('Informe um e-mail válido'),
   senha: z.string().refine(validarSenha, 'A senha precisa ter pelo menos 6 caracteres, com letra e número'),
-  telefone: z.string().optional(),
+  telefone: z.string().refine(telefone => !telefone.trim() || validarTelefone(telefone), 'Informe um telefone válido, com DDD').optional(),
   secretaria: z.string().optional(),
 })
 
