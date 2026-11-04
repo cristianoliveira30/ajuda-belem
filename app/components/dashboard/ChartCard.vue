@@ -4,6 +4,7 @@
 // estilo/dimensão — o card aparece, mas o gráfico some (mesmo problema que
 // o Leaflet teria sem `leaflet.css`, ver app/components/MapaOcorrencias.vue).
 import 'apexcharts/dist/apexcharts.css'
+import type ApexChartsInstance from 'apexcharts'
 import type { ApexOptions } from 'apexcharts'
 
 // Componente único pra todos os tipos de gráfico do dashboard (donut, bar,
@@ -33,10 +34,30 @@ const props = withDefaults(defineProps<{
   cores: undefined,
 })
 
-const CORES_PADRAO = ['#2563eb', '#f59e0b', '#0ea5e9', '#22c55e', '#71717a', '#ef4444', '#a855f7']
+const CORES_PADRAO = [
+  '#1D4ED8', // Azul principal
+  '#0EA5E9', // Azul claro
+  '#14B8A6', // Turquesa
+  '#22C55E', // Verde
+  '#F59E0B', // Âmbar
+  '#F97316', // Laranja
+  '#64748B', // Cinza
+  '#DC2626', // Vermelho
+]
+
+const CORES_BARRAS = [
+  '#123B5D', // Azul-marinho
+  '#164E7A', // Azul profundo
+  '#1D5F99', // Azul escuro
+  '#2563B8', // Azul principal
+  '#3182CE', // Azul médio
+  '#60A5E8', // Azul claro
+  '#93C5E8', // Azul suave
+  '#269B9A', // Azul esverdeado
+]
 
 const containerRef = useTemplateRef('containerRef')
-let grafico: import('apexcharts').default | null = null
+let grafico: ApexChartsInstance | null = null
 // Mesma cautela do MapaOcorrencias.vue: `await import('apexcharts')` pode
 // terminar depois do componente já ter sido desmontado (navegação rápida) —
 // sem essa flag, o unmount do Vue quebrava no meio do caminho.
@@ -71,10 +92,20 @@ function montarOpcoes(): ApexOptions {
       fontFamily: 'inherit',
       animations: { enabled: true },
     },
-    colors: props.cores ?? CORES_PADRAO,
+   colors: props.cores ?? (
+      props.tipo === 'bar' ? CORES_BARRAS : CORES_PADRAO
+    ),
     series: props.series,
     ...(ehDonut ? { labels: props.categorias } : { xaxis: { categories: props.categorias ?? [] } }),
-    ...(props.tipo === 'bar' ? { plotOptions: { bar: { horizontal: props.horizontal ?? false, borderRadius: 4 } } } : {}),
+    ...(props.tipo === 'bar' ? {
+  plotOptions: {
+    bar: {
+      horizontal: props.horizontal ?? false,
+      borderRadius: 4,
+      distributed: true,
+    },
+  },
+} : {}),
     dataLabels: { enabled: false },
     legend: { position: ehDonut ? 'bottom' : 'top', fontSize: '12px' },
     tooltip: { theme: 'light' },
@@ -141,7 +172,7 @@ onBeforeUnmount(() => {
       <p v-else-if="semDados" class="text-sm text-muted">
         Sem dados para o período selecionado.
       </p>
-      <div v-show="!carregando && !semDados" ref="containerRef" class="w-full" />
+       <div v-show="!carregando && !semDados" ref="containerRef" class="w-full" />
     </div>
   </DashboardCard>
 </template>
