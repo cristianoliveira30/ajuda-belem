@@ -1,4 +1,4 @@
-import type { Solicitacao } from '#shared/types/solicitacao'
+import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const protocolo = getRouterParam(event, 'protocolo')
@@ -7,11 +7,16 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Informe o número de protocolo' })
   }
 
-  const solicitacao = await useStorage('solicitacoes').getItem<Solicitacao>(`${protocolo}.json`)
+  const linha = db.select().from(solicitacoes).where(eq(solicitacoes.protocolo, protocolo)).get()
 
-  if (!solicitacao) {
+  if (!linha) {
     throw createError({ statusCode: 404, message: 'Solicitação não encontrada' })
   }
 
-  return solicitacao
+  const historico = db.select().from(historicoSolicitacao)
+    .where(eq(historicoSolicitacao.protocolo, protocolo))
+    .orderBy(historicoSolicitacao.id)
+    .all()
+
+  return paraSolicitacao(linha, historico)
 })

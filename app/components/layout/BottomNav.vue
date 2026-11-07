@@ -1,11 +1,17 @@
 <script setup lang="ts">
-const abas = [
+const { loggedIn, user } = useUserSession()
+
+const abas = computed(() => [
   { label: 'Início', icon: 'i-lucide-home', to: '/' },
   { label: 'Mapa', icon: 'i-lucide-map', to: '/mapa' },
   { label: 'Protocolos', icon: 'i-lucide-clock', to: '/solicitacoes/acompanhar' },
   { label: 'Avisos', icon: 'i-lucide-newspaper', to: '/#avisos' },
-  { label: 'Perfil', icon: 'i-lucide-user', to: '/entrar' },
-]
+  {
+    label: 'Perfil',
+    icon: 'i-lucide-user',
+    to: !loggedIn.value ? '/entrar' : user.value?.tipo === 'servidor' ? '/painel' : '/perfil',
+  },
+])
 
 const route = useRoute()
 function ativo(to: string) {

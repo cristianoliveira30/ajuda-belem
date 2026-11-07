@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@nuxt/eslint'],
+  modules: ['@nuxt/ui', '@nuxt/eslint', 'nuxt-auth-utils'],
 
   devtools: { enabled: true },
   compatibilityDate: '2026-09-18',
@@ -23,11 +23,5 @@ export default defineNuxtConfig({
     preference: 'light',
     fallback: 'light',
     classSuffix: '',
-  },
-
-  nitro: {
-    storage: {
-      solicitacoes: { driver: 'fs', base: './.data/solicitacoes' },
-    },
   },
 })

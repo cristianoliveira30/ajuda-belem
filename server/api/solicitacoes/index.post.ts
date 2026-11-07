@@ -1,6 +1,6 @@
+import { eq } from 'drizzle-orm'
 import { solicitacaoSchema } from '#shared/utils/validacao'
 import { gerarProtocolo } from '#shared/utils/status'
-import type { Solicitacao } from '#shared/types/solicitacao'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
@@ -14,30 +14,43 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const storage = useStorage('solicitacoes')
-
   let protocolo = gerarProtocolo()
-  while (await storage.hasItem(`${protocolo}.json`)) {
+  while (db.select().from(solicitacoes).where(eq(solicitacoes.protocolo, protocolo)).get()) {
     protocolo = gerarProtocolo()
   }
 
-  const agora = new Date().toISOString()
+  const sessao = await getUserSession(event)
+  const userId = sessao.user?.tipo === 'cidadao' ? sessao.user.id : null
 
-  const solicitacao: Solicitacao = {
-    ...resultado.data,
+  const agora = new Date().toISOString()
+  const dados = resultado.data
+
+  db.insert(solicitacoes).values({
     protocolo,
+    userId,
+    categoria: dados.categoria,
+    rua: dados.rua,
+    numero: dados.numero,
+    bairro: dados.bairro,
+    complemento: dados.complemento,
+    pontoReferencia: dados.pontoReferencia,
+    descricao: dados.descricao,
+    fotos: dados.fotos ? JSON.stringify(dados.fotos) : null,
+    risco: dados.risco,
+    nome: dados.nome,
+    email: dados.email,
+    telefone: dados.telefone,
+    cpf: dados.cpf,
     status: 'aberto',
     criadoEm: agora,
-    historico: [
-      {
-        status: 'aberto',
-        data: agora,
-        mensagem: 'Solicitação registrada com sucesso.',
-      },
-    ],
-  }
+  }).run()
 
-  await storage.setItem(`${protocolo}.json`, solicitacao)
+  db.insert(historicoSolicitacao).values({
+    protocolo,
+    status: 'aberto',
+    data: agora,
+    mensagem: 'Solicitação registrada com sucesso.',
+  }).run()
 
   return { protocolo }
 })

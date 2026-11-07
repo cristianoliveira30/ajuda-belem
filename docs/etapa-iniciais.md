@@ -58,8 +58,15 @@ Adicionada na Etapa 1:
 Bibliotecas que **ainda não foram adicionadas** e devem entrar em etapas específicas (evitar instalar antes de precisar):
 
 - Biblioteca de mapas (`maplibre-gl` ou `leaflet`) — Etapa 4.
-- Persistência (banco de dados) e autenticação real — Etapa 2, a depender da infraestrutura de backend escolhida (ex.: Nitro + banco gerenciado, ou serviço externo). Na Etapa 1 o armazenamento usa o storage de arquivos do próprio Nitro (`useStorage`), suficiente para desenvolvimento mas não para produção.
 - Integração com LLM real (ex.: API da Anthropic) para o assistente de registro de ocorrências — avaliado na Etapa 1 e adiado deliberadamente (ver nota abaixo); entraria como evolução futura opcional.
+
+Adicionadas na Etapa 2:
+
+| Biblioteca | Motivo |
+| --- | --- |
+| `nuxt-auth-utils` | Sessão de autenticação própria (cookie selado), sem serviço externo. Fornece `useUserSession()`, `setUserSession`/`requireUserSession` e o hash de senha (`hashPassword`/`verifyPassword`, scrypt) — dispensa uma lib de hashing separada. |
+| `drizzle-orm` + `drizzle-kit` (dev) | Camada de acesso ao banco (schema tipado + migrações versionadas), substituindo o `useStorage` de arquivo da Etapa 1. |
+| `better-sqlite3` | Driver SQLite. Distribui binários pré-compilados por plataforma dentro do próprio pacote (inclusive `linuxmusl-x64`), então não exige compilação nem ferramentas de build no Docker (`node:24-alpine`) — o Nitro externaliza a dependência nativa e copia os binários para `.output/server/node_modules` automaticamente. |
 
 ### Identidade visual
 
@@ -78,34 +85,59 @@ app/
     default.vue           # header + conteúdo + footer (páginas institucionais)
     chat.vue              # layout minimalista (sem header/footer) usado pelo chat de registro
   components/
-    layout/AppHeader.vue  # cabeçalho, navegação, alternância de tema
+    layout/AppHeader.vue  # cabeçalho, navegação, alternância de tema, menu do usuário logado
     layout/AppFooter.vue  # rodapé institucional
+    layout/BottomNav.vue  # navegação inferior (mobile)
     EmConstrucao.vue      # placeholder usado pelas páginas ainda não detalhadas
+  middleware/
+    cidadao.ts             # exige sessão de cidadão, senão redireciona para /entrar (Etapa 2)
+    servidor.ts             # exige sessão de servidor, senão redireciona para /entrar (Etapa 2)
   pages/
     index.vue             # página inicial
     solicitacoes/
       nova.vue             # chat guiado de registro de ocorrência (Etapa 1)
       acompanhar.vue       # consulta de protocolo com linha do tempo (Etapa 1)
     mapa.vue               # placeholder — Etapa 4
-    entrar.vue              # placeholder — Etapa 2
-    painel/index.vue        # placeholder — Etapa 3
+    entrar.vue              # login (cidadão e servidor) (Etapa 2)
+    cadastro.vue             # cadastro de cidadão (Etapa 2)
+    minhas-solicitacoes.vue  # solicitações do cidadão logado (Etapa 2)
+    perfil.vue               # dados da conta do cidadão (Etapa 2)
+    painel/index.vue        # saudação ao servidor logado; restante é placeholder — Etapa 3
 shared/
-  types/solicitacao.ts    # tipos isomórficos (cliente + servidor) da Solicitação
+  types/
+    solicitacao.ts         # tipos isomórficos (cliente + servidor) da Solicitação
+    auth.d.ts                # aumenta o tipo de sessão do nuxt-auth-utils (Etapa 2)
   utils/
     categorias.ts          # lista de categorias de serviço (ícone, label, descrição)
     bairros.ts              # lista de bairros de Belém (sugestão nos campos de endereço)
     status.ts               # rótulos/cores/ícones de status + gerador de protocolo
     validacao.ts             # schema Zod da solicitação, usado no cliente e na API
+    validacaoAuth.ts          # schemas Zod de cadastro/login (Etapa 2)
+    cpf.ts                     # máscara de CPF para exibição (Etapa 2)
     deteccaoCategoria.ts      # detecção simples por palavra-chave da categoria a partir do texto livre
 server/
-  api/solicitacoes/
-    index.post.ts           # cria uma solicitação (valida com Zod, gera protocolo único)
-    [protocolo].get.ts       # consulta uma solicitação por protocolo
+  database/
+    schema.ts               # tabelas Drizzle (users, solicitacoes, historico_solicitacao) (Etapa 2)
+    index.ts                 # abre o SQLite e roda as migrações na subida do servidor (Etapa 2)
+    migrations/               # migrações versionadas, geradas por `yarn db:generate` (Etapa 2)
+  utils/
+    db.ts                    # re-exporta `db` e as tabelas do schema como auto-import (Etapa 2)
+    solicitacoes.ts           # monta o tipo `Solicitacao` a partir das linhas do banco (Etapa 2)
+  plugins/
+    seed-servidores.ts       # cria contas de servidor de demonstração (`SEED_DEMO_USERS=true`) (Etapa 2)
+  api/
+    auth/
+      cadastro.post.ts        # cadastro de cidadão + login automático (Etapa 2)
+      login.post.ts            # login único para cidadão e servidor (Etapa 2)
+    solicitacoes/
+      index.post.ts           # cria uma solicitação (valida com Zod, gera protocolo único)
+      [protocolo].get.ts       # consulta uma solicitação por protocolo
+      minhas.get.ts             # lista as solicitações do cidadão logado (Etapa 2)
 docs/
   etapa-iniciais.md       # este documento
 ```
 
-A página inicial (`/`) e o fluxo de registro/consulta de solicitação (`/solicitacoes/nova` e `/solicitacoes/acompanhar`) já estão implementados por completo. As demais rotas existem (para a navegação já funcionar de ponta a ponta) mas mostram um aviso "Em construção" apontando a etapa em que serão detalhadas.
+A página inicial (`/`), o fluxo de registro/consulta de solicitação (`/solicitacoes/nova` e `/solicitacoes/acompanhar`) e as telas de conta do cidadão e login de servidor (Etapa 2) já estão implementados por completo. As demais rotas existem (para a navegação já funcionar de ponta a ponta) mas mostram um aviso "Em construção" apontando a etapa em que serão detalhadas.
 
 ---
 
@@ -147,14 +179,20 @@ Depois da primeira versão, o usuário compartilhou capturas de tela e o script 
 
 O protótipo compartilhado pelo usuário descreve telas adicionais que não faziam parte do escopo original (voltado a infraestrutura). As que são compatíveis com esse escopo foram incorporadas às etapas futuras abaixo; telas de outras secretarias (saúde, educação, transporte, assistência social) ficam fora do escopo deste sistema.
 
-### Etapa 2 — Conta do cidadão e acesso da equipe
+### Etapa 2 — Conta do cidadão e acesso da equipe (concluída)
 
-Páginas: `entrar.vue`, `cadastro.vue`, `minhas-solicitacoes.vue`, `perfil.vue`.
+Provedor de autenticação definido: **sessão própria via Nitro**, usando `nuxt-auth-utils` (cookie selado, sem serviço externo). A persistência também foi migrada nesta etapa: as solicitações deixaram de ser arquivos JSON (`useStorage`) e passaram a viver em um banco **SQLite** (`.data/ajuda-belem.db`, no mesmo diretório/volume já usado pela Etapa 1), acessado via `drizzle-orm` + `better-sqlite3`. Ver tabela de bibliotecas acima.
 
-- Login/cadastro do cidadão (permite ver histórico de solicitações abertas por CPF/e-mail).
-- Login separado para servidores da Prefeitura (perfis: atendente, gestor por secretaria).
-- Definição do provedor de autenticação (sessão própria via Nitro, ou serviço externo).
-- Tela de perfil do cidadão: dados da conta, solicitações em andamento/concluídas, notificações. CPF sempre mascarado (`***.345.678-**`).
+- **Banco de dados** (`server/database/schema.ts`, migrações versionadas em `server/database/migrations/`, geradas com `yarn db:generate`): tabela `users` (cidadão e servidor juntos, com discriminador `tipo`, já que o login é unificado por e-mail), `solicitacoes` (mesmos campos da Etapa 1, mais `user_id` opcional quando a solicitação é registrada por um cidadão logado) e `historico_solicitacao` (normalizada, não mais um blob JSON — pensando na Etapa 3, que vai atualizar/filtrar por status). As migrações rodam automaticamente na subida do servidor (`server/database/index.ts`), tanto em `yarn dev` quanto no container Docker (por isso o `Dockerfile` agora também copia `server/database/migrations` para a imagem final).
+- **Login/cadastro do cidadão** (`entrar.vue`, `cadastro.vue`): um único endpoint de login (`POST /api/auth/login`, por e-mail + senha) serve cidadão e servidor — o tipo de conta vem do registro encontrado, sem telas ou código separados. O cadastro (`POST /api/auth/cadastro`) é exclusivo para cidadão.
+- **Login de servidores da Prefeitura** (perfis `atendente`/`gestor`, por secretaria): como ainda não existe UI de administração (fica para a Etapa 3), as contas de servidor são criadas por um plugin Nitro (`server/plugins/seed-servidores.ts`) que só roda quando a variável `SEED_DEMO_USERS=true` está definida — nunca por padrão em produção. Cria duas contas de demonstração e imprime as credenciais no log uma única vez.
+- **`minhas-solicitacoes.vue`**: lista as solicitações do cidadão logado (`GET /api/solicitacoes/minhas`), casando por `user_id` (quando a solicitação foi criada já logado) ou por e-mail/CPF da conta (cobrindo solicitações antigas/anônimas feitas com os mesmos dados) — o fluxo de registro anônimo (`/solicitacoes/nova`) continua funcionando sem exigir login.
+- **`perfil.vue`**: dados da conta, CPF mascarado (`shared/utils/cpf.ts`, `***.345.678-**`), contagem de solicitações em andamento/concluídas. A seção de notificações ficou como aviso "chega na Etapa 5" em vez de meio-implementada.
+- **Proteção de rotas**: middleware nomeado (`app/middleware/cidadao.ts`, `app/middleware/servidor.ts`) redireciona para `/entrar` quando a sessão não tem o tipo de conta esperado; aplicado em `minhas-solicitacoes.vue`, `perfil.vue` e `painel/index.vue` (que ganhou uma saudação ao servidor logado, mas continua com o restante do conteúdo como placeholder — a UI completa do painel é Etapa 3).
+- **`AppHeader.vue`**: o botão "Entrar" vira um menu (`UDropdownMenu`) com o nome do usuário, atalhos por tipo de conta e "Sair", quando há sessão ativa.
+- Testado de ponta a ponta (`yarn dev` e build de produção via Docker, incluindo `docker build`/`docker run` com o volume `.data`): cadastro, login (cidadão e servidor), acesso/bloqueio das rotas protegidas, vínculo de uma solicitação nova à conta logada. Suíte de testes (`test/auth.test.ts`) cobre cadastro, sessão, bloqueio sem sessão, login com senha errada e o vínculo de solicitação à conta.
+
+Fora de escopo, propositalmente: pré-preencher nome/e-mail/telefone no chat de registro (`nova.vue`) quando o cidadão já está logado.
 
 ### Etapa 3 — Painel administrativo
 
