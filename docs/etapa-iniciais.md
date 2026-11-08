@@ -58,15 +58,8 @@ Adicionada na Etapa 1:
 Bibliotecas que **ainda não foram adicionadas** e devem entrar em etapas específicas (evitar instalar antes de precisar):
 
 - Biblioteca de mapas (`maplibre-gl` ou `leaflet`) — Etapa 4.
+- Persistência (banco de dados) e autenticação real — Etapa 2, a depender da infraestrutura de backend escolhida (ex.: Nitro + banco gerenciado, ou serviço externo). Na Etapa 1 o armazenamento usa o storage de arquivos do próprio Nitro (`useStorage`), suficiente para desenvolvimento mas não para produção.
 - Integração com LLM real (ex.: API da Anthropic) para o assistente de registro de ocorrências — avaliado na Etapa 1 e adiado deliberadamente (ver nota abaixo); entraria como evolução futura opcional.
-
-Adicionadas na Etapa 2:
-
-| Biblioteca | Motivo |
-| --- | --- |
-| `nuxt-auth-utils` | Sessão de autenticação própria (cookie selado), sem serviço externo. Fornece `useUserSession()`, `setUserSession`/`requireUserSession` e o hash de senha (`hashPassword`/`verifyPassword`, scrypt) — dispensa uma lib de hashing separada. |
-| `drizzle-orm` + `drizzle-kit` (dev) | Camada de acesso ao banco (schema tipado + migrações versionadas), substituindo o `useStorage` de arquivo da Etapa 1. |
-| `better-sqlite3` | Driver SQLite. Distribui binários pré-compilados por plataforma dentro do próprio pacote (inclusive `linuxmusl-x64`), então não exige compilação nem ferramentas de build no Docker (`node:24-alpine`) — o Nitro externaliza a dependência nativa e copia os binários para `.output/server/node_modules` automaticamente. |
 
 ### Identidade visual
 
@@ -85,59 +78,34 @@ app/
     default.vue           # header + conteúdo + footer (páginas institucionais)
     chat.vue              # layout minimalista (sem header/footer) usado pelo chat de registro
   components/
-    layout/AppHeader.vue  # cabeçalho, navegação, alternância de tema, menu do usuário logado
+    layout/AppHeader.vue  # cabeçalho, navegação, alternância de tema
     layout/AppFooter.vue  # rodapé institucional
-    layout/BottomNav.vue  # navegação inferior (mobile)
     EmConstrucao.vue      # placeholder usado pelas páginas ainda não detalhadas
-  middleware/
-    cidadao.ts             # exige sessão de cidadão, senão redireciona para /entrar (Etapa 2)
-    servidor.ts             # exige sessão de servidor, senão redireciona para /entrar (Etapa 2)
   pages/
     index.vue             # página inicial
     solicitacoes/
       nova.vue             # chat guiado de registro de ocorrência (Etapa 1)
       acompanhar.vue       # consulta de protocolo com linha do tempo (Etapa 1)
     mapa.vue               # placeholder — Etapa 4
-    entrar.vue              # login (cidadão e servidor) (Etapa 2)
-    cadastro.vue             # cadastro de cidadão (Etapa 2)
-    minhas-solicitacoes.vue  # solicitações do cidadão logado (Etapa 2)
-    perfil.vue               # dados da conta do cidadão (Etapa 2)
-    painel/index.vue        # saudação ao servidor logado; restante é placeholder — Etapa 3
+    entrar.vue              # placeholder — Etapa 2
+    painel/index.vue        # placeholder — Etapa 3
 shared/
-  types/
-    solicitacao.ts         # tipos isomórficos (cliente + servidor) da Solicitação
-    auth.d.ts                # aumenta o tipo de sessão do nuxt-auth-utils (Etapa 2)
+  types/solicitacao.ts    # tipos isomórficos (cliente + servidor) da Solicitação
   utils/
     categorias.ts          # lista de categorias de serviço (ícone, label, descrição)
     bairros.ts              # lista de bairros de Belém (sugestão nos campos de endereço)
     status.ts               # rótulos/cores/ícones de status + gerador de protocolo
     validacao.ts             # schema Zod da solicitação, usado no cliente e na API
-    validacaoAuth.ts          # schemas Zod de cadastro/login (Etapa 2)
-    cpf.ts                     # máscara de CPF para exibição (Etapa 2)
     deteccaoCategoria.ts      # detecção simples por palavra-chave da categoria a partir do texto livre
 server/
-  database/
-    schema.ts               # tabelas Drizzle (users, solicitacoes, historico_solicitacao) (Etapa 2)
-    index.ts                 # abre o SQLite e roda as migrações na subida do servidor (Etapa 2)
-    migrations/               # migrações versionadas, geradas por `yarn db:generate` (Etapa 2)
-  utils/
-    db.ts                    # re-exporta `db` e as tabelas do schema como auto-import (Etapa 2)
-    solicitacoes.ts           # monta o tipo `Solicitacao` a partir das linhas do banco (Etapa 2)
-  plugins/
-    seed-servidores.ts       # cria contas de servidor de demonstração (`SEED_DEMO_USERS=true`) (Etapa 2)
-  api/
-    auth/
-      cadastro.post.ts        # cadastro de cidadão + login automático (Etapa 2)
-      login.post.ts            # login único para cidadão e servidor (Etapa 2)
-    solicitacoes/
-      index.post.ts           # cria uma solicitação (valida com Zod, gera protocolo único)
-      [protocolo].get.ts       # consulta uma solicitação por protocolo
-      minhas.get.ts             # lista as solicitações do cidadão logado (Etapa 2)
+  api/solicitacoes/
+    index.post.ts           # cria uma solicitação (valida com Zod, gera protocolo único)
+    [protocolo].get.ts       # consulta uma solicitação por protocolo
 docs/
   etapa-iniciais.md       # este documento
 ```
 
-A página inicial (`/`), o fluxo de registro/consulta de solicitação (`/solicitacoes/nova` e `/solicitacoes/acompanhar`) e as telas de conta do cidadão e login de servidor (Etapa 2) já estão implementados por completo. As demais rotas existem (para a navegação já funcionar de ponta a ponta) mas mostram um aviso "Em construção" apontando a etapa em que serão detalhadas.
+A página inicial (`/`) e o fluxo de registro/consulta de solicitação (`/solicitacoes/nova` e `/solicitacoes/acompanhar`) já estão implementados por completo. As demais rotas existem (para a navegação já funcionar de ponta a ponta) mas mostram um aviso "Em construção" apontando a etapa em que serão detalhadas.
 
 ---
 
@@ -179,49 +147,200 @@ Depois da primeira versão, o usuário compartilhou capturas de tela e o script 
 
 O protótipo compartilhado pelo usuário descreve telas adicionais que não faziam parte do escopo original (voltado a infraestrutura). As que são compatíveis com esse escopo foram incorporadas às etapas futuras abaixo; telas de outras secretarias (saúde, educação, transporte, assistência social) ficam fora do escopo deste sistema.
 
-### Etapa 2 — Conta do cidadão e acesso da equipe (concluída)
+### Etapa 2 — Conta do cidadão e acesso da equipe (em andamento)
 
-Provedor de autenticação definido: **sessão própria via Nitro**, usando `nuxt-auth-utils` (cookie selado, sem serviço externo). A persistência também foi migrada nesta etapa: as solicitações deixaram de ser arquivos JSON (`useStorage`) e passaram a viver em um banco **SQLite** (`.data/ajuda-belem.db`, no mesmo diretório/volume já usado pela Etapa 1), acessado via `drizzle-orm` + `better-sqlite3`. Ver tabela de bibliotecas acima.
+Decisões tomadas com o usuário: autenticação via **Supabase Auth** (serviço externo, plano free — também resolve a limitação de a solicitação ficar só em arquivo local, já que o Supabase inclui um Postgres) em vez de sessão própria via Nitro; e o login de servidores da Prefeitura entra já nesta etapa (não esperar a Etapa 3).
 
-- **Banco de dados** (`server/database/schema.ts`, migrações versionadas em `server/database/migrations/`, geradas com `yarn db:generate`): tabela `users` (cidadão e servidor juntos, com discriminador `tipo`, já que o login é unificado por e-mail), `solicitacoes` (mesmos campos da Etapa 1, mais `user_id` opcional quando a solicitação é registrada por um cidadão logado) e `historico_solicitacao` (normalizada, não mais um blob JSON — pensando na Etapa 3, que vai atualizar/filtrar por status). As migrações rodam automaticamente na subida do servidor (`server/database/index.ts`), tanto em `yarn dev` quanto no container Docker (por isso o `Dockerfile` agora também copia `server/database/migrations` para a imagem final).
-- **Login/cadastro do cidadão** (`entrar.vue`, `cadastro.vue`): um único endpoint de login (`POST /api/auth/login`, por e-mail + senha) serve cidadão e servidor — o tipo de conta vem do registro encontrado, sem telas ou código separados. O cadastro (`POST /api/auth/cadastro`) é exclusivo para cidadão.
-- **Login de servidores da Prefeitura** (perfis `atendente`/`gestor`, por secretaria): como ainda não existe UI de administração (fica para a Etapa 3), as contas de servidor são criadas por um plugin Nitro (`server/plugins/seed-servidores.ts`) que só roda quando a variável `SEED_DEMO_USERS=true` está definida — nunca por padrão em produção. Cria duas contas de demonstração e imprime as credenciais no log uma única vez.
-- **`minhas-solicitacoes.vue`**: lista as solicitações do cidadão logado (`GET /api/solicitacoes/minhas`), casando por `user_id` (quando a solicitação foi criada já logado) ou por e-mail/CPF da conta (cobrindo solicitações antigas/anônimas feitas com os mesmos dados) — o fluxo de registro anônimo (`/solicitacoes/nova`) continua funcionando sem exigir login.
-- **`perfil.vue`**: dados da conta, CPF mascarado (`shared/utils/cpf.ts`, `***.345.678-**`), contagem de solicitações em andamento/concluídas. A seção de notificações ficou como aviso "chega na Etapa 5" em vez de meio-implementada.
-- **Proteção de rotas**: middleware nomeado (`app/middleware/cidadao.ts`, `app/middleware/servidor.ts`) redireciona para `/entrar` quando a sessão não tem o tipo de conta esperado; aplicado em `minhas-solicitacoes.vue`, `perfil.vue` e `painel/index.vue` (que ganhou uma saudação ao servidor logado, mas continua com o restante do conteúdo como placeholder — a UI completa do painel é Etapa 3).
-- **`AppHeader.vue`**: o botão "Entrar" vira um menu (`UDropdownMenu`) com o nome do usuário, atalhos por tipo de conta e "Sair", quando há sessão ativa.
-- Testado de ponta a ponta (`yarn dev` e build de produção via Docker, incluindo `docker build`/`docker run` com o volume `.data`): cadastro, login (cidadão e servidor), acesso/bloqueio das rotas protegidas, vínculo de uma solicitação nova à conta logada. Suíte de testes (`test/auth.test.ts`) cobre cadastro, sessão, bloqueio sem sessão, login com senha errada e o vínculo de solicitação à conta.
+O que foi implementado:
 
-Fora de escopo, propositalmente: pré-preencher nome/e-mail/telefone no chat de registro (`nova.vue`) quando o cidadão já está logado.
+- **`@nuxtjs/supabase`** instalado e configurado em `nuxt.config.ts`, com redirecionamento automático (para `/entrar`) apenas nas rotas protegidas (`/perfil`, `/minhas-solicitacoes`, `/painel`). As demais rotas continuam públicas.
+- **`supabase/schema.sql`**: script único para colar no SQL Editor do Supabase. Cria a tabela `profiles` (nome, cpf, telefone, papel `cidadao`/`servidor`, secretaria), políticas de RLS (cada um vê o próprio perfil; servidores veem todos) e um trigger que cria o perfil automaticamente no cadastro.
+- **`/cadastro`**: cadastro público de cidadão (nome, e-mail, telefone, CPF opcional, senha). Contas de **servidor não têm cadastro público** nesta etapa — são criadas manualmente no Supabase (instruções no fim do `schema.sql`), já que o painel que as gerenciaria só existe na Etapa 3.
+- **`/entrar`**: login único para cidadão e servidor; após autenticar, verifica o `papel` no perfil e redireciona para `/painel` (servidor) ou `/perfil` (cidadão).
+- **`/perfil`**: dados da conta, CPF sempre mascarado (`***.345.678-**`, ver `shared/utils/cpf.ts`), atalho para "Minhas solicitações" (ou para o painel, se servidor) e botão de sair.
+- **`/minhas-solicitacoes`**: lista as solicitações do usuário logado. Como as solicitações continuam no armazenamento em arquivo (não foram migradas para o Postgres nesta etapa, para não somar duas mudanças grandes de uma vez), o filtro é feito por e-mail no servidor (`server/api/minhas-solicitacoes.get.ts`), usando o e-mail da sessão autenticada (nunca um valor vindo do cliente).
+- **`/painel`**: protegido por um middleware (`app/middleware/servidor.ts`) que só libera acesso para contas com `papel = 'servidor'`. O conteúdo do painel em si foi construído na Etapa 3, abaixo.
+- Cabeçalho e navegação inferior atualizados para refletir se há uma sessão ativa.
 
-### Etapa 3 — Painel administrativo
+**Pendente do lado do usuário**: o app só funciona de verdade com um projeto Supabase real. Crie um projeto em [supabase.com](https://supabase.com), rode `supabase/schema.sql` no SQL Editor, copie a Project URL e a anon key (Project Settings → API) para um `.env` local (ver `.env.example`) com `NUXT_PUBLIC_SUPABASE_URL` e `NUXT_PUBLIC_SUPABASE_KEY`. Sem isso, o app usa valores de placeholder só para não quebrar o SSR das páginas públicas — login e cadastro não funcionam de verdade até as chaves reais serem configuradas.
 
-Páginas: `painel/index.vue` (visão geral), `painel/solicitacoes.vue` (fila/triagem), `painel/solicitacoes/[id].vue` (detalhe e atualização de status).
+Fica para depois (fora do escopo desta etapa): recuperação de senha, notificações, e a migração das solicitações do armazenamento em arquivo para uma tabela no Postgres do Supabase (unificaria os dois bancos e permitiria consultas mais ricas no painel da Etapa 3).
 
-- Listagem com filtros por categoria, bairro, status e prazo.
-- Atribuição de responsável e atualização de status com histórico (usando os status já definidos em `shared/utils/status.ts`).
-- Indicadores por secretaria (quantidade aberta, tempo médio de atendimento) — total de solicitações, por categoria, protocolos pendentes, mapa de ocorrências e tabela de demandas recentes.
+### Etapa 3 — Painel administrativo (concluída)
 
-### Etapa 4 — Mapa de ocorrências
+O painel usa um layout de dashboard próprio (`app/layouts/painel.vue`, com `UDashboardGroup`/`UDashboardSidebar`/`UDashboardPanel` do Nuxt UI — sidebar com navegação, dados do servidor logado e botão de sair), separado do layout público do site.
 
-Página: `mapa.vue`.
+- **`/painel`**: visão geral — total de solicitações, quantidade por status (recebidas / em andamento / concluídas), quebra por categoria e uma lista das solicitações mais recentes.
+- **`/painel/solicitacoes`**: listagem de todas as solicitações com filtros por categoria, status e bairro (filtrados no cliente sobre os dados carregados — dataset pequeno, arquivo local).
+- **`/painel/solicitacoes/[protocolo]`**: detalhe completo (endereço, descrição, fotos, contato, CPF mascarado, risco percebido) e histórico (`UTimeline`), com um formulário para atualizar o status (novo status + responsável + mensagem), que grava uma nova entrada no histórico.
+- Novo status **"Encaminhado"** já estava no vocabulário (`shared/utils/status.ts`, Etapa 1); o campo `responsavel` foi adicionado à `Solicitacao` para registrar quem/qual secretaria está tratando o caso.
+- **Segurança**: a proteção de página (middleware `servidor`) é só uma camada de UX. As rotas de API (`server/api/painel/**`) verificam a sessão e o papel de novo no servidor, via o helper `server/utils/exigirServidor.ts` — testado retornando 401 sem sessão e 403 para quem não é servidor.
 
-- Mapa interativo (a definir: MapLibre GL ou Leaflet, com estilo OpenStreetMap) com marcadores por status (recebido, em análise/atendimento, concluído).
-- Filtro por categoria e status, reaproveitando os dados da Etapa 1.
-- Seleção de ponto no mapa reaproveitada no fluxo de registro (alternativa ao GPS/endereço manual do chat).
+Fora do escopo desta etapa (fica para quando fizer sentido): tempo médio de atendimento por secretaria (precisa de mais dados históricos reais para ser útil), mapa de ocorrências no painel (depende da Etapa 4), e a migração das solicitações para uma tabela Postgres — enquanto isso não acontece, a listagem do painel carrega todos os arquivos de uma vez, o que não escala além de um volume pequeno de solicitações.
 
-### Etapa 5 — Notificações, avaliação, notícias e contatos úteis
+### Etapa 4 — Mapa de ocorrências (concluída)
 
-- Notificação por e-mail/SMS ao mudar o status de uma solicitação.
-- Avaliação do atendimento pelo cidadão ao concluir o protocolo.
-- Página de notícias/avisos da Prefeitura com categorias (alerta, zeladoria, obras, infraestrutura), evoluindo a seção estática já presente na Home.
-- Página de contatos úteis (ouvidoria, defesa civil, guarda municipal, atendimento presencial).
+- **Biblioteca escolhida: Leaflet** (`leaflet` + `@types/leaflet`) com tiles do OpenStreetMap (`tile.openstreetmap.org`, gratuito, sem chave) — mais simples que MapLibre GL para o que era necessário aqui (marcadores + popup). O componente (`app/components/MapaOcorrencias.vue`) carrega a biblioteca dinamicamente (`import('leaflet')`) só no cliente, já que ela manipula o DOM diretamente e não deve entrar no bundle de SSR.
+- **Coordenadas**: as solicitações não guardavam latitude/longitude até agora (só endereço em texto). O chat de registro (`solicitacoes/nova.vue`) passou a salvar as coordenadas quando o cidadão usa "Usar minha localização atual" (já vinham do GPS, só não eram guardadas) e, quando o endereço é digitado manualmente, faz uma geocodificação (busca) via Nominatim antes de enviar — best-effort: se não encontrar, a solicitação é registrada normalmente, só não aparece no mapa. Solicitações registradas antes desta etapa não têm coordenadas e não aparecem no mapa.
+- **`/mapa`**: filtros por categoria e status, marcadores coloridos por status (mesma paleta do restante do sistema) com popup (categoria, bairro, protocolo, link para acompanhar) e legenda.
+- **`GET /api/mapa/ocorrencias`**: endpoint público, mas só retorna campos de interesse coletivo (categoria, bairro, rua, status, descrição, coordenadas, protocolo) — nunca nome, e-mail, telefone ou CPF do cidadão.
+- Não implementado (fica para quando fizer sentido): seleção de ponto no mapa como alternativa ao GPS/endereço digitado dentro do próprio chat, e o mapa dentro do painel administrativo (Etapa 3 ficou só com a listagem e o resumo por categoria).
 
-### Etapa 6 — Acessibilidade, performance e PWA
+### Etapa 5 — Avaliação, notícias e contatos úteis (concluída)
 
-- Revisão de acessibilidade (contraste, navegação por teclado, leitores de tela) em todas as páginas construídas.
-- Otimização de imagens e carregamento.
-- Possibilidade de instalar como PWA para uso em campo pelas equipes de rua.
+Decisão tomada com o usuário: **sem envio real de e-mail/SMS por agora** — notificação por SMS quase certamente exigiria uma conta paga (Twilio ou similar); e-mail teria uma opção gratuita viável (Resend), mas ficou fora desta rodada para não depender de mais uma conta/chave externa. O andamento continua visível em `/minhas-solicitacoes` e `/solicitacoes/acompanhar`.
+
+O que foi implementado:
+
+- **Avaliação do atendimento**: quando a solicitação está com status "Concluído", `/solicitacoes/acompanhar` mostra um formulário de 1 a 5 estrelas (`UInputRating`) + comentário opcional. Guardado no campo `avaliacao` da própria `Solicitacao`. O endpoint (`server/api/solicitacoes/[protocolo]/avaliacao.post.ts`) rejeita avaliações de solicitações que ainda não foram concluídas.
+- **`/avisos`**: evolução da seção estática da Home para uma página completa, com abas de filtro por categoria (Alerta, Zeladoria, Obras, Infraestrutura). Conteúdo estático por enquanto (`shared/utils/avisos.ts`) — não há painel para a Prefeitura publicar avisos de verdade ainda.
+- **`/contatos`**: números de emergência nacionais (190/192/193/199, informação pública e estável) e contatos da Prefeitura (Ouvidoria, Guarda Municipal, atendimento presencial) — estes últimos marcados com um badge "Exemplo" porque são **dados fictícios**: não inventei números reais da Prefeitura de Belém para não apresentar informação errada como se fosse oficial. Substituir por dados reais antes de qualquer uso fora deste projeto de estudo.
+- Navegação (cabeçalho, rodapé, barra inferior) atualizada com links para as páginas novas.
+
+Fica para depois: notificação real por e-mail (Resend) ou SMS, e uma tela no painel administrativo para a própria Prefeitura cadastrar avisos (hoje é preciso editar `shared/utils/avisos.ts` no código).
+
+### Etapa 6 — Acessibilidade, performance e PWA (concluída)
+
+- **Acessibilidade**: link "Pular para o conteúdo" (visível ao navegar por teclado) no layout público; `aria-label` nos botões que só têm ícone; `role="status"` + texto para leitor de tela no indicador "digitando" do chat, com `motion-reduce:animate-none` para quem desativou animações no sistema; a lista de mensagens do chat usa `aria-live="polite"` para que novas mensagens sejam anunciadas; anel de foco visível (`focus-visible:ring`) nos cards/links que não são componentes do Nuxt UI (a maior parte já vem com foco acessível de fábrica); todas as imagens de fotos enviadas têm texto alternativo. **Isso é uma revisão pontual, não uma auditoria completa** — não tenho como rodar Lighthouse/axe ou testar com leitor de tela de verdade neste ambiente; recomendo rodar uma auditoria automatizada antes de considerar isso resolvido.
+- **Performance**: fotos enviadas no chat agora são redimensionadas no navegador (máx. 1280px, JPEG 75%) antes de virar base64 — antes, uma foto de celular de vários MB ia inteira para o JSON da solicitação; `/avisos` e `/contatos` ganharam cache (`routeRules` com `swr`), já que o conteúdo é estático.
+- **PWA**: `@vite-pwa/nuxt` configurado — manifesto (`Ajuda Belém`, cor `#2563eb`, ícones em `public/icons/`, gerados uma única vez com `sharp` a partir de um SVG simples com o mesmo emblema "AB" do cabeçalho) e service worker que cacheia só os arquivos estáticos da build (JS/CSS/fontes) via Workbox — **nunca respostas de API**, para não arriscar mostrar status de solicitação desatualizado como se fosse atual quando o cidadão estiver offline. O ícone/manifesto real da Prefeitura (se houver identidade visual oficial) deve substituir os arquivos em `public/icons/`.
+
+Fica para depois: auditoria de acessibilidade com ferramenta automatizada (Lighthouse/axe) e teste com leitor de tela real; e — se fizer sentido para o caso de uso de "equipes de rua" — cache offline dos dados já carregados (ex.: uma solicitação já aberta na tela continuar visível sem internet), o que exigiria decidir deliberadamente quando mostrar dado desatualizado.
+
+## Revisão de segurança pós-Etapa 6
+
+Depois de fechar as 6 etapas, uma revisão geral do diff (7 agentes em paralelo, cada um olhando o código por um ângulo diferente — correção, duplicação, eficiência, comportamento removido) encontrou dois problemas reais que foram corrigidos na hora:
+
+- **`GET /api/solicitacoes/[protocolo]` vazava dados pessoais sem login**: a rota pública de consulta por protocolo devolvia o registro inteiro, incluindo nome, e-mail, telefone e CPF sem mascarar. Como o protocolo é só `${ano}${6 dígitos}` (~900 mil combinações por ano, sem limite de tentativas), qualquer um poderia varrer a faixa de números e coletar dados pessoais de todo mundo. Corrigido: essa rota agora devolve `SolicitacaoPublica` (tudo, menos nome/e-mail/telefone/CPF — ver `shared/types/solicitacao.ts`); a página `/solicitacoes/acompanhar` nunca exibia esses campos mesmo, então não mudou nada visualmente. O painel administrativo, que precisa dos dados de contato, ganhou sua própria rota autenticada (`GET /api/painel/solicitacoes/[protocolo]`, protegida por `exigirServidor`).
+- **Avaliação do atendimento podia ser sobrescrita por qualquer um**: `POST /api/solicitacoes/[protocolo]/avaliacao` não checava se já existia uma avaliação antes de gravar por cima. Corrigido: a rota agora responde `409` se a solicitação já tiver sido avaliada.
+
+Também corrigidos, de menor gravidade: `/entrar` e `/cadastro` tinham `try/finally` sem `catch` — uma falha de rede fazia a tela voltar ao normal sem nenhuma mensagem de erro; e `usePerfil()` engolia erros de consulta ao Supabase, então um perfil ausente ou uma falha de RLS resultava em `/perfil` em branco sem explicação — agora mostra uma mensagem com botão de "Tentar novamente".
+
+Um teste automatizado (`test/basic.test.ts`) foi adicionado especificamente para não deixar o vazamento de dados pessoais voltar despercebido.
+
+Ficaram identificados, mas não corrigidos nesta rodada (são duplicação/eficiência, não bugs de segurança): a checagem "é servidor?" está reimplementada em três lugares (`app/middleware/servidor.ts`, `server/utils/exigirServidor.ts`, `app/pages/entrar.vue`); três rotas de API fazem a mesma varredura completa do armazenamento de arquivos a cada chamada, sem paginação ou cache; e a geração de protocolo tem uma corrida rara (TOCTOU) que poderia, em teoria, sobrescrever uma solicitação sob envios simultâneos. Vale revisar antes de qualquer uso em produção real.
+
+## Detecção de XSS/SQL injection nos formulários + XSS real corrigido no mapa
+
+Pedido do usuário: avisar o cidadão/servidor quando o texto digitado parecer um ataque (XSS ou injeção de SQL), em vez de só rejeitar silenciosamente.
+
+Duas coisas importantes de contexto técnico, para não dar a impressão de que isso "resolve" XSS/SQLi por si só:
+
+- **SQL injection não tem superfície de ataque neste projeto**: não existe SQL bruto em lugar nenhum do código. As solicitações ficam em arquivo (`useStorage`), e as consultas ao banco de autenticação passam pelo query builder do Better Auth (Kysely internamente, ver nota sobre a migração de Supabase para Postgres mais abaixo), que já é imune a injeção por construção — não porque alguém escreveu uma defesa, mas porque nunca se concatena string de SQL. A checagem abaixo é só uma camada extra de aviso, não a proteção real.
+- **XSS reflexivo/armazenado via `{{ }}` do Vue já não existe**: o Vue escapa toda interpolação por padrão. Só uma vulnerabilidade real foi encontrada e corrigida: o popup do mapa de ocorrências (`app/components/MapaOcorrencias.vue`) montava HTML via *template string* usando `bairro` (texto que o cidadão digita livremente no chat) direto no `innerHTML` do Leaflet — um bairro como `<img src=x onerror=...>` executaria para qualquer um vendo `/mapa`. Corrigido construindo o popup via DOM (`textContent`) em vez de string de HTML.
+
+O que foi adicionado (`shared/utils/segurancaEntrada.ts`): uma checagem por padrões (tags `<script>`/`<iframe>`, atributos `on*=`, `javascript:`, e padrões clássicos de SQLi como `' OR '1'='1`, `UNION SELECT`, `; --`) aplicada nos campos de texto livre — descrição, referência, endereço e nome no chat de registro; comentário da avaliação; mensagem e responsável no painel; nome/telefone no cadastro. Quando detectado, mostra uma mensagem explicando o motivo e bloqueia o envio. A mesma checagem roda de novo no servidor (`server/api/solicitacoes/index.post.ts`, `.../avaliacao.post.ts`, `server/api/painel/solicitacoes/[protocolo].patch.ts`), já que a checagem no cliente pode ser contornada por quem chama a API direto.
+
+É uma heurística: texto legítimo cheio de pontuação incomum pode eventualmente disparar um falso positivo, e alguém determinado pode escrever um payload que não bate com nenhum padrão. Testado (incluído em `test/basic.test.ts`): payload com `<script>` é rejeitado, payload com `' OR '1'='1` é rejeitado, e texto legítimo com apóstrofo (`"a rua d'Oliveira"`) passa normalmente.
+
+## Migração de Supabase para PostgreSQL próprio + Better Auth
+
+Pedido do usuário: tirar a dependência do Supabase (serviço externo hospedado) e usar uma imagem PostgreSQL normal, própria do projeto.
+
+O Supabase, desde a Etapa 2, cobria duas coisas ao mesmo tempo: autenticação (Supabase Auth) e o banco Postgres por trás da tabela `profiles`. As solicitações em si nunca usaram Supabase — sempre ficaram no storage de arquivo do Nitro (ver Etapa 1/3). Decisões tomadas com o usuário antes de implementar:
+
+- **Autenticação**: [Better Auth](https://better-auth.com) no lugar do Supabase Auth — biblioteca open source que roda dentro do próprio Nitro (rota catch-all `server/api/auth/[...all].ts`), sem depender de um serviço externo. Guarda usuário/sessão/senha (hash) no Postgres próprio.
+- **Infraestrutura**: `docker-compose.yml` com um serviço `db` (`postgres:16-alpine`, volume nomeado `db-data`) e um serviço `app` (build do `Dockerfile` existente, volume `app-data` para as solicitações). `docker compose up -d` sobe os dois. Um terceiro serviço, `migrate` (`profiles: ['tools']`, não sobe com `up`), builda a partir do estágio intermediário `build` do `Dockerfile` — que ainda tem yarn/node_modules/código-fonte, ao contrário do estágio `runtime` final usado pelo `app` — só para rodar `yarn db:migrate` sem precisar de Node/Yarn instalado no host: `docker compose run --rm migrate`.
+
+O que mudou:
+
+- **`supabase/schema.sql`** (tabela `profiles`, RLS, trigger `handle_new_user` ligados a `auth.users`/`auth.uid()` do Supabase) foi removido. No lugar, **`server/utils/auth.ts`** configura o Better Auth com `emailAndPassword` habilitado e campos extra no próprio `user` (`papel`, `cpf`, `telefone`, `secretaria`) via `user.additionalFields` — substitui a tabela `profiles` separada, já que o Better Auth guarda tudo na sua própria tabela `user`. O campo `papel` tem `input: false` (não pode ser setado pelo cliente no cadastro) e `defaultValue: 'cidadao'`, replicando a mesma regra do Supabase: **não há cadastro público de servidor**, contas são promovidas manualmente no banco (`update "user" set papel = 'servidor', ...`, documentado no topo de **`db/schema.sql`**, um arquivo gerado por referência — a fonte da verdade é a config do Better Auth aplicada via `yarn db:migrate`, novo script do `package.json`).
+- A proteção de rotas que o módulo `@nuxtjs/supabase` fazia automaticamente (`redirect`/`redirectOptions`) virou um middleware próprio, **`app/middleware/auth.global.ts`**, que exige sessão para `/perfil`, `/minhas-solicitacoes` e `/painel/**`. `app/middleware/servidor.ts` continua fazendo a checagem extra de `papel === 'servidor'` para `/painel`, agora lendo a sessão do Better Auth.
+- No servidor, `server/utils/exigirServidor.ts` trocou `serverSupabaseUser`/`serverSupabaseClient` (`#supabase/server`) por `auth.api.getSession({ headers: event.headers })`. Mesmo contrato (401 sem sessão, 403 se não for servidor) usado por `server/api/painel/**`.
+- No cliente, `useSupabaseUser()`/`useSupabaseClient()` viraram: `app/composables/useSessao.ts` (wrapper fino sobre `GET /api/auth/get-session` com uma `key` fixa, para o Nuxt reaproveitar a mesma resposta entre middleware/cabeçalho/página em vez de uma requisição por consumidor) para leitura de sessão, e `app/utils/auth-client.ts` (`authClient`, cliente `better-auth/vue`) para as ações (`signIn.email`, `signUp.email`, `signOut`). `usePerfil()` foi reescrito para derivar o perfil direto da sessão (que já inclui `papel`/`cpf`/`telefone`/`secretaria` via `additionalFields`), sem precisar de uma segunda consulta a uma tabela `profiles` separada como antes.
+- **Efeito colateral simplificador**: como o Better Auth (self-hosted) não manda e-mail de confirmação por padrão — e o projeto já havia decidido na Etapa 5 não integrar envio de e-mail —, o cadastro (`/cadastro`) loga o cidadão na hora, sem a etapa intermediária de "aguardando confirmação" que existia com o Supabase Auth (que dependia de confirmação por e-mail habilitada no projeto).
+- O aviso "Supabase não configurado" em `/entrar` e `/cadastro` (fallback de placeholder para o app não quebrar em SSR sem `.env`) foi removido — sem equivalente direto no novo modelo, já que não há mais uma URL/chave de projeto hospedado para validar; erros de conexão com o Postgres continuam tratados pelo `catch` genérico de cada formulário.
+
+Testado manualmente (fora do app, com um Postgres descartável via Docker): `yarn db:migrate` cria as tabelas (`user`, `session`, `account`, `verification`) a partir de `server/utils/auth.ts`; cadastro via `auth.api.signUpEmail` confirma que `papel` sempre volta `'cidadao'` mesmo tentando enviar `papel: 'servidor'` no corpo da requisição (o `input: false` bloqueia).
+
+Fica para depois: os testes automatizados (`test/basic.test.ts`) não cobrem o fluxo de autenticação (nunca cobriram, mesmo com Supabase) — depende de um Postgres disponível no CI, avaliar se vale a pena antes de qualquer uso em produção real.
+
+### Dockerfile de desenvolvimento
+
+Pedido do usuário, na sequência da migração acima: rodar o projeto inteiro (app + Postgres) via Docker também para desenvolvimento com hot-reload, sem precisar de Node/Yarn instalados na máquina — até então o `Dockerfile` só servia para builds de produção.
+
+- **`Dockerfile.dev`**: imagem que só instala as dependências (`yarn install`); não copia o código-fonte — quem fornece o código é o bind mount do serviço `dev` no `docker-compose.yml` (`.:/app`), então editar um arquivo local já reflete no container, sem rebuild de imagem. `node_modules` fica de fora do bind mount (volume anônimo `/app/node_modules`) para não ser sobrescrito pelo `node_modules` do host (que pode nem existir).
+- **Serviço `dev`** no `docker-compose.yml`, atrás de `profiles: ['dev']` (não sobe com `docker compose up` puro, que continua subindo `app`/produção como antes) — sobe com `docker compose --profile dev up dev`. Reaproveita o `db` já existente (mesmo `depends_on: service_healthy`).
+- As variáveis `DATABASE_URL`/`BETTER_AUTH_SECRET`, antes repetidas em `app` e `migrate`, viraram uma âncora YAML (`x-auth-env`) reaproveitada pelos três serviços (`app`, `dev`, `migrate`).
+
+Testado manualmente: `docker compose --profile dev up dev` sobe o Nuxt dev server dentro do container (`http://localhost:3000`); editar um texto em `app/pages/index.vue` no host apareceu no HTML servido pelo container quase na hora (log `✔ Vite server hmr ... files in Nms`), confirmando que o bind mount + HMR funcionam de ponta a ponta.
+
+## Seed de dados de demonstração
+
+Antes não existia nenhum seed: o schema só documentava as tabelas do Better Auth, e o banco e o `.data` estavam povoados por dados simulados de um script avulso que nunca foi versionado — o `.data` fica no `.gitignore`, então apagar o volume perdia tudo. Também não havia nenhuma conta de admin ou servidor, só cidadãos de teste e uma conta Google.
+
+Os dados vivem em **dois lugares**, e o seed cobre os dois:
+
+- **Postgres** (Better Auth): contas em `user` + `account`. As tabelas `session` e `verification` nascem vazias.
+- **Storage de arquivos do Nitro** (`./.data/solicitacoes`): as solicitações, um `<protocolo>.json` por ocorrência. Não há tabela delas no banco.
+
+O que foi adicionado:
+
+- **`db/seed.mjs`** (`yarn db:seed`): cria 4 contas (admin, 2 servidores, 1 cidadão; senha `Belem123`, só para dev) e grava as solicitações do fixture em `.data/solicitacoes`. A senha passa pelo `hashPassword` do próprio Better Auth, então o login funciona pelo fluxo normal (`/entrar`). O CPF do cidadão é calculado com o mesmo algoritmo de `shared/utils/cpf.ts`. É idempotente (`on conflict (id)` nas contas, sobrescrita por protocolo nos arquivos), recusa `NODE_ENV=production` e só toca em ids `seed-*` e nos protocolos do fixture.
+- **`db/seed/solicitacoes.json`**: snapshot das 100 solicitações simuladas que já existiam (7 categorias, 5 status, 18 bairros, de 09/05 a 01/10/2026, com relatos de 1 a 6 por ocorrência). Ficou de fora de propósito a única solicitação real, que tem CPF, telefone e foto de um usuário.
+- Script `db:seed` no `package.json` e nota no cabeçalho de `db/schema.sql`.
+
+Decisões:
+
+- **Fixture em vez de gerador aleatório**: reproduz exatamente o que já se via na tela (dashboard, mapa), sem depender de uma semente de aleatoriedade.
+- **Contas existentes fora do seed**: os cidadãos de teste e a conta Google ficam como estão — são dados locais, não de demonstração.
+- **Os `userId` das solicitações simuladas (`seed-user-N`) não existem na tabela `user`**: nada no app exige o vínculo, as telas leem nome e e-mail gravados na própria solicitação. O `userId` só é usado em "Minhas solicitações" (`minhas-solicitacoes.get.ts`) e na checagem de relato duplicado (`relato.post.ts`), e a conta `cidadao@ajudabelem.local` não é dona de nenhuma delas — então começa com "Minhas solicitações" vazio e pode relatar qualquer ocorrência.
+
+Testado manualmente: duas execuções seguidas dão o mesmo resultado (9 contas no total, 101 arquivos, sem duplicar), e o login por `POST /api/auth/sign-in/email` retorna 200 para admin, servidor e cidadão do seed.
+
+### Correção do mapa (coordenadas do seed e marcador)
+
+Sintoma: os pontos apareciam na água (rio Guamá, baía do Guajará, Ilhas das Onças), embora o texto de cada ocorrência dissesse o bairro certo. O componente `MapaOcorrencias.vue` plotava exatamente a latitude/longitude recebidas — o erro estava nos **dados**: as 100 solicitações simuladas tinham coordenadas espalhadas por uma área bem maior que a cidade, sem relação com o bairro.
+
+- **`db/seed/solicitacoes.json`**: latitude/longitude refeitas. Cada bairro tem um centro (conferido visualmente sobre o mapa do OpenStreetMap, com todos os centros em terra) e cada ocorrência recebe um deslocamento pequeno e determinístico em volta dele (derivado do hash do protocolo; ~165 m, ou ~110 m nos bairros à beira do rio — Condor, Jurunas, Cidade Velha, Guamá, Comércio — para não cair na água). Rodar `yarn db:seed` de novo regrava os arquivos com as coordenadas corrigidas. Rua e número continuam fictícios e não correspondem ao ponto exato; só o bairro é fiel.
+- **`app/components/MapaOcorrencias.vue`**: o marcador diminuiu de 24 px para 10 px, com estilo inline e tamanho igual ao `iconSize` (âncora no centro, para o ponto cair exatamente na coordenada). O mapa agora usa `fitBounds` nos pontos (`maxZoom` 15) em vez de zoom fixo 12, que deixava tudo espremido sobre a cidade. Vale para `/mapa` e para o card de mapa do dashboard (mesmo componente).
+
+### Fotos reais nas solicitações do seed
+
+Pedido do usuário: as 100 solicitações simuladas passaram a ter fotos reais, em vez de nenhuma.
+
+- **Origem**: [Wikimedia Commons](https://commons.wikimedia.org), só arquivos com licença livre (CC BY, CC BY-SA, CC0 ou domínio público), em miniatura de 800 px. Cada candidata foi **vista antes de ser usada**: os títulos enganam (várias buscas por "broken street light" devolveram postes com adesivo, por exemplo) e as que não mostravam o problema da categoria foram descartadas. Ficaram 26 fotos: pavimentação 4, limpeza 4, saneamento 4, sinalização 5, iluminação 3, arborização 3, alagamento 3.
+- **Armazenamento**: arquivos em `public/seed/fotos/<categoria>-<n>.jpg` (~7,6 MB), e o campo `fotos` da solicitação guarda só o caminho (`/seed/fotos/pavimentacao-1.jpg`), não base64 como nas fotos enviadas pelo chat. Isso mantém o fixture pequeno; todas as telas exibem `fotos` por `<img :src>`, então funcionam com os dois formatos. A validação de `data:image/...` em `shared/utils/validacao.ts` só vale para foto **enviada**, não para o que já está salvo.
+- **Distribuição** (determinística, ordenada por protocolo): cada ocorrência recebe a foto da sua categoria em rodízio; a cada 4ª ocorrência de uma categoria ganha uma segunda foto (73 com 1 foto, 27 com 2).
+- **Créditos**: `public/seed/fotos/CREDITOS.md` lista arquivo, original, autor e licença de cada foto — necessário para as licenças CC BY/BY-SA. Limitação conhecida: os locais retratados não são de Belém (Wikimedia quase não tem fotos desse tipo de problema em Belém); a foto ilustra o tipo de problema, não o endereço.
+- **Rede**: a busca e o download usaram a API pública do Commons (com limite de requisições — houve respostas 429, contornadas com espera). Os arquivos agora estão no repositório, então rodar o seed **não** depende de internet.
+
+Testado: o `/seed/fotos/...jpg` é servido pelo app (200 `image/jpeg`) e a página `/solicitacoes/acompanhar?protocolo=...` de uma ocorrência de pavimentação exibe as duas miniaturas de buraco.
+
+### Topo da Início enxuto no celular (mobile-first)
+
+Primeira etapa do ajuste mobile-first do site do cidadão (escopo: só o site do cidadão, não o painel; conferência por prints em 390 px). O topo da Início gastava a primeira tela com coisas repetidas:
+
+- **`app/pages/index.vue`**: removida a linha de marca dentro do card azul (ícone + "Ajuda Belém" + "Prefeitura de Belém do Pará" + botões de sino e de usuário). O cabeçalho do site já mostra a marca; o ícone de usuário duplicava a aba "Perfil" da barra inferior; e o **sino não tinha função nenhuma** (nem link, nem ação). Agora o card azul começa direto na saudação. Também diminuiu o espaçamento do card no celular (`pt-6 pb-16`; de `sm:` para cima mantém `pt-12 pb-20`).
+- **`app/components/layout/AppHeader.vue`**: cabeçalho com `h-14` no celular e `md:h-16` de tablet em diante.
+- Resultado: o botão "Contar um problema" sobe cerca de 100 px e fica visível já na primeira tela.
+
+Conferência: o Chrome headless não renderiza janelas menores que ~500 px (a página sai cortada), então os prints usam um iframe de 390 px (e 360 px) dentro de uma moldura larga, que dá o viewport real para as media queries.
+
+Observação pendente, já existente antes desta mudança: em ~768 px (limite do `md`) o cabeçalho mostra os 5 links + tema + "Entrar" e fica ligeiramente mais largo que a tela (aparece rolagem horizontal).
+
+### Mapa por cima do cabeçalho e da barra inferior
+
+Sintoma (visto ao rolar a Início até o card "Mapa de ocorrências"): o mapa passava POR CIMA do cabeçalho fixo (logo e botão de tema ficavam pela metade) e da barra de navegação inferior (as abas sumiam atrás do mapa).
+
+Causa: o Leaflet usa `z-index` altos por dentro (painéis de tiles/marcadores 200–700, controles de zoom e atribuição 800–1000), e o container do mapa não criava contexto de empilhamento próprio — então esses valores competiam diretamente com o cabeçalho (`z-40`) e a barra inferior (`z-50`).
+
+Correção em `app/components/MapaOcorrencias.vue`: o container ganhou `isolate` (`isolation: isolate`), que cria um contexto de empilhamento só para o mapa. Os `z-index` do Leaflet ficam presos lá dentro, e o cabeçalho/barra inferior passam a ficar sempre acima. Vale para `/mapa` e para o card de mapa do dashboard (mesmo componente). Reproduzido e verificado com prints em 390 px, rolando a página até o mapa ficar parcialmente sob o cabeçalho e sob a barra inferior.
+
+### Login por papel (depois do seed)
+
+Com contas de admin e servidor disponíveis, o login passou a levar cada papel para a sua tela:
+
+- **`app/utils/destinoPosLogin.ts`** é o único lugar que decide o destino: admin → `/painel` (visão geral + gestão de servidores), servidor → `/painel/solicitacoes` (fila de atendimento), cidadão → `/perfil`. Servidor em primeiro acesso vai para `/perfil` (troca de senha obrigatória, ver `app/middleware/auth.global.ts`).
+- **`app/pages/entrar.vue`**: depois do `signIn.email`, atualiza a sessão em cache (`refreshNuxtData('sessao')`) e navega pelo destino acima. Conta com `banned = true` é deslogada na hora, com a mensagem "Conta desativada. Fale com o administrador." — o Better Auth ainda cria a sessão de uma conta desativada, e a barreira de verdade continua em `server/utils/exigirServidor.ts`.
+- **`app/layouts/painel.vue`**: o título e o menu mudam por papel — "Painel do administrador" (Visão geral, Solicitações, Servidores) e "Painel do servidor" (Solicitações, Visão geral). Servidor que abre `/painel/servidores` vê a mensagem de área restrita, e a API devolve 403 (`exigirAdmin`).
+- **Troca de conta**: uma primeira versão redirecionava automaticamente quem já estava logado ao abrir `/entrar`, o que impedia entrar com outra conta (ex.: estava no Google e queria testar o admin). Foi trocada por um aviso "Você já está logado" com a conta atual e dois atalhos (**Ir para minha tela** e **Sair**); o formulário continua utilizável, e o novo login substitui a sessão anterior.
+
+Testado com `curl` nas contas do seed: `/entrar` logado devolve o aviso (200), logar como cidadão e depois como admin sem sair troca a sessão para a do admin, `/painel` mostra o título certo por papel, e o cidadão é redirecionado para `/` ao tentar abrir `/painel`.
+
+### Contas pessoais fora do seed
+
+Além das contas do seed, foram criadas à mão no banco local `renan.admin@ajudabelem.local` (admin) e `renan.servidor@ajudabelem.local` (servidor, secretaria "Prefeitura de Belém", `primeiroAcesso = false`), com a mesma estrutura do seed (`user` + `account` com `providerId = 'credential'`, senha pelo `hashPassword` do Better Auth). A senha de ambas é `renan123` (projeto acadêmico, por isso fica registrada aqui). Não fazem parte do `db/seed.mjs`, então vivem só no volume `db-data` e não são recriadas por `yarn db:seed`.
 
 ---
 

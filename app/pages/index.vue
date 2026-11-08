@@ -10,13 +10,20 @@ function consultarProtocolo() {
   router.push({ path: '/solicitacoes/acompanhar', query: { protocolo: protocolo.value.trim() } })
 }
 
-const saudacao = computed(() => {
+// Calculado só no navegador: o servidor roda em UTC (dentro do Docker),
+// então "a hora agora" no servidor quase nunca bate com o horário local de
+// quem está acessando — isso gerava um "Hydration text content mismatch" no
+// Vue (texto renderizado no servidor diferente do esperado no cliente), que
+// descartava e remontava o resto da árvore a partir daqui.
+const saudacao = ref('Olá')
+onMounted(() => {
   const hora = new Date().getHours()
   if (hora < 12)
-    return 'Bom dia'
-  if (hora < 18)
-    return 'Boa tarde'
-  return 'Boa noite'
+    saudacao.value = 'Bom dia'
+  else if (hora < 18)
+    saudacao.value = 'Boa tarde'
+  else
+    saudacao.value = 'Boa noite'
 })
 
 const servicosFiltrados = computed(() => {
@@ -29,23 +36,7 @@ const servicosFiltrados = computed(() => {
   )
 })
 
-const avisos = [
-  {
-    icon: 'i-lucide-cloud-rain',
-    title: 'Período chuvoso em Belém',
-    description: 'Relate pontos de alagamento na sua região para agilizar a limpeza de bueiros e canais.',
-  },
-  {
-    icon: 'i-lucide-hard-hat',
-    title: 'Manutenção programada',
-    description: 'Equipes de zeladoria seguem atuando nos bairros com mais solicitações abertas.',
-  },
-  {
-    icon: 'i-lucide-megaphone',
-    title: 'Canal oficial',
-    description: 'O Ajuda Belém é o canal direto entre você e as equipes de infraestrutura da Prefeitura.',
-  },
-]
+const avisosRecentes = AVISOS.slice(0, 3)
 
 const passos = [
   {
@@ -68,47 +59,14 @@ const passos = [
 
 <template>
   <div>
-    <div class="relative overflow-hidden bg-gradient-to-br from-primary-800 via-primary-600 to-primary-500 px-4 pb-20 pt-8 sm:pt-12">
+    <div class="relative overflow-hidden bg-gradient-to-br from-primary-800 via-primary-600 to-primary-500 px-4 pb-16 pt-6 sm:pb-20 sm:pt-12">
       <svg class="pointer-events-none absolute inset-x-0 bottom-0 text-white/10" viewBox="0 0 400 90" preserveAspectRatio="none" fill="currentColor">
         <path d="M0 45 Q100 5 200 45 T400 45 V90 H0 Z" />
         <path d="M0 62 Q100 25 200 62 T400 62 V90 H0 Z" opacity="0.7" />
       </svg>
 
       <UContainer class="relative">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <span class="flex size-11 items-center justify-center rounded-2xl bg-white/15 text-white">
-              <UIcon name="i-lucide-landmark" class="size-6" />
-            </span>
-            <div>
-              <p class="text-lg font-extrabold leading-none text-white">
-                Ajuda Belém
-              </p>
-              <p class="mt-1 text-xs text-white/70">
-                Prefeitura de Belém do Pará
-              </p>
-            </div>
-          </div>
-          <div class="flex gap-2">
-            <UButton
-              icon="i-lucide-bell"
-              color="neutral"
-              variant="ghost"
-              class="bg-white/15 text-white hover:bg-white/25"
-              aria-label="Notificações"
-            />
-            <UButton
-              to="/entrar"
-              icon="i-lucide-user"
-              color="neutral"
-              variant="ghost"
-              class="bg-white/15 text-white hover:bg-white/25"
-              aria-label="Entrar"
-            />
-          </div>
-        </div>
-
-        <p class="mt-8 text-sm font-medium text-white/80">
+        <p class="text-sm font-medium text-white/80">
           {{ saudacao }}, cidadão! 👋
         </p>
         <h1 class="mt-1 text-2xl font-extrabold leading-snug text-white sm:text-3xl">
@@ -124,7 +82,7 @@ const passos = [
       <UContainer class="relative z-10 -mt-10">
         <NuxtLink
           to="/solicitacoes/nova"
-          class="flex items-center gap-4 rounded-2xl bg-default p-4 shadow-lg ring-1 ring-default transition hover:shadow-xl active:scale-[0.99]"
+          class="flex items-center gap-4 rounded-2xl bg-default p-4 shadow-lg ring-1 ring-default transition hover:shadow-xl active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
           <span class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 dark:bg-secondary-900/40 dark:text-secondary-300">
             <UIcon name="i-lucide-message-circle" class="size-5" />
@@ -155,7 +113,7 @@ const passos = [
               v-for="servico in servicosFiltrados"
               :key="servico.value"
               :to="{ path: '/solicitacoes/nova', query: { categoria: servico.value } }"
-              class="flex flex-col items-center gap-2 rounded-2xl bg-default p-4 text-center shadow-sm ring-1 ring-default transition hover:shadow-md active:scale-[0.97]"
+              class="flex flex-col items-center gap-2 rounded-2xl bg-default p-4 text-center shadow-sm ring-1 ring-default transition hover:shadow-md active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
               <span class="flex size-11 items-center justify-center rounded-xl" :class="TOM_CATEGORIA_CLASSES[servico.tom]">
                 <UIcon :name="servico.icon" class="size-5" />
@@ -182,27 +140,31 @@ const passos = [
         </section>
 
         <section id="avisos" class="scroll-mt-20">
-          <h2 class="mb-4 text-lg font-bold text-highlighted">
-            Avisos e notícias
-          </h2>
+          <div class="mb-4 flex items-center justify-between">
+            <h2 class="text-lg font-bold text-highlighted">
+              Avisos e notícias
+            </h2>
+            <UButton to="/avisos" label="Ver todos" color="neutral" variant="ghost" size="sm" />
+          </div>
           <div class="space-y-3">
-            <div
-              v-for="aviso in avisos"
-              :key="aviso.title"
-              class="flex items-start gap-3 rounded-2xl bg-default p-4 shadow-sm ring-1 ring-default"
+            <NuxtLink
+              v-for="aviso in avisosRecentes"
+              :key="aviso.id"
+              to="/avisos"
+              class="flex items-start gap-3 rounded-2xl bg-default p-4 shadow-sm ring-1 ring-default transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
               <span class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-100 text-primary-600 dark:bg-primary-900/40 dark:text-primary-300">
                 <UIcon :name="aviso.icon" class="size-5" />
               </span>
               <div>
                 <p class="font-semibold text-highlighted">
-                  {{ aviso.title }}
+                  {{ aviso.titulo }}
                 </p>
                 <p class="mt-0.5 text-sm text-muted">
-                  {{ aviso.description }}
+                  {{ aviso.descricao }}
                 </p>
               </div>
-            </div>
+            </NuxtLink>
           </div>
         </section>
       </UContainer>

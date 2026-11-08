@@ -30,6 +30,28 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    # Os testes fazem cadastro e login de verdade, então precisam do Postgres
+    # e das variáveis do Better Auth (mesmos valores do docker-compose.yml).
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ajuda_belem
+          POSTGRES_PASSWORD: ajuda_belem
+          POSTGRES_DB: ajuda_belem
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ajuda_belem"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgres://ajuda_belem:ajuda_belem@localhost:5432/ajuda_belem
+      BETTER_AUTH_SECRET: segredo-somente-para-os-testes-do-ci-0123456789
+      BETTER_AUTH_URL: http://localhost:3000
+
     steps:
       - uses: actions/checkout@v7
 
@@ -41,6 +63,9 @@ jobs:
 
       - name: Install dependencies
         run: npx nypm@latest i
+
+      - name: Create database tables
+        run: npm run db:migrate
 
       - name: Test
         run: npm run test

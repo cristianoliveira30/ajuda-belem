@@ -1,21 +1,15 @@
 <script setup lang="ts">
-const { loggedIn, user } = useUserSession()
-
-const abas = computed(() => [
+const abas = [
   { label: 'Início', icon: 'i-lucide-home', to: '/' },
   { label: 'Mapa', icon: 'i-lucide-map', to: '/mapa' },
   { label: 'Protocolos', icon: 'i-lucide-clock', to: '/solicitacoes/acompanhar' },
-  { label: 'Avisos', icon: 'i-lucide-newspaper', to: '/#avisos' },
-  {
-    label: 'Perfil',
-    icon: 'i-lucide-user',
-    to: !loggedIn.value ? '/entrar' : user.value?.tipo === 'servidor' ? '/painel' : '/perfil',
-  },
-])
+  { label: 'Avisos', icon: 'i-lucide-newspaper', to: '/avisos' },
+  { label: 'Perfil', icon: 'i-lucide-user', to: '/perfil' },
+]
 
 const route = useRoute()
 function ativo(to: string) {
-  return to === '/' ? route.path === '/' : route.path.startsWith(to.split('#')[0]!) && to !== '/#avisos'
+  return to === '/' ? route.path === '/' : route.path.startsWith(to)
 }
 </script>
 

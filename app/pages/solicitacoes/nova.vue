@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { OcorrenciaCandidata } from '#shared/types/solicitacao'
+
 useSeoMeta({ title: 'Registrar problema — Ajuda Belém' })
 definePageMeta({ layout: 'chat' })
 
@@ -16,12 +18,9 @@ type Etapa =
   | 'localizacao_opcoes'
   | 'localizacao_manual'
   | 'confirmar_localizacao'
+  | 'confirmar_duplicidade'
   | 'referencia'
   | 'risco'
-  | 'nome'
-  | 'email'
-  | 'telefone'
-  | 'cpf'
   | 'resumo'
   | 'enviando'
   | 'concluido'
@@ -37,6 +36,11 @@ interface NominatimResposta {
   }
 }
 
+interface NominatimBusca {
+  lat: string
+  lon: string
+}
+
 const route = useRoute()
 const router = useRouter()
 
@@ -44,6 +48,10 @@ const categoriaInicial = CATEGORIAS.some(categoria => categoria.value === route.
   ? (route.query.categoria as string)
   : ''
 
+// Nome/e-mail/telefone/CPF não entram mais aqui: o cidadão já está
+// autenticado quando chega nesta página (ver app/middleware/auth.global.ts)
+// e o backend usa a identidade da sessão, não confia em nada vindo daqui
+// (ver server/api/solicitacoes/index.post.ts).
 function estadoInicial() {
   return {
     categoria: categoriaInicial,
@@ -53,11 +61,9 @@ function estadoInicial() {
     numero: '',
     bairro: '',
     pontoReferencia: '',
+    latitude: undefined as number | undefined,
+    longitude: undefined as number | undefined,
     risco: '' as '' | 'sim' | 'nao' | 'nao_sei',
-    nome: '',
-    email: '',
-    telefone: '',
-    cpf: '',
   }
 }
 
@@ -70,12 +76,13 @@ const revisando = ref(false)
 const protocoloGerado = ref('')
 const protocoloCopiado = ref(false)
 const erroEnvio = ref('')
+const candidataEncontrada = ref<OcorrenciaCandidata | null>(null)
 
 const containerRef = useTemplateRef('containerRef')
 const fileInputRef = useTemplateRef('fileInputRef')
 const inputRef = useTemplateRef('inputRef')
 
-const etapasComTexto: Etapa[] = ['descricao', 'referencia', 'nome', 'email', 'telefone', 'cpf']
+const etapasComTexto: Etapa[] = ['descricao', 'referencia']
 const podeDigitar = computed(() => etapasComTexto.includes(etapa.value))
 
 let contador = 0
@@ -127,6 +134,13 @@ async function enviarTexto() {
 
   entrada.value = ''
 
+  const ameaca = detectarAmeacaEntrada(texto)
+  if (ameaca) {
+    mensagemUsuario(texto)
+    await mensagemBot(MENSAGEM_AMEACA_ENTRADA[ameaca])
+    return
+  }
+
   if (etapa.value === 'descricao') {
     dados.descricao = dados.descricao ? `${dados.descricao} ${texto}` : texto
     mensagemUsuario(texto)
@@ -152,34 +166,6 @@ async function enviarTexto() {
     mensagemUsuario(texto)
     await perguntarRisco()
   }
-  else if (etapa.value === 'nome') {
-    dados.nome = texto
-    mensagemUsuario(texto)
-    await perguntarEmail()
-  }
-  else if (etapa.value === 'email') {
-    mensagemUsuario(texto)
-    if (!/^\S+@\S+\.\S+$/.test(texto)) {
-      await mensagemBot('Esse e-mail não parece válido. Pode conferir e enviar novamente?')
-      return
-    }
-    dados.email = texto
-    await perguntarTelefone()
-  }
-  else if (etapa.value === 'telefone') {
-    mensagemUsuario(texto)
-    if (texto.replace(/\D/g, '').length < 10) {
-      await mensagemBot('Esse telefone parece incompleto. Envie com DDD, por favor.')
-      return
-    }
-    dados.telefone = texto
-    await perguntarCpf()
-  }
-  else if (etapa.value === 'cpf') {
-    dados.cpf = texto
-    mensagemUsuario(texto)
-    await mostrarResumo()
-  }
 }
 
 async function escolherCategoria(valor: string) {
@@ -197,12 +183,37 @@ function abrirSeletorFoto() {
   fileInputRef.value?.click()
 }
 
-function arquivoParaBase64(file: File) {
+const LADO_MAXIMO_FOTO = 1280
+
+// Redimensiona no navegador antes de converter para base64: fotos de celular
+// costumam ter vários MB, e sem isso cada uma vai inteira no JSON da solicitação.
+function redimensionarFoto(file: File) {
   return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = () => reject(reader.error)
-    reader.readAsDataURL(file)
+    const leitor = new FileReader()
+    leitor.onerror = () => reject(leitor.error)
+    leitor.onload = () => {
+      const imagem = new Image()
+      imagem.onerror = () => resolve(leitor.result as string)
+      imagem.onload = () => {
+        const escala = Math.min(1, LADO_MAXIMO_FOTO / Math.max(imagem.width, imagem.height))
+        const largura = Math.round(imagem.width * escala)
+        const altura = Math.round(imagem.height * escala)
+        const canvas = document.createElement('canvas')
+        canvas.width = largura
+        canvas.height = altura
+        const contexto = canvas.getContext('2d')
+
+        if (!contexto) {
+          resolve(leitor.result as string)
+          return
+        }
+
+        contexto.drawImage(imagem, 0, 0, largura, altura)
+        resolve(canvas.toDataURL('image/jpeg', 0.75))
+      }
+      imagem.src = leitor.result as string
+    }
+    leitor.readAsDataURL(file)
   })
 }
 
@@ -213,7 +224,7 @@ async function aoSelecionarFoto(event: Event) {
   if (!arquivos.length)
     return
 
-  const fotos = await Promise.all(arquivos.map(arquivoParaBase64))
+  const fotos = await Promise.all(arquivos.map(redimensionarFoto))
   dados.fotos.push(...fotos)
   mensagens.value.push({ id: proximoId(), autor: 'usuario', fotos })
   rolarParaFinal()
@@ -243,8 +254,15 @@ async function usarLocalizacaoAtual() {
   digitando.value = true
   navigator.geolocation.getCurrentPosition(
     async (posicao) => {
+      // GPS é a fonte de verdade das coordenadas. O reverse geocode abaixo
+      // só DESCREVE esse ponto (rua/bairro) — nunca substitui latitude/
+      // longitude por outra coisa, mesmo que a busca do endereço falhe ou
+      // volte incompleta.
+      const { latitude, longitude } = posicao.coords
+      dados.latitude = latitude
+      dados.longitude = longitude
+
       try {
-        const { latitude, longitude } = posicao.coords
         const resposta = await $fetch<NominatimResposta>('https://nominatim.openstreetmap.org/reverse', {
           query: { lat: latitude, lon: longitude, format: 'jsonv2' },
         })
@@ -264,16 +282,22 @@ async function usarLocalizacaoAtual() {
         }
       }
       catch {
+        // Falha no reverse geocode não pode derrubar a coordenada real do
+        // GPS, já guardada acima — só falta descrever o endereço.
         digitando.value = false
-        await mensagemBot('Não consegui identificar o endereço a partir da localização. Pode digitar manualmente?')
+        await mensagemBot('Consegui sua localização, mas não encontrei o endereço automaticamente. Pode preencher a rua e o bairro?')
         etapa.value = 'localizacao_manual'
       }
     },
     async () => {
       digitando.value = false
-      await mensagemBot('Não consegui acessar sua localização. Pode digitar o endereço?')
+      await mensagemBot('Não foi possível obter sua localização. Você pode informar o endereço manualmente.')
       etapa.value = 'localizacao_manual'
     },
+    // Alta precisão pede o GPS real do dispositivo em vez de localização
+    // aproximada por rede/Wi-Fi (que pode errar por quilômetros). Sem cache
+    // (maximumAge: 0) pra nunca reaproveitar uma posição antiga.
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 },
   )
 }
 
@@ -284,19 +308,125 @@ function digitarEndereco() {
 
 async function confirmarLocalizacaoEncontrada() {
   mensagemUsuario('Sim, é aqui')
-  await perguntarReferencia()
+  await verificarDuplicidade()
 }
 
 function corrigirLocalizacao() {
   mensagemUsuario('Corrigir localização')
+  dados.latitude = undefined
+  dados.longitude = undefined
   etapa.value = 'localizacao_manual'
+}
+
+async function geocodificarEnderecoDigitado() {
+  try {
+    const resultados = await $fetch<NominatimBusca[]>('https://nominatim.openstreetmap.org/search', {
+      query: {
+        q: `${dados.rua}, ${dados.numero}, ${dados.bairro}, Belém, Pará, Brasil`,
+        format: 'jsonv2',
+        limit: 1,
+      },
+    })
+    const encontrado = resultados?.[0]
+    if (encontrado) {
+      dados.latitude = Number.parseFloat(encontrado.lat)
+      dados.longitude = Number.parseFloat(encontrado.lon)
+    }
+  }
+  catch {
+    // Sem coordenadas, a solicitação simplesmente não aparece no mapa.
+  }
 }
 
 async function enviarEnderecoManual() {
   if (!dados.rua.trim() || !dados.bairro.trim())
     return
 
-  mensagemUsuario(`${dados.rua}, ${dados.numero || 'S/N'} — ${dados.bairro}`)
+  const enderecoDigitado = `${dados.rua}, ${dados.numero || 'S/N'} — ${dados.bairro}`
+  const ameaca = detectarAmeacaEntrada(enderecoDigitado)
+  if (ameaca) {
+    mensagemUsuario(enderecoDigitado)
+    await mensagemBot(MENSAGEM_AMEACA_ENTRADA[ameaca])
+    return
+  }
+
+  mensagemUsuario(enderecoDigitado)
+
+  if (!dados.latitude || !dados.longitude)
+    await geocodificarEnderecoDigitado()
+
+  await verificarDuplicidade()
+}
+
+// Roda depois que a localização é confirmada (GPS ou endereço digitado),
+// antes de perguntar o ponto de referência. Só SUGERE uma ocorrência
+// parecida pro cidadão — quem decide se é o mesmo problema é sempre o
+// cidadão, nunca o sistema sozinho (ver server/api/solicitacoes/candidata.post.ts).
+async function verificarDuplicidade() {
+  if (dados.latitude == null || dados.longitude == null) {
+    await perguntarReferencia()
+    return
+  }
+
+  digitando.value = true
+  try {
+    const resposta = await $fetch<{ candidata: OcorrenciaCandidata | null }>('/api/solicitacoes/candidata', {
+      method: 'POST',
+      body: { categoria: dados.categoria, latitude: dados.latitude, longitude: dados.longitude },
+    })
+    digitando.value = false
+
+    if (resposta.candidata) {
+      candidataEncontrada.value = resposta.candidata
+      await mensagemBot('Encontrei um problema parecido já registrado perto daqui — dá uma olhada:')
+      etapa.value = 'confirmar_duplicidade'
+    }
+    else {
+      await perguntarReferencia()
+    }
+  }
+  catch {
+    digitando.value = false
+    // Falha na checagem não pode travar o cidadão — segue como ocorrência nova.
+    await perguntarReferencia()
+  }
+}
+
+async function confirmarMesmoProblema() {
+  const candidata = candidataEncontrada.value
+  if (!candidata)
+    return
+
+  mensagemUsuario('Sim, é o mesmo problema')
+  etapa.value = 'enviando'
+
+  try {
+    const resposta = await $fetch<{ protocolo: string, quantidadeRelatos: number }>(
+      `/api/solicitacoes/${candidata.protocolo}/relato`,
+      { method: 'POST' },
+    )
+    protocoloGerado.value = resposta.protocolo
+    etapa.value = 'concluido'
+    await mensagemBot(`✅ Seu relato foi registrado nesta ocorrência. Esta ocorrência já possui ${resposta.quantidadeRelatos} relato${resposta.quantidadeRelatos === 1 ? '' : 's'}.`, 300)
+  }
+  catch (erro) {
+    if ((erro as { statusCode?: number }).statusCode === 409) {
+      // Já tinha relatado antes — não é um erro de verdade pro cidadão.
+      protocoloGerado.value = candidata.protocolo
+      etapa.value = 'concluido'
+      await mensagemBot('Você já tinha registrado esse problema antes — não precisa relatar de novo. 👍', 300)
+    }
+    else {
+      erroEnvio.value = 'Não foi possível registrar seu relato agora. Tente novamente em instantes.'
+      await mensagemBot('Ops, não consegui registrar seu relato agora. Podemos tentar de novo?')
+      etapa.value = 'confirmar_duplicidade'
+    }
+  }
+}
+
+async function naoEhMesmoProblema() {
+  mensagemUsuario('Não, é outro problema')
+  candidataEncontrada.value = null
   await perguntarReferencia()
 }
 
@@ -320,38 +450,7 @@ const LABEL_RISCO = { sim: 'Sim', nao: 'Não', nao_sei: 'Não sei' } as const
 async function responderRisco(valor: 'sim' | 'nao' | 'nao_sei') {
   dados.risco = valor
   mensagemUsuario(LABEL_RISCO[valor])
-
-  if (revisando.value) {
-    revisando.value = false
-    await mostrarResumo()
-  }
-  else {
-    await perguntarNome()
-  }
-}
-
-async function perguntarNome() {
-  await mensagemBot('Para finalizar, qual é o seu nome completo?')
-  etapa.value = 'nome'
-}
-
-async function perguntarEmail() {
-  await mensagemBot('Qual o melhor e-mail para contato?')
-  etapa.value = 'email'
-}
-
-async function perguntarTelefone() {
-  await mensagemBot('E um telefone com DDD?')
-  etapa.value = 'telefone'
-}
-
-async function perguntarCpf() {
-  await mensagemBot('Se quiser, você pode informar seu CPF para facilitar o acompanhamento. É totalmente opcional.')
-  etapa.value = 'cpf'
-}
-
-async function pularCpf() {
-  mensagemUsuario('Prefiro não informar')
+  revisando.value = false
   await mostrarResumo()
 }
 
@@ -365,6 +464,7 @@ async function corrigirAlgo() {
   await mensagemBot('Sem problema! Me conte novamente o que está acontecendo, que eu atualizo os dados.')
   dados.descricao = ''
   dados.categoria = categoriaInicial
+  candidataEncontrada.value = null
   revisando.value = true
   etapa.value = 'descricao'
 }
@@ -391,11 +491,12 @@ async function confirmarEnvio() {
         numero: dados.numero || 'S/N',
         bairro: dados.bairro,
         pontoReferencia: dados.pontoReferencia || undefined,
+        latitude: dados.latitude,
+        longitude: dados.longitude,
         risco: dados.risco || undefined,
-        nome: dados.nome,
-        email: dados.email,
-        telefone: dados.telefone,
-        cpf: dados.cpf || undefined,
+        // Sem nome/e-mail/telefone/CPF aqui — o backend usa a sessão pra
+        // identidade e a própria conta pra telefone/CPF, se existirem (ver
+        // server/api/solicitacoes/index.post.ts).
       },
     })
 
@@ -403,8 +504,10 @@ async function confirmarEnvio() {
     etapa.value = 'concluido'
     await mensagemBot('✅ Ocorrência registrada! Sua solicitação foi enviada para a equipe responsável.', 300)
   }
-  catch {
-    erroEnvio.value = 'Não foi possível enviar sua solicitação agora. Tente novamente em instantes.'
+  catch (erro) {
+    erroEnvio.value = (erro as { statusCode?: number }).statusCode === 401
+      ? 'Sua sessão expirou. Entre novamente para enviar a solicitação.'
+      : 'Não foi possível enviar sua solicitação agora. Tente novamente em instantes.'
     await mensagemBot('Ops, não consegui enviar sua solicitação agora. Podemos tentar de novo?')
     etapa.value = 'resumo'
   }
@@ -422,6 +525,7 @@ async function copiarProtocolo() {
 function reiniciar() {
   Object.assign(dados, estadoInicial())
   mensagens.value = []
+  candidataEncontrada.value = null
   protocoloGerado.value = ''
   erroEnvio.value = ''
   revisando.value = false
@@ -452,7 +556,7 @@ function reiniciar() {
       </UContainer>
     </div>
 
-    <div ref="containerRef" class="flex-1 overflow-y-auto">
+    <div ref="containerRef" class="flex-1 overflow-y-auto" aria-live="polite" aria-relevant="additions">
       <UContainer class="max-w-2xl space-y-4 py-6">
         <div
           v-for="mensagem in mensagens"
@@ -491,10 +595,14 @@ function reiniciar() {
           <span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary-600 to-primary-400 text-white">
             <UIcon name="i-lucide-message-circle" class="size-3" />
           </span>
-          <div class="flex items-center gap-1 rounded-2xl rounded-bl-sm bg-default px-4 py-3 shadow-sm ring-1 ring-default">
-            <span class="size-1.5 animate-bounce rounded-full bg-muted [animation-delay:-0.3s]" />
-            <span class="size-1.5 animate-bounce rounded-full bg-muted [animation-delay:-0.15s]" />
-            <span class="size-1.5 animate-bounce rounded-full bg-muted" />
+          <div
+            class="flex items-center gap-1 rounded-2xl rounded-bl-sm bg-default px-4 py-3 shadow-sm ring-1 ring-default"
+            role="status"
+          >
+            <span class="sr-only">Assistente está digitando</span>
+            <span class="size-1.5 animate-bounce rounded-full bg-muted motion-reduce:animate-none [animation-delay:-0.3s]" />
+            <span class="size-1.5 animate-bounce rounded-full bg-muted motion-reduce:animate-none [animation-delay:-0.15s]" />
+            <span class="size-1.5 animate-bounce rounded-full bg-muted motion-reduce:animate-none" />
           </div>
         </div>
 
@@ -568,6 +676,87 @@ function reiniciar() {
           </div>
         </div>
 
+        <UCard v-if="etapa === 'confirmar_duplicidade' && candidataEncontrada" variant="subtle">
+          <template #header>
+            <span class="font-medium text-highlighted">Encontramos um problema semelhante próximo deste local</span>
+          </template>
+
+          <div class="flex gap-3">
+            <img
+              v-if="candidataEncontrada.fotoPrincipal"
+              :src="candidataEncontrada.fotoPrincipal"
+              class="size-20 shrink-0 rounded-lg object-cover"
+              alt="Foto da ocorrência já registrada"
+            >
+            <dl class="min-w-0 flex-1 space-y-2 text-sm">
+              <div class="flex justify-between gap-4">
+                <dt class="text-muted">
+                  Categoria
+                </dt>
+                <dd class="text-right text-highlighted">
+                  {{ getCategoria(candidataEncontrada.categoria)?.label }}
+                </dd>
+              </div>
+              <div>
+                <dt class="text-muted">
+                  Descrição
+                </dt>
+                <dd class="text-highlighted">
+                  {{ candidataEncontrada.descricao }}
+                </dd>
+              </div>
+              <div class="flex justify-between gap-4">
+                <dt class="text-muted">
+                  Local
+                </dt>
+                <dd class="text-right text-highlighted">
+                  {{ candidataEncontrada.rua }}, {{ candidataEncontrada.bairro }}
+                </dd>
+              </div>
+              <div v-if="candidataEncontrada.pontoReferencia" class="flex justify-between gap-4">
+                <dt class="text-muted">
+                  Referência
+                </dt>
+                <dd class="text-right text-highlighted">
+                  {{ candidataEncontrada.pontoReferencia }}
+                </dd>
+              </div>
+              <div class="flex justify-between gap-4">
+                <dt class="text-muted">
+                  Status
+                </dt>
+                <dd class="text-right text-highlighted">
+                  {{ STATUS_SOLICITACAO[candidataEncontrada.status].label }}
+                </dd>
+              </div>
+              <div class="flex justify-between gap-4">
+                <dt class="text-muted">
+                  Relatos
+                </dt>
+                <dd class="text-right text-highlighted">
+                  {{ candidataEncontrada.quantidadeRelatos }}
+                </dd>
+              </div>
+              <div class="flex justify-between gap-4">
+                <dt class="text-muted">
+                  Distância
+                </dt>
+                <dd class="text-right text-highlighted">
+                  aproximadamente {{ candidataEncontrada.distanciaMetros }}m
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          <p class="mt-4 text-sm font-medium text-highlighted">
+            Este é o mesmo problema que você está relatando?
+          </p>
+          <div class="mt-2 flex flex-wrap gap-2">
+            <UButton label="Sim, é o mesmo problema" color="primary" class="rounded-full" @click="confirmarMesmoProblema" />
+            <UButton label="Não, é outro problema" color="neutral" variant="outline" class="rounded-full" @click="naoEhMesmoProblema" />
+          </div>
+        </UCard>
+
         <div v-if="etapa === 'referencia'" class="flex flex-wrap gap-2">
           <UButton label="Não tenho ponto de referência" color="neutral" variant="ghost" size="sm" class="rounded-full" @click="pularReferencia" />
         </div>
@@ -576,10 +765,6 @@ function reiniciar() {
           <UButton label="Sim" color="primary" class="rounded-full" @click="responderRisco('sim')" />
           <UButton label="Não" color="neutral" variant="outline" class="rounded-full" @click="responderRisco('nao')" />
           <UButton label="Não sei" color="neutral" variant="ghost" class="rounded-full" @click="responderRisco('nao_sei')" />
-        </div>
-
-        <div v-if="etapa === 'cpf'" class="flex flex-wrap gap-2">
-          <UButton label="Prefiro não informar" color="neutral" variant="ghost" size="sm" class="rounded-full" @click="pularCpf" />
         </div>
 
         <UCard v-if="etapa === 'resumo' || etapa === 'enviando'" variant="subtle">
@@ -600,7 +785,13 @@ function reiniciar() {
                 📷 Fotos
               </dt>
               <dd class="flex gap-1">
-                <img v-for="(foto, index) in dados.fotos" :key="index" :src="foto" class="size-10 rounded-md object-cover">
+                <img
+                  v-for="(foto, index) in dados.fotos"
+                  :key="index"
+                  :src="foto"
+                  class="size-10 rounded-md object-cover"
+                  alt="Foto enviada pelo cidadão"
+                >
               </dd>
             </div>
             <div>
