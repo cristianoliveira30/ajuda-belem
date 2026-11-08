@@ -46,10 +46,7 @@ export default defineEventHandler(async (event): Promise<DashboardResposta> => {
   const { inicio, fim } = calcularIntervaloPeriodo(periodo)
   const granularidade = granularidadePeriodo(periodo)
 
-  const storage = useStorage('solicitacoes')
-  const chaves = await storage.getKeys()
-  const todas = (await Promise.all(chaves.map(chave => storage.getItem<Solicitacao>(chave))))
-    .filter((solicitacao): solicitacao is Solicitacao => !!solicitacao)
+  const todas = await listarSolicitacoes()
 
   // Todos os KPIs/gráficos derivam deste mesmo recorte por período — filtra
   // uma vez só, pela data de criação da ocorrência.

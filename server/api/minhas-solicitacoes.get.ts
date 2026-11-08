@@ -10,11 +10,7 @@ export default defineEventHandler(async (event) => {
   const userId = session.user.id
   const email = session.user.email.toLowerCase()
 
-  const storage = useStorage('solicitacoes')
-  const chaves = await storage.getKeys()
-  const solicitacoes = await Promise.all(
-    chaves.map(chave => storage.getItem<Solicitacao>(chave)),
-  )
+  const solicitacoes = await listarSolicitacoes()
 
   return solicitacoes
     .filter((solicitacao): solicitacao is Solicitacao => {

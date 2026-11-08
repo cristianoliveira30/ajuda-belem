@@ -25,13 +25,7 @@ export const solicitacaoSchema = z.object({
     .max(1000, 'Descrição muito longa (máximo 1000 caracteres)'),
   fotos: z.array(fotoSchema).max(3, 'Envie no máximo 3 fotos').optional(),
   risco: z.enum(['sim', 'nao', 'nao_sei']).optional(),
-  nome: z.string().min(3, 'Informe seu nome completo').optional(),
-  email: z.string().email('Informe um e-mail válido').optional(),
-  telefone: z.string().min(10, 'Informe um telefone válido, com DDD').optional(),
-  cpf: z.string().optional(),
 })
-
-export type SolicitacaoFormData = z.infer<typeof solicitacaoSchema>
 
 const valoresStatus = ['aberto', 'em_analise', 'encaminhado', 'em_execucao', 'concluido'] as const
 
@@ -71,7 +65,8 @@ export type CriarServidorFormData = z.infer<typeof criarServidorSchema>
 
 export const editarServidorSchema = z.object({
   nome: z.string().min(3, 'Informe o nome completo').optional(),
-  email: z.string().email('Informe um e-mail válido').optional(),
+  // Minúsculo: o Better Auth busca o e-mail em minúsculas no login.
+  email: z.string().email('Informe um e-mail válido').toLowerCase().optional(),
   banned: z.boolean().optional(),
 })
 

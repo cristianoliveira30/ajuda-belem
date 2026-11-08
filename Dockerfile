@@ -14,6 +14,8 @@ RUN yarn build
 FROM node:24.21.0-alpine AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
+# Dashboard agrupa "hoje"/dia pelo relógio do servidor; Belém é UTC-3.
+ENV TZ=America/Belem
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
