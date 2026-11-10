@@ -3,13 +3,13 @@ import { calcularIntervaloPeriodo, granularidadePeriodo } from '#shared/utils/pe
 import { STATUS_SOLICITACAO } from '#shared/utils/status'
 import type {
   DashboardResposta,
-  OcorrenciaMaisRelatada,
   PontoAbertasConcluidas,
   PontoBairro,
   PontoCategoria,
   PontoEvolucao,
   PontoRisco,
   PontoStatus,
+  ProblemaMaisRelatado,
 } from '#shared/types/dashboard'
 import type { Solicitacao, StatusSolicitacao } from '#shared/types/solicitacao'
 
@@ -161,16 +161,31 @@ export default defineEventHandler(async (event): Promise<DashboardResposta> => {
     quantidade: contagemConcluidasCategoria.get(categoria.value) ?? 0,
   }))
 
-  // ---- Card 8: top 10 mais relatadas (só dado público) ----
-  const maisRelatadas: OcorrenciaMaisRelatada[] = [...filtradas]
-    .sort((a, b) => quantidadeRelatos(b) - quantidadeRelatos(a))
+  // ---- Card 8: top 10 problemas mais relatados (só dado público) ----
+  // "Problema" = par categoria+bairro, somando os relatos de TODAS as
+  // ocorrências daquele par — não uma ocorrência específica (ver
+  // ProblemaMaisRelatado). Sem isso, a mesma categoria em bairros diferentes
+  // (ex.: "Alagamento" no Umarizal e no Marco) entrava como duas linhas
+  // soltas no ranking em vez de aparecer agrupada por onde o problema se
+  // repete.
+  const relatosPorProblema = new Map<string, { categoria: string, bairro: string, quantidadeRelatos: number }>()
+  for (const s of filtradas) {
+    const chave = `${s.categoria}::${s.bairro}`
+    const existente = relatosPorProblema.get(chave)
+    const relatos = quantidadeRelatos(s)
+    if (existente)
+      existente.quantidadeRelatos += relatos
+    else
+      relatosPorProblema.set(chave, { categoria: s.categoria, bairro: s.bairro, quantidadeRelatos: relatos })
+  }
+  const maisRelatadas: ProblemaMaisRelatado[] = [...relatosPorProblema.values()]
+    .sort((a, b) => b.quantidadeRelatos - a.quantidadeRelatos)
     .slice(0, 10)
-    .map(s => ({
-      protocolo: s.protocolo,
-      categoria: s.categoria,
-      categoriaLabel: getCategoria(s.categoria)?.label ?? s.categoria,
-      bairro: s.bairro,
-      quantidadeRelatos: quantidadeRelatos(s),
+    .map(p => ({
+      categoria: p.categoria,
+      categoriaLabel: getCategoria(p.categoria)?.label ?? p.categoria,
+      bairro: p.bairro,
+      quantidadeRelatos: p.quantidadeRelatos,
     }))
 
   // ---- Card 9: por nível de risco ----

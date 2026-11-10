@@ -70,6 +70,37 @@ rm -rf .data                             # apaga as ocorrências (ficam em arqui
 
 Se mudar `server/utils/auth.ts`, rode o passo 3 de novo.
 
+#### Subir de novo no dia a dia (sem migrate e sem seed)
+
+Depois da primeira execução, as tabelas e os dados de demonstração continuam no volume do Postgres. Para voltar a trabalhar, basta subir os containers:
+
+```bash
+docker compose --profile dev up -d dev   # sobe o Postgres e o app em modo dev (sem --build, usa a imagem existente)
+docker compose logs -f dev               # acompanha o log (opcional)
+```
+
+Só rode `docker compose run --rm migrate` e `docker compose exec dev yarn db:seed` de novo se tiver apagado o banco (`down -v`) ou mudado `server/utils/auth.ts`. Adicione `--build` ao primeiro comando apenas se mudar o `Dockerfile.dev` ou as dependências (`package.json`).
+
+Outros comandos úteis:
+
+```bash
+docker compose --profile dev restart dev   # reinicia só o app
+docker compose --profile dev ps            # mostra o que está rodando
+```
+
+#### Zerar o banco e recarregar o seed
+
+Apaga o volume do Postgres e as ocorrências em `.data`, recria as tabelas e carrega de novo as 4 contas e as 100 ocorrências de demonstração:
+
+```bash
+docker compose --profile dev down -v && rm -rf .data \
+  && docker compose --profile dev up -d dev \
+  && docker compose run --rm migrate \
+  && docker compose exec dev yarn db:seed
+```
+
+Os comandos são encadeados com `&&`: se um falhar, os seguintes não rodam.
+
 ### Opção 2: sem Docker para o app (Node local)
 
 Precisa de **Node 24** e **Yarn 4** (`corepack enable`) e de um Postgres. O Postgres pode vir do Docker (`docker compose up -d db`, que expõe a porta **5433**) ou ser um já instalado, ajustando `DATABASE_URL`.

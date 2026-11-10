@@ -106,10 +106,48 @@ function montarOpcoes(): ApexOptions {
     },
   },
 } : {}),
-    dataLabels: { enabled: false },
+    // Nos donuts mostra a porcentagem de cada fatia (comportamento padrão do
+    // formatter do ApexCharts pra pie/donut); o tooltip não é afetado e
+    // continua mostrando o valor absoluto de cada status.
+    dataLabels: {
+      enabled: ehDonut,
+      ...(ehDonut ? { formatter: (valor: number) => `${valor.toFixed(1)}%` } : {}),
+    },
     legend: { position: ehDonut ? 'bottom' : 'top', fontSize: '12px' },
     tooltip: { theme: 'light' },
     ...(props.tipo === 'line' || props.tipo === 'area' ? { stroke: { curve: 'smooth', width: 2 } } : {}),
+    // Em telas estreitas (PWA no celular) a legenda do donut quebra em mais
+    // linhas, as barras (verticais ou horizontais) têm pouco espaço pros
+    // rótulos das categorias — nos dois casos isso "come" a altura fixa do
+    // gráfico e espreme o desenho. No mobile cada card ocupa uma linha
+    // inteira (grid-cols-1), então, diferente do desktop (onde pares de
+    // cards em lg:col-span-6 ficam lado a lado e pedem a mesma altura),
+    // aqui não precisa manter os gráficos do mesmo tamanho — por isso o bar
+    // ganha bem mais altura que os demais tipos.
+    // O `responsive` do próprio ApexCharts resolve sem JS de resize: ele
+    // observa a largura da tela e troca a altura/fonte só abaixo do
+    // breakpoint, sem afetar o desktop.
+    responsive: [
+      {
+        breakpoint: 640,
+        options: {
+          chart: {
+            height: ehDonut
+              ? props.altura + 70
+              : props.tipo === 'bar'
+                ? props.altura + (props.horizontal ? 80 : 130)
+                : props.altura,
+          },
+          legend: { fontSize: '11px' },
+          // Só as barras verticais têm o nome da categoria embaixo da
+          // coluna (nas horizontais o rótulo vai do lado, na lateral); é
+          // esse rótulo que quebra em telas estreitas, daí a fonte menor.
+          ...(props.tipo === 'bar' && !props.horizontal ? {
+            xaxis: { labels: { style: { fontSize: '9px' } } },
+          } : {}),
+        },
+      },
+    ],
   }
 }
 

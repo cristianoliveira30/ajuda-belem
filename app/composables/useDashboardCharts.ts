@@ -44,7 +44,7 @@ export function useDashboardCharts(dashboard: Ref<DashboardResposta | null | und
   }))
 
   const maisRelatadas = computed(() => ({
-    categorias: dashboard.value?.maisRelatadas.map(m => `${m.categoriaLabel} · ${m.bairro} · ${m.protocolo}`) ?? [],
+    categorias: dashboard.value?.maisRelatadas.map(m => `${m.categoriaLabel} · ${m.bairro}`) ?? [],
     series: [{ name: 'Relatos', data: dashboard.value?.maisRelatadas.map(m => m.quantidadeRelatos) ?? [] }],
   }))
 

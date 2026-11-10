@@ -266,7 +266,7 @@ async function sair() {
           <UAlert v-if="erroSair" color="error" variant="subtle" icon="i-lucide-alert-triangle" :description="erroSair" />
 
           <UButton
-            label=" conta"
+            label=""
             icon="i-lucide-log-out"
             color="error"
             variant="outline"

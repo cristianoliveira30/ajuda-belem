@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { DashboardResposta } from '#shared/types/dashboard'
-import type { OcorrenciaMapa } from '#shared/types/solicitacao'
+import type { DashboardResposta } from '#shared/types/dashboard';
+import type { OcorrenciaMapa } from '#shared/types/solicitacao';
 
 const props = defineProps<{
   dashboard: DashboardResposta | null | undefined
@@ -67,6 +67,18 @@ const { data: ocorrenciasMapa, status: statusMapa } = await useFetch<OcorrenciaM
     <div class="lg:col-span-6">
       <ClientOnly>
         <DashboardChartCard
+          titulo="Abertas x concluídas"
+          subtitulo="Ao longo do tempo, pela data real de cada evento"
+          tipo="line"
+          :categorias="abertasConcluidas.categorias"
+          :series="abertasConcluidas.series"
+          :carregando="carregando"
+        />
+      </ClientOnly>
+    </div>
+    <div class="lg:col-span-6">
+      <ClientOnly>
+        <DashboardChartCard
           titulo="Bairros com mais ocorrências"
           subtitulo="Top 10"
           tipo="bar"
@@ -78,19 +90,21 @@ const { data: ocorrenciasMapa, status: statusMapa } = await useFetch<OcorrenciaM
         />
       </ClientOnly>
     </div>
-
-    <div class="lg:col-span-12">
+    <div class="lg:col-span-6">
       <ClientOnly>
         <DashboardChartCard
-          titulo="Abertas x concluídas"
-          subtitulo="Ao longo do tempo, pela data real de cada evento"
-          tipo="line"
-          :categorias="abertasConcluidas.categorias"
-          :series="abertasConcluidas.series"
+          titulo="Problemas mais relatados por bairros"
+          subtitulo="Top 10 por quantidade de relatos"
+          tipo="bar"
+          horizontal
+          :categorias="maisRelatadas.categorias"
+          :series="maisRelatadas.series"
           :carregando="carregando"
+          :altura="360"
         />
       </ClientOnly>
     </div>
+
 
     <div class="lg:col-span-6">
       <ClientOnly>
@@ -116,21 +130,7 @@ const { data: ocorrenciasMapa, status: statusMapa } = await useFetch<OcorrenciaM
       </ClientOnly>
     </div>
 
-    <div class="lg:col-span-6">
-      <ClientOnly>
-        <DashboardChartCard
-          titulo="Problemas mais relatados"
-          subtitulo="Top 10 por quantidade de relatos"
-          tipo="bar"
-          horizontal
-          :categorias="maisRelatadas.categorias"
-          :series="maisRelatadas.series"
-          :carregando="carregando"
-          :altura="360"
-        />
-      </ClientOnly>
-    </div>
-    <div class="lg:col-span-6">
+    <!-- <div class="lg:col-span-6">
       <ClientOnly>
         <DashboardChartCard
           titulo="Ocorrências por nível de risco"
@@ -140,7 +140,7 @@ const { data: ocorrenciasMapa, status: statusMapa } = await useFetch<OcorrenciaM
           :carregando="carregando"
         />
       </ClientOnly>
-    </div>
+    </div> -->
 
     <div class="lg:col-span-12">
       <DashboardCard variant="subtle" padding="compacto">

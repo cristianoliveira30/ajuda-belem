@@ -37,8 +37,11 @@ export interface PontoRisco extends ContagemRotulada {
   risco: RiscoPercebido | 'nao_informado'
 }
 
-export interface OcorrenciaMaisRelatada {
-  protocolo: string
+// Um problema = uma categoria num bairro (ex.: "Alagamento no Umarizal"),
+// somando os relatos de TODAS as ocorrências daquele par categoria+bairro —
+// não uma ocorrência específica. Por isso não tem `protocolo`: pode
+// representar várias.
+export interface ProblemaMaisRelatado {
   categoria: string
   categoriaLabel: string
   bairro: string
@@ -66,6 +69,6 @@ export interface DashboardResposta {
   abertasConcluidas: PontoAbertasConcluidas[]
   relatosPorCategoria: PontoCategoria[]
   concluidasPorCategoria: PontoCategoria[]
-  maisRelatadas: OcorrenciaMaisRelatada[]
+  maisRelatadas: ProblemaMaisRelatado[]
   porRisco: PontoRisco[]
 }
