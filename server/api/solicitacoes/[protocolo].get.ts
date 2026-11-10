@@ -15,13 +15,16 @@ export default defineEventHandler(async (event): Promise<SolicitacaoPublica> => 
 
   // Rota pública (sem login): nunca devolver nome, e-mail, telefone ou CPF do
   // cidadão. Quem precisa dos dados de contato é a rota do painel, autenticada.
-  const { nome: _nome, email: _email, telefone: _telefone, cpf: _cpf, ...solicitacaoPublica } = solicitacao
+  // `userId` e `relatos[].userId` também ficam de fora: ligariam várias
+  // ocorrências à mesma conta. A tela só usa a quantidade de relatos.
+  const { nome: _nome, email: _email, telefone: _telefone, cpf: _cpf, userId: _userId, ...solicitacaoPublica } = solicitacao
 
   // Mesma lógica pro histórico: `servidorUserId`/`servidorNome` são
   // auditoria interna (ver painel/solicitacoes/[protocolo].patch.ts), o
   // cidadão só vê status/mensagem/data de cada item.
   return {
     ...solicitacaoPublica,
+    relatos: solicitacaoPublica.relatos?.map(({ criadoEm }) => ({ criadoEm })),
     historico: solicitacaoPublica.historico.map(({ status, data, mensagem }) => ({ status, data, mensagem })),
   }
 })

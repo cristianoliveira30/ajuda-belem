@@ -85,6 +85,46 @@ describe('ssr', async () => {
     ).rejects.toMatchObject({ statusCode: 401 })
   })
 
+  it('rejects rating a solicitação without an authenticated session', async () => {
+    await expect(
+      $fetch('/api/solicitacoes/2026000000/avaliacao', { method: 'POST', body: { nota: 1 } }),
+    ).rejects.toMatchObject({ statusCode: 401 })
+  })
+
+  it('does not let someone who did not report the solicitação rate it', async () => {
+    const { protocolo } = await $fetch<{ protocolo: string }>('/api/solicitacoes', {
+      method: 'POST',
+      headers: { cookie: cookieCidadao },
+      body: {
+        categoria: 'iluminacao',
+        rua: 'Av. Gentil Bittencourt',
+        numero: '1234',
+        bairro: 'Nazaré',
+        descricao: 'Poste de luz apagado há uma semana, deixando a rua escura à noite.',
+      },
+    })
+    protocolosCriados.push(protocolo)
+
+    const outra = await fetchCru('/api/auth/sign-up/email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: 'Outra Pessoa',
+        email: `outra.${Date.now()}@example.com`,
+        password: 'SenhaTeste123!',
+        cpf: gerarCpfValido(),
+      }),
+    })
+
+    await expect(
+      $fetch(`/api/solicitacoes/${protocolo}/avaliacao`, {
+        method: 'POST',
+        headers: { cookie: outra.headers.getSetCookie().join('; ') },
+        body: { nota: 1 },
+      }),
+    ).rejects.toMatchObject({ statusCode: 403 })
+  })
+
   it('creates and retrieves a solicitação by protocolo', async () => {
     const { protocolo } = await $fetch<{ protocolo: string }>('/api/solicitacoes', {
       method: 'POST',
@@ -131,6 +171,8 @@ describe('ssr', async () => {
     expect(solicitacao).not.toHaveProperty('email')
     expect(solicitacao).not.toHaveProperty('telefone')
     expect(solicitacao).not.toHaveProperty('cpf')
+    // userId (e relatos[].userId) ligaria várias ocorrências à mesma conta.
+    expect(JSON.stringify(solicitacao)).not.toContain('userId')
   })
 
   it('rejects a solicitação payload containing an XSS-like script tag', async () => {

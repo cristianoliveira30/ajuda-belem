@@ -13,6 +13,8 @@ export default defineNuxtConfig({
   routeRules: {
     '/avisos': { swr: 3600 },
     '/contatos': { swr: 3600 },
+    // shortcut: cache de 60s só alivia a leitura do disco; o certo é mover as solicitações para o Postgres.
+    '/api/mapa/ocorrencias': { swr: 60 },
   },
 
   pwa: {

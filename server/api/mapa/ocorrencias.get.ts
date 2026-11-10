@@ -2,11 +2,7 @@ import { calcularIntervaloPeriodo } from '#shared/utils/periodo'
 import type { OcorrenciaMapa, Solicitacao } from '#shared/types/solicitacao'
 
 export default defineEventHandler(async (event) => {
-  const storage = useStorage('solicitacoes')
-  const chaves = await storage.getKeys()
-  const solicitacoes = await Promise.all(
-    chaves.map(chave => storage.getItem<Solicitacao>(chave)),
-  )
+  const solicitacoes = await listarSolicitacoes()
 
   // `periodo` é opcional — a página /mapa nunca manda esse parâmetro, então
   // continua mostrando todas as ocorrências como sempre. Só o card de mapa

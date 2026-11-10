@@ -32,9 +32,7 @@ export default defineEventHandler(async (event) => {
     return { candidata: null }
   }
 
-  const storage = useStorage('solicitacoes')
-  const chaves = await storage.getKeys()
-  const solicitacoes = await Promise.all(chaves.map(chave => storage.getItem<Solicitacao>(chave)))
+  const solicitacoes = await listarSolicitacoes()
 
   // Entre as elegíveis dentro do raio, pega a mais próxima — mais provável
   // de ser o mesmo problema do que uma outra qualquer dentro do limite.

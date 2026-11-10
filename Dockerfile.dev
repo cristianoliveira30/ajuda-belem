@@ -7,6 +7,7 @@
 # anônimo no compose) para não ser sobrescrito pelo host.
 FROM node:24.21.0-alpine
 WORKDIR /app
+ENV TZ=America/Belem
 
 RUN corepack enable
 

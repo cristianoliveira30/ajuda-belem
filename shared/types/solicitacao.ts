@@ -63,12 +63,6 @@ export interface Solicitacao {
   relatos?: RelatoOcorrencia[]
 }
 
-export type NovaSolicitacaoPayload = Pick<
-  Solicitacao,
-  | 'categoria' | 'rua' | 'numero' | 'bairro' | 'complemento' | 'pontoReferencia' | 'latitude' | 'longitude'
-  | 'descricao' | 'fotos' | 'risco' | 'nome' | 'email' | 'telefone' | 'cpf'
->
-
 export type OcorrenciaMapa = Pick<
   Solicitacao,
   'protocolo' | 'categoria' | 'bairro' | 'rua' | 'latitude' | 'longitude' | 'status' | 'descricao' | 'criadoEm'
@@ -100,6 +94,7 @@ export interface OcorrenciaCandidata {
 // Versão exposta pela consulta pública de protocolo (server/api/solicitacoes/[protocolo].get.ts):
 // sem nome, e-mail, telefone e CPF do cidadão, e sem a auditoria interna de
 // quem alterou cada item do histórico — essa rota não exige login.
-export type SolicitacaoPublica = Omit<Solicitacao, 'nome' | 'email' | 'telefone' | 'cpf' | 'historico'> & {
+export type SolicitacaoPublica = Omit<Solicitacao, 'nome' | 'email' | 'telefone' | 'cpf' | 'userId' | 'relatos' | 'historico'> & {
+  relatos?: { criadoEm: string }[]
   historico: HistoricoSolicitacaoPublico[]
 }
